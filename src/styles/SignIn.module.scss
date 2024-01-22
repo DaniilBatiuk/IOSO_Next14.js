@@ -1,0 +1,108 @@
+@import "../styles/variables.scss";
+.signIn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  &__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+  }
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh + 96px);
+  }
+
+  &__title {
+    font-size: clamp(50px, 4vw, 60px);
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 1);
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 10%;
+  }
+
+  &__block {
+    position: relative;
+    width: 800px;
+    height: 600px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    @media (max-width: 850.98px) {
+      margin-top: 50px;
+    }
+  }
+
+  &__left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__right {
+    position: relative;
+    z-index: 1;
+    width: 50%;
+    height: 100%;
+    border-top-right-radius: 28px;
+    border-bottom-right-radius: 28px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-height: 807px;
+    @media (max-width: 809.98px) {
+      width: 100%;
+      border-radius: 20px;
+    }
+  }
+
+  &__picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  flex: 1 1 auto;
+
+  &__undertext {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 3%;
+    text-align: center;
+    & span a {
+      color: #db8dff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
+  & Button {
+    width: 250px;
+    height: 80px;
+  }
+}

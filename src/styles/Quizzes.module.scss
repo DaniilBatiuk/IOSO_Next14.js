@@ -1,0 +1,87 @@
+@import "../styles/variables.scss";
+
+.quizzes {
+  &__container {
+    color: rgb(255, 255, 255);
+    margin-bottom: 30px;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    background-color: rgba(70, 233, 255, 0.2);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    min-height: 65px;
+    padding: 5px 36px;
+    padding-top: 0px;
+
+    @media (max-width: 1054.98px) {
+      justify-content: center;
+      padding: 10px 36px;
+    }
+    @media (max-width: 952.98px) {
+      gap: 10px;
+    }
+
+    @media (max-width: 441.98px) {
+      padding: 19px 10px;
+    }
+  }
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: rgb(255, 255, 255);
+
+  @media (max-width: 1111.98px) {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  @media (max-width: 952.98px) {
+    gap: 10px;
+  }
+}
+
+.quizzes {
+  &__table {
+    width: 100%;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      display: block;
+      width: 5px;
+      overflow: auto;
+      height: 5px;
+      background-color: lightgray;
+      border-radius: 30px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: gray;
+      border-radius: 30px;
+    }
+  }
+}
+
+.main {
+  border: 1px rgba(55, 255, 255, 1) solid;
+  border-radius: 10px;
+  margin-top: 40px;
+
+  @media (max-width: 1041.98px) {
+    margin-top: 20px;
+  }
+}
+
+.button__active {
+  background-color: rgba(55, 255, 255, 0.1) !important;
+  border: 1px rgba(55, 255, 255, 1) solid !important;
+}

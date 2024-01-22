@@ -1,0 +1,266 @@
+@import "../../../styles/variables.scss";
+
+.header {
+  position: relative;
+  width: 100%;
+
+  &__dark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    backdrop-filter: blur(3px);
+    background-color: rgb(0, 0, 0, 0.5);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 57px;
+    left: 0;
+    width: 100vw;
+    border-bottom: 2px rgba(186, 29, 200, 0.4) solid;
+    z-index: 1;
+  }
+
+  &__logo {
+    &:hover {
+      color: rgb(255, 255, 255);
+    }
+    font-size: 38px;
+    font-weight: 700;
+    position: relative;
+    z-index: 10;
+  }
+
+  &__container {
+    padding-top: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  &__list {
+    display: flex;
+    column-gap: 50px;
+    align-items: center;
+    font-size: 500;
+    @media (max-width: 767.98px) {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      row-gap: 20px;
+    }
+  }
+
+  &__item {
+    font-size: 24px;
+    font-weight: 400;
+    padding: 5px 12px;
+    cursor: pointer;
+    position: relative;
+    z-index: 5;
+    @extend %hoverLink;
+
+    &__active {
+      font-size: 24px;
+      font-weight: 400;
+      padding: 5px 12px;
+      cursor: pointer;
+      position: relative;
+      z-index: 5;
+      &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -10px;
+        width: 100%;
+        height: 4px;
+        background-color: $colorBlueBorder;
+        transition: 0.3s;
+      }
+    }
+
+    &__sign-up {
+      font-size: 24px;
+      font-weight: 400;
+      padding: 5px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      z-index: 5;
+      color: $colorBlueTitle;
+      @media (min-width: 767.98px) {
+        @include buttonColor($colorBlueBorder, $colorBlueOpacity, $colorBlueOpacity);
+      }
+
+      @media (max-width: 767.98px) {
+        position: relative;
+        font-size: 40px;
+        color: rgb(255, 255, 255);
+        position: relative;
+        &::before {
+          content: "";
+          position: absolute;
+          right: 0;
+          bottom: -10px;
+          width: 0;
+          height: 4px;
+          background-color: $colorBlueBorder;
+          transition: 0.3s;
+        }
+
+        &:hover {
+          &::before {
+            left: 0;
+            width: 100%;
+            transition: 0.3s;
+          }
+        }
+      }
+    }
+  }
+
+  &__body {
+    @media (max-width: 767.98px) {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      left: -110%;
+      top: 0;
+      padding: 85px 15px 30px 15px;
+      overflow: auto;
+      transition: all 0.3s ease 0s;
+      z-index: 2;
+      &::before {
+        content: "";
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: -110%;
+        height: 90px;
+        z-index: 5;
+        transition: all 0.3s ease 0s;
+      }
+    }
+  }
+}
+
+.icon-menu {
+  display: none;
+  @media (max-width: 767.98px) {
+    & {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 35px;
+      height: 18px;
+      position: relative;
+      z-index: 5;
+      margin-left: 20px;
+    }
+  }
+}
+
+.menu-open .header__body,
+.menu-open .header__body::before {
+  left: 0;
+}
+
+.menu-open body {
+  overflow: hidden;
+}
+
+.svg2 {
+  display: none;
+}
+.menu-open body .header .header__container .icon-menu .svg1 {
+  display: none;
+}
+.menu-open body .header .header__container {
+  position: relative;
+  z-index: 9;
+}
+
+.menu-open body .header .header__container .icon-menu .svg2 {
+  display: block;
+}
+
+.menu-open body .header .header__container .header__nav .header__body .header__list .header__item {
+  @media (max-width: 767.98px) {
+    font-size: 40px;
+  }
+}
+.menu-open
+  body
+  .header
+  .header__container
+  .header__nav
+  .header__body
+  .header__list
+  .header__item__sign-up {
+  border: none;
+  background-color: inherit;
+}
+
+.menu-open body .header .header__container .header__nav .header__body {
+  @media (max-width: 767.98px) {
+    background-color: rgba(56, 31, 88, 1);
+    opacity: 93%;
+  }
+}
+.menu-open body .header .header__container .lines {
+  // display: none;
+}
+.svg1 {
+}
+
+.lines {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  top: 0;
+  left: 0;
+  background-color: inherit;
+
+  &__line-1 {
+    border-right: 2px rgba(186, 29, 200, 0.4) solid;
+    border-left: 2px rgba(186, 29, 200, 0.4) solid;
+    width: 20%;
+  }
+
+  &__line-2,
+  &__line-3,
+  &__line-4,
+  &__line-5 {
+    border-right: 2px rgba(186, 29, 200, 0.4) solid;
+    width: 20%;
+  }
+
+  @media (max-width: 1152px) {
+    &__line-5 {
+      display: none;
+    }
+    &__line-1,
+    &__line-2,
+    &__line-3,
+    &__line-4 {
+      width: 25%;
+    }
+  }
+
+  @media (max-width: 1061px) {
+    &__line-4 {
+      display: none;
+    }
+    &__line-1,
+    &__line-2,
+    &__line-3 {
+      width: 33.33%;
+    }
+  }
+}

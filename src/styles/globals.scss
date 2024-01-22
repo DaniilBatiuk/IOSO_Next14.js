@@ -1,0 +1,231 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+  margin: 0px;
+}
+
+html,
+body {
+  height: 100%;
+  line-height: 1;
+}
+
+button,
+input {
+  font-weight: inherit;
+  font-size: inherit;
+  color: inherit;
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  background-color: inherit;
+}
+
+/* Layout styles */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-weight: 300;
+  font-size: 16px;
+  background-color: rgba(56, 31, 88, 1);
+  color: rgb(255, 255, 255);
+}
+
+body {
+  overflow-x: hidden;
+
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+    overflow: auto;
+    height: 5px;
+    background-color: rgb(29, 101, 110);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(2, 197, 223);
+    border-radius: 30px;
+  }
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 1 auto;
+}
+
+[class*="__container"] {
+  max-width: 1310px;
+  margin: 0px auto;
+  padding: 0px 15px;
+  overflow-wrap: break-word;
+}
+
+// .custom_select {
+//   &__control {
+//     background-color: transparent !important;
+//     border: none !important;
+//     border-radius: 0 !important;
+//     border: 2px rgba(54, 169, 184, 1) solid !important;
+//     color: white !important;
+//     border-radius: 5px !important;
+//     box-shadow: none !important;
+//     font-size: clamp(18px, 4vw, 20px) !important;
+//     padding: 3px 0px !important;
+//     padding-left: 10px !important;
+
+//     &:hover,
+//     &:focus {
+//       border: 2px solid rgb(0, 225, 255) !important;
+//     }
+//   }
+
+//   &__placeholder {
+//     color: rgb(179, 174, 174) !important;
+//   }
+//   &__single-value {
+//     color: white !important;
+//   }
+
+//   &__value-container {
+//     padding: 0 !important;
+//   }
+
+//   &__indicator-separator {
+//     display: none !important;
+//   }
+//   &__indicators {
+//     cursor: pointer !important;
+//   }
+//   &__indicator {
+//     color: rgb(255, 255, 255) !important;
+
+//     &:hover {
+//       color: rgb(255, 255, 255) !important;
+//     }
+//   }
+
+//   &__menu {
+//     background-color: rgb(7, 124, 139) !important;
+//     border: 2px rgba(54, 169, 184, 1) solid !important;
+//   }
+
+//   &__option--is-selected {
+//     background-color: rgba(255, 255, 255, 0.2) !important;
+//   }
+
+//   &__option {
+//     cursor: pointer !important;
+//     &--is-focused {
+//       background-color: rgba(255, 255, 255, 0.2) !important;
+//     }
+//   }
+// }
+
+[class$="-MuiFormControl-root"] {
+  margin: 0 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+  background-color: transparent !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border: none !important;
+  border-radius: 0px !important;
+  border-bottom: 2px rgba(54, 169, 184, 1) solid !important;
+  transition-duration: 10ms !important;
+
+  &:hover {
+    border-bottom: 3px rgb(0, 225, 255) solid !important;
+  }
+}
+
+.MuiPaper-root {
+  background-color: rgba(54, 169, 184, 1) !important;
+}
+
+.MuiPieArc-root {
+  stroke: none !important;
+  stroke-width: 0 !important;
+  stroke-linejoin: initial !important;
+}
+
+.MuiPopper-root {
+  font-weight: 800 !important;
+  font-size: 20px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important;
+}
+
+.MuiButtonGroup-root {
+  padding-top: 5px;
+  & button {
+    padding: 3px 10px !important;
+    padding-bottom: 0px !important;
+  }
+}
+.MuiAvatar-root {
+  font-size: 19px !important;
+  font-weight: 600 !important;
+  width: 38px !important;
+  height: 38px !important;
+  border: 1px rgb(129, 129, 129) solid !important;
+}
+
+.MuiAvatarGroup-root .MuiAvatar-root:first-child {
+  color: rgb(94, 94, 94) !important;
+  background-color: rgb(161, 161, 161) !important;
+}
+
+.MuiTypography-root {
+  font-size: clamp(20px, 4vw, 22px) !important;
+}

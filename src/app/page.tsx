@@ -1,95 +1,116 @@
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "@/styles/Home.module.scss";
+import Main from "@/../public/Main3.png";
+import SubMain from "@/../public/SubMain.png";
+import Button from "@/components/UI/Button/Button";
+import Footer from "@/components/HeaderFooter/Footer/Footer";
+import Link from "next/link";
+import Svg1 from "@/../public/Icon.svg";
+import Svg2 from "@/../public/Icon1.svg";
+import Svg3 from "@/../public/Icon2.svg";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
+    <>
+      <div className={`${styles.home__container}`}>
         <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          src={Main.src}
+          alt="MainPhoto"
+          fill={true}
+          priority={true}
+          className={`${styles.main_photo}`}
         />
+        <section className={`${styles.main}`}>
+          <div className={`${styles.main_title}`}>IOSO online test and quiz maker</div>
+          <div className={`${styles.main_subtitle}`}>
+            Create, send and analyze your tests, quizzes and assessments for free with IOSO
+          </div>
+          <Link href="/SignUp">
+            <Button>Get started</Button>
+          </Link>
+        </section>
+        <section className={`${styles.info}`}>
+          <div className={`${styles.info__title}`}>You need to make a test?</div>
+          <div className={`${styles.info__content}`}>
+            <div className={`${styles.info__left}`}>
+              <div className={`${styles.info__text}`}>
+                Hello, test creator, you've come to the right place. Instead of printing out reams
+                of paper to hand out to your staff or students, opt for an online test. A huge
+                number of public tests, the opportunity to create your own and share it with
+                colleagues. This and many other features are free. Plus, you can see the results in
+                a few seconds and find out who is the best in the class. See for yourself.
+              </div>
+              <Link href="/SignUp">
+                <Button>Get started</Button>
+              </Link>
+            </div>
+            <div className={`${styles.info__right}`}>
+              <Image
+                src={SubMain.src}
+                alt="MainPhoto"
+                priority={true}
+                width={608}
+                height={752}
+                className={`${styles.info__photo}`}
+              />
+            </div>
+          </div>
+        </section>
+        <div className={`${styles.how}`}>
+          <div className={`${styles.how__title}`}>How it works</div>
+        </div>
+        <section className={`${styles.how__list}`}>
+          <div className={`${styles.how__list__item}`}>
+            <div className={`${styles.how__icon}`}>
+              <Image src={Svg1.src} alt="Icon" width={200} height={200} />
+            </div>
+            <div className={`${styles.how__list__info}`}>
+              <div className={`${styles.how__list__title}`}>Create</div>
+              <div className={`${styles.how__list__text}`}>
+                Quickly create great looking tests using question types and formatting options.
+              </div>
+            </div>
+          </div>
+          <div className={`${styles.how__list__item}`}>
+            <div className={`${styles.how__icon}`}>
+              <Image src={Svg2.src} alt="Icon" width={200} height={200} />
+            </div>
+            <div className={`${styles.how__list__info}`}>
+              <div className={`${styles.how__list__title}`}>Publish</div>
+              <div className={`${styles.how__list__text}`}>
+                Tests can either be published privately to a select group or open them up to
+                everyone with a single link and registration page.
+              </div>
+            </div>
+          </div>
+          <div className={`${styles.how__list__item}`}>
+            <div className={`${styles.how__icon}`}>
+              <Image src={Svg3.src} alt="Icon" width={200} height={200} />
+            </div>
+            <div className={`${styles.how__list__info}`}>
+              <div className={`${styles.how__list__title}`}>Analyze</div>
+              <div className={`${styles.how__list__text}`}>
+                IOSO instantly marks and grades your tests. Powerful reports then allow you to
+                perform in-depth analysis across all responses.
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <section className={`${styles.end}`}>
+        <div className={`${styles.end__title}`}>IOSO</div>
+        <div className={`${styles.block}`}>
+          <div className={`${styles.block__info}`}>
+            <div className={`${styles.block__title}`}>IOSO is a powerful online test generator</div>
+            <div className={`${styles.block__subtitle}`}>
+              Build your own online tests and assessments with IOSO for free
+            </div>
+          </div>
+          <Link href="/SignUp">
+            <Button>Get started</Button>
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }

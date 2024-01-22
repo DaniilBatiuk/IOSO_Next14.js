@@ -1,0 +1,61 @@
+@import "../../../styles/variables.scss";
+.end {
+  &__list {
+    display: flex;
+    justify-content: center;
+    column-gap: 28px;
+  }
+
+  &__item {
+    font-size: clamp(20px, 4vw, 24px);
+    font-weight: 500;
+
+    & a {
+      padding: 5px 0px;
+      @extend %hoverLink;
+    }
+  }
+
+  &__iconlist {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 50px;
+  }
+
+  &__contact {
+    display: flex;
+    flex-direction: column;
+    row-gap: 41px;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 50px;
+    border-top: 2px rgba(186, 29, 200, 0.4) solid;
+    padding-top: 20px;
+    backdrop-filter: blur(2px);
+  }
+
+  &__icon {
+  }
+
+  &__end {
+    display: flex;
+    flex-direction: column;
+    row-gap: 14px;
+  }
+
+  &__year {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  &__creator {
+    color: rgba(255, 255, 255, 0.6);
+
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration-line: underline;
+  }
+}

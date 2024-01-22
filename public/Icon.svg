@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="system-uicons:create">
+<g id="Group">
+<path id="Vector" d="M95.2381 42.8572H52.381C47.3292 42.8572 42.4844 44.864 38.9123 48.4361C35.3401 52.0082 33.3333 56.8531 33.3333 61.9048V147.619C33.3333 152.671 35.3401 157.516 38.9123 161.088C42.4844 164.66 47.3292 166.667 52.381 166.667H147.619C152.671 166.667 157.516 164.66 161.088 161.088C164.66 157.516 166.667 152.671 166.667 147.619V104.762" stroke="url(#paint0_linear_12_48)" stroke-width="4.7619" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M147.619 52.381L156.695 61.9048M166.667 33.0191C169.206 35.6444 170.611 39.1621 170.581 42.8141C170.551 46.4662 169.087 49.9601 166.505 52.5429L100 119.048L71.4286 128.571L80.9524 100L147.495 32.8953C149.835 30.5379 152.965 29.1318 156.281 28.9489C159.597 28.7659 162.863 29.8191 165.448 31.9048L166.667 33.0191Z" stroke="url(#paint1_linear_12_48)" stroke-width="4.7619" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_12_48" x1="35.7724" y1="42.8572" x2="128.689" y2="190.646" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E3DFF"/>
+<stop offset="1" stop-color="#C10074"/>
+</linearGradient>
+<linearGradient id="paint1_linear_12_48" x1="73.2424" y1="28.9285" x2="150.428" y2="142.367" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E3DFF"/>
+<stop offset="1" stop-color="#C10074"/>
+</linearGradient>
+</defs>
+</svg>

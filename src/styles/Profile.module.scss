@@ -1,0 +1,367 @@
+@import "../styles/variables.scss";
+
+.profile {
+  &__container {
+    color: white;
+    margin-bottom: 30px;
+    margin-top: 40px;
+
+    @media (max-width: 900.98px) {
+      margin-top: 30px;
+    }
+
+    @media (max-width: 500.98px) {
+      margin-top: 20px;
+    }
+  }
+  &__info {
+    border-radius: 10px;
+    background-color: rgba(66, 233, 255, 0.1);
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+
+    @media (max-width: 900.98px) {
+      flex-direction: column;
+      align-items: center;
+      row-gap: 30px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 22px;
+    column-gap: 30px;
+  }
+
+  &__item {
+    font-size: clamp(18px, 4vw, 20px);
+    cursor: pointer;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -10px;
+      width: 0;
+      height: 4px;
+      background-color: $colorBlueBorder;
+      transition: 0.3s;
+    }
+
+    &:hover {
+      &::before {
+        left: 0;
+        width: 100%;
+        transition: 0.3s;
+      }
+    }
+
+    &__active {
+      font-size: clamp(18px, 4vw, 20px);
+      cursor: pointer;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -10px;
+        width: 100%;
+        height: 4px;
+        background-color: $colorBlueBorder;
+        transition: 0.3s;
+      }
+    }
+  }
+}
+
+.info {
+  &__left {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    @media (max-width: 713.98px) {
+      & img {
+        width: 150px;
+        height: 150px;
+      }
+    }
+
+    @media (max-width: 513.98px) {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    &__text {
+      display: flex;
+      flex-direction: column;
+      height: 130px;
+      justify-content: space-between;
+
+      @media (max-width: 713.98px) {
+        height: 100px;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: flex-start;
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &__title {
+    font-size: clamp(22px, 4vw, 26px);
+    font-weight: 500;
+    width: 90%;
+    text-align: center;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 60px;
+  }
+
+  &__name {
+    font-size: clamp(26px, 4vw, 30px);
+    font-weight: 600;
+  }
+
+  &__email {
+    font-size: clamp(16px, 4vw, 18px);
+    font-weight: 500;
+    color: rgb(179, 174, 174);
+  }
+
+  &__result {
+    display: flex;
+    column-gap: 20px;
+  }
+}
+
+.profile {
+  &__main_2 {
+    margin-top: 20px;
+    width: 100%;
+    overflow-x: auto;
+    border: 1px rgb(55, 255, 255) solid;
+    border-radius: 10px;
+
+    &::-webkit-scrollbar {
+      display: block;
+      width: 5px;
+      overflow: auto;
+      height: 5px;
+      background-color: rgb(29, 101, 110);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgb(2, 197, 223);
+      border-radius: 30px;
+    }
+  }
+  &__main {
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: rgba(66, 233, 255, 0.1);
+    padding: 10px;
+  }
+
+  &__table {
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(89, 231, 250, 0.1);
+    border-radius: 10px;
+    row-gap: 7px;
+    width: 100%;
+
+    & th,
+    td {
+      padding: 1rem;
+      font-size: clamp(14px, 4vw, 16px);
+    }
+
+    & th {
+      text-align: left;
+      border-bottom: 1px $colorBlueTitle solid;
+    }
+
+    & tr:nth-child(2n) {
+      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(70, 233, 255, 0.1);
+    }
+
+    & tr {
+      color: rgb(190, 190, 190);
+    }
+  }
+}
+
+.item {
+  &__title {
+    font-size: clamp(16px, 4vw, 18px) !important;
+    color: white;
+    font-weight: 500;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 370px;
+  }
+
+  &__data {
+    min-width: 70px;
+    font-weight: 700;
+    color: rgb(255, 208, 0);
+  }
+
+  &__deadline {
+    min-width: 130px;
+  }
+
+  &__creator {
+    color: rgb(190, 190, 190);
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  &__status_open {
+    text-align: center;
+    padding: 5px 24px;
+    color: rgba(30, 252, 11, 1);
+    background-color: rgb(9, 114, 0);
+    border-radius: 5px;
+    font-weight: 500;
+  }
+
+  &__status_manager {
+    text-align: center;
+    padding: 5px 24px;
+    color: rgb(229, 255, 0);
+    background-color: rgb(146, 137, 12);
+    border-radius: 5px;
+    font-weight: 500;
+  }
+
+  &__status_close {
+    text-align: center;
+    padding: 5px 24px;
+    color: rgb(255, 68, 68);
+    background-color: rgb(109, 0, 0);
+    border-radius: 5px;
+    font-weight: 500;
+  }
+
+  &__button {
+    color: $colorBlueTitle;
+    border-radius: 5px;
+    padding: 5px 29px;
+    font-weight: 700;
+    min-width: 153px;
+    @include buttonColor($colorBlueBorder, $colorBlueOpacity, $colorBlueOpacity);
+
+    &__marLef {
+      color: rgb(255, 68, 68);
+      border-radius: 5px;
+      padding: 5px 29px;
+      font-weight: 700;
+      @include buttonColor(rgb(161, 0, 0), rgba(109, 0, 0, 0.5), rgba(214, 0, 0, 0.5));
+      margin-left: 20px;
+    }
+  }
+
+  &__action {
+    min-width: 280px;
+  }
+}
+
+.button__save {
+  margin-top: 20px;
+  color: rgb(0, 255, 34);
+  border-radius: 5px;
+  padding: 5px 15px;
+  font-weight: 700;
+  font-size: clamp(16px, 4vw, 18px);
+  @include buttonColor(rgb(3, 187, 28), rgba(0, 255, 34, 0.2), rgba(0, 255, 34, 0.2));
+}
+
+.list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 20px;
+
+  @media (max-width: 1041.98px) {
+    flex-direction: column;
+  }
+}
+
+.my_quizzes {
+  &__form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    background-color: rgba(70, 233, 255, 0.2);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    min-height: 65px;
+    padding: 5px 36px;
+    padding-top: 0px;
+
+    @media (max-width: 1054.98px) {
+      justify-content: center;
+      padding: 10px 36px;
+    }
+    @media (max-width: 952.98px) {
+      gap: 10px;
+    }
+
+    @media (max-width: 441.98px) {
+      padding: 19px 10px;
+    }
+  }
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+  color: white;
+
+  @media (max-width: 1111.98px) {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  @media (max-width: 952.98px) {
+    gap: 10px;
+  }
+}
+
+.main {
+  border: 1px rgba(55, 255, 255, 1) solid;
+  border-radius: 10px;
+  margin-top: 0px;
+
+  @media (max-width: 1041.98px) {
+    margin-top: 20px;
+  }
+}
+
+.button__active {
+  background-color: rgba(55, 255, 255, 0.1) !important;
+  border: 1px rgba(55, 255, 255, 1) solid !important;
+}

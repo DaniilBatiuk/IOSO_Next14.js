@@ -1,0 +1,11 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="arcticons:audio-spectrum-analyzer">
+<path id="Vector" d="M14.5833 104.242H55.7375L65.225 58.5208L74.7167 142.529L84.2042 37.7583L93.6958 162.242L103.183 38.3041L112.675 151.783L122.163 45.925L131.654 124.075L141.142 56.5041L150.633 103.85H185.417" stroke="url(#paint0_linear_12_56)" stroke-width="2.08333" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_12_56" x1="17.7083" y1="37.7583" x2="99.9736" y2="204.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E3DFF"/>
+<stop offset="1" stop-color="#C10074"/>
+</linearGradient>
+</defs>
+</svg>
