@@ -28,7 +28,7 @@ const Header: React.FC = () => {
     const wrapperElement = document.getElementById("wrapper");
 
     if (wrapperElement !== null) {
-      const height = wrapperElement.getBoundingClientRect().height;
+      const height = wrapperElement.getBoundingClientRect().height + 200;
       setHeight(height);
     }
   }, []);

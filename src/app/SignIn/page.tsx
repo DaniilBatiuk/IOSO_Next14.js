@@ -14,20 +14,23 @@ export default function SignIn() {
     <ThemeWrapper>
       <div className={`${styles.signIn}`}>
         <Image
-          src={SignInBack.src}
+          src={SignInBack}
           alt="SignInBack"
           fill={true}
+          priority={true}
+          placeholder="blur"
           className={`${styles.signIn__photo}`}
         />
         <div className={`${styles.signIn__container}`}>
           <div className={`${styles.signIn__block}`}>
             <div className={`${styles.signIn__left}`}>
               <Image
-                src={SignInFront.src}
+                src={SignInFront}
                 alt="SignInFront"
                 width={1154}
                 height={807}
                 priority={true}
+                placeholder="blur"
                 className={`${styles.signIn__picture}`}
               />
             </div>

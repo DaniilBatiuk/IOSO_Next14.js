@@ -11,20 +11,23 @@ export default function SignUp() {
     <ThemeWrapper>
       <div className={`${styles.signIn}`}>
         <Image
-          src={SignUpBack.src}
+          src={SignUpBack}
           alt="SignInBack"
           fill={true}
+          priority={true}
+          placeholder="blur"
           className={`${styles.signIn__photo}`}
         />
         <div className={`${styles.signIn__container}`}>
           <div className={`${styles.signIn__block}`}>
             <div className={`${styles.signIn__left}`}>
               <Image
-                src={SignUpFront.src}
+                src={SignUpFront}
                 alt="SignInFront"
                 width={1154}
                 height={807}
                 priority={true}
+                placeholder="blur"
                 className={`${styles.signIn__picture}`}
                 style={{ filter: "brightness(80%)" }}
               />

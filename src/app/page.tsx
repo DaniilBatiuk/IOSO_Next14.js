@@ -3,7 +3,6 @@ import styles from "@/styles/Home.module.scss";
 import Main from "@/../public/Main3.png";
 import SubMain from "@/../public/SubMain.png";
 import Button from "@/components/UI/Button/Button";
-import Footer from "@/components/HeaderFooter/Footer/Footer";
 import Link from "next/link";
 import Svg1 from "@/../public/Icon.svg";
 import Svg2 from "@/../public/Icon1.svg";
@@ -14,10 +13,11 @@ export default function Home() {
     <>
       <div className={`${styles.home__container}`}>
         <Image
-          src={Main.src}
+          src={Main}
           alt="MainPhoto"
           fill={true}
           priority={true}
+          placeholder="blur"
           className={`${styles.main_photo}`}
         />
         <section className={`${styles.main}`}>
@@ -46,11 +46,12 @@ export default function Home() {
             </div>
             <div className={`${styles.info__right}`}>
               <Image
-                src={SubMain.src}
+                src={SubMain}
                 alt="MainPhoto"
                 priority={true}
                 width={608}
                 height={752}
+                placeholder="blur"
                 className={`${styles.info__photo}`}
               />
             </div>
