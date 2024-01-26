@@ -7,6 +7,7 @@ import Link from "next/link";
 import Svg1 from "@/../public/Icon.svg";
 import Svg2 from "@/../public/Icon1.svg";
 import Svg3 from "@/../public/Icon2.svg";
+import { LINKS } from "@/utils/config/links";
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
           <div className={`${styles.main_subtitle}`}>
             Create, send and analyze your tests, quizzes and assessments for free with IOSO
           </div>
-          <Link href="/SignUp">
+          <Link href={LINKS.SignUp}>
             <Button>Get started</Button>
           </Link>
         </section>
@@ -40,7 +41,7 @@ export default function Home() {
                 colleagues. This and many other features are free. Plus, you can see the results in
                 a few seconds and find out who is the best in the class. See for yourself.
               </div>
-              <Link href="/SignUp">
+              <Link href={LINKS.SignUp}>
                 <Button>Get started</Button>
               </Link>
             </div>
@@ -107,7 +108,7 @@ export default function Home() {
               Build your own online tests and assessments with IOSO for free
             </div>
           </div>
-          <Link href="/SignUp">
+          <Link href={LINKS.SignUp}>
             <Button>Get started</Button>
           </Link>
         </div>

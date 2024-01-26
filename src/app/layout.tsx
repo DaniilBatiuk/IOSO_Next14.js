@@ -1,9 +1,12 @@
+import Footer from "@/components/HeaderFooter/Footer/Footer";
+import Header from "@/components/HeaderFooter/Header/Header";
+import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/styles/globals.scss";
 import Head from "next/head";
-import Header from "@/components/HeaderFooter/Header/Header";
-import Footer from "@/components/HeaderFooter/Footer/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -28,7 +31,10 @@ export default function RootLayout({
         <body className={inter.className}>
           <div className="wrapper" id="wrapper">
             <Header />
-            <main className={inter.className}>{children}</main>
+            <main>
+              {children}
+              <ToastContainer />
+            </main>
             <Footer />
           </div>
         </body>

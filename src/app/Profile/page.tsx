@@ -8,6 +8,7 @@ import QuizHistory from "@/components/Profile/QuizHistory";
 import MyQuizzes from "@/components/Profile/MyQuizzes";
 import Link from "next/link";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { LINKS } from "@/utils/config/links";
 
 const DATA = [
   { value: 70, label: "create group" },
@@ -35,10 +36,10 @@ export default function Profile() {
               </div>
               <div className={styles.info__result}>
                 <button className={styles.button__save}>
-                  <Link href="/CreateQuiz">New quiz</Link>
+                  <Link href={LINKS.CreateQuiz}>New quiz</Link>
                 </button>
                 <button className={styles.button__save}>
-                  <Link href="/CreateGroup">New group</Link>
+                  <Link href={LINKS.CreateGroup}>New group</Link>
                 </button>
               </div>
             </div>

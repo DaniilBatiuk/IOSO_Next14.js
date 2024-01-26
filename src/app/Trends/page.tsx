@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import clsx from "clsx";
 import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
-export default function Quizzes() {
+export default function Trends() {
   const [age, setAge] = useState("");
   const [activeQuiz, setActiveQuiz] = useState(true);
   const handleChange = (event: SelectChangeEvent) => {

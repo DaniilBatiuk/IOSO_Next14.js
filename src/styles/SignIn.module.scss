@@ -101,6 +101,16 @@
     }
   }
 
+  &__error {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px 10px;
+    column-gap: 10px;
+    border-radius: 5px;
+    background-color: rgba(207, 54, 54, 0.3);
+  }
+
   & Button {
     width: 250px;
     height: 80px;

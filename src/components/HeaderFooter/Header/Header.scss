@@ -18,7 +18,7 @@
   &::after {
     content: "";
     position: absolute;
-    top: 57px;
+    top: 58px;
     left: 0;
     width: 100vw;
     border-bottom: 2px rgba(186, 29, 200, 0.4) solid;
@@ -98,6 +98,7 @@
       }
 
       @media (max-width: 767.98px) {
+        display: none;
         position: relative;
         font-size: 40px;
         color: rgb(255, 255, 255);
@@ -120,6 +121,33 @@
             transition: 0.3s;
           }
         }
+      }
+
+      &-min {
+        display: none;
+        text-wrap: nowrap;
+        font-size: 24px;
+        font-weight: 400;
+        padding: 5px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+        color: $colorBlueTitle;
+        justify-self: flex-end;
+        align-self: flex-end;
+        @media (max-width: 767.98px) {
+          display: block;
+          @include buttonColor($colorBlueBorder, $colorBlueOpacity, $colorBlueOpacity);
+        }
+      }
+    }
+
+    &__block-min {
+      display: flex;
+      align-items: center;
+      @media (min-width: 767.98px) {
+        display: none;
       }
     }
   }
