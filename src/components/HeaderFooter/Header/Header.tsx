@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import SignInButton from "@/components/UI/SignInButton/SignInButton";
+import { LINKS } from "@/utils/config/links";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import "../Header/Header.scss";
-import { LINKS } from "@/utils/config/links";
-import SignInButton from "@/components/UI/SignInButton/SignInButton";
-import { SessionProvider } from "next-auth/react";
 
 const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -19,7 +18,7 @@ const Header: React.FC = () => {
     setIsVisible(pathname === "/");
 
     if (
-      (pathname !== "/Profile" && linkActiveUnderLine === 1) ||
+      (!pathname.includes("Profile") && linkActiveUnderLine === 1) ||
       (pathname !== "/Trends" && linkActiveUnderLine === 2) ||
       (pathname !== "/SignIn" && linkActiveUnderLine === 3)
     ) {
@@ -42,13 +41,12 @@ const Header: React.FC = () => {
   };
 
   return (
-    <SessionProvider>
-      <div className="header">
-        {menuActive && (
-          <div className="header__dark" onClick={() => setMenuActive(prev => !prev)}></div>
-        )}
-        {!isVisible && (
-          <style>{`
+    <div className="header">
+      {menuActive && (
+        <div className="header__dark" onClick={() => setMenuActive(prev => !prev)}></div>
+      )}
+      {!isVisible && (
+        <style>{`
           .header:after {
             border-bottom: none;
           }
@@ -57,112 +55,92 @@ const Header: React.FC = () => {
             padding-bottom:9px;
           }
         `}</style>
-        )}
+      )}
 
-        <div className="header__container">
-          <a href="/" className="header__logo">
-            IOSO
-          </a>
-          <nav className="header__nav">
-            <div className="header__body">
-              <ul className="header__list">
-                <li className="header__item">
-                  <Link href="/Group/1">Group</Link>
-                </li>
-                <li
-                  className={
-                    linkActiveUnderLine === 1 && menuActive === false
-                      ? "header__item__active"
-                      : "header__item"
-                  }
-                >
-                  <Link
-                    href="/Profile"
-                    onClick={() => {
-                      setLinkActiveUnderLine(1);
-                      if (menuActive) {
-                        menuOpen();
-                      }
-                    }}
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li
-                  className={
-                    linkActiveUnderLine === 2 && menuActive === false
-                      ? "header__item__active"
-                      : "header__item"
-                  }
-                >
-                  <Link
-                    href={LINKS.Trends}
-                    onClick={() => {
-                      setLinkActiveUnderLine(2);
-                      if (menuActive) {
-                        menuOpen();
-                      }
-                    }}
-                  >
-                    Trends
-                  </Link>
-                </li>
-                <SignInButton
-                  menuOpen={menuOpen}
-                  menuActive={menuActive}
-                  linkActiveUnderLine={linkActiveUnderLine}
-                  setLinkActiveUnderLine={setLinkActiveUnderLine}
-                />
-              </ul>
-            </div>
-          </nav>
-          <div className="header__item__block-min">
-            <div className="header__item__sign-up-min">
-              <Link href={LINKS.SignUp}>Sign Up</Link>
-            </div>
-            <button className="icon-menu" type="button" onClick={menuOpen}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                className="svg1"
+      <div className="header__container">
+        <a href="/" className="header__logo">
+          IOSO
+        </a>
+        <nav className="header__nav">
+          <div className="header__body">
+            <ul className="header__list">
+              <li className="header__item">
+                <Link href="/Group/1">Group</Link>
+              </li>
+              <li
+                className={
+                  linkActiveUnderLine === 2 && menuActive === false
+                    ? "header__item__active"
+                    : "header__item"
+                }
               >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M3 6.001h18m-18 6h18m-18 6h18"
-                />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                className="svg2"
-              >
-                <path
-                  fill="currentColor"
-                  d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275L12 13.4Z"
-                />
-              </svg>
-            </button>
+                <Link
+                  href={LINKS.Trends}
+                  onClick={() => {
+                    setLinkActiveUnderLine(2);
+                    if (menuActive) {
+                      menuOpen();
+                    }
+                  }}
+                >
+                  Trends
+                </Link>
+              </li>
+              <SignInButton
+                menuOpen={menuOpen}
+                menuActive={menuActive}
+                linkActiveUnderLine={linkActiveUnderLine}
+                setLinkActiveUnderLine={setLinkActiveUnderLine}
+              />
+            </ul>
           </div>
-          {isVisible && (
-            <div className="lines">
-              <div className="lines__line-1" style={{ height: `${height}px` }}></div>
-              <div className="lines__line-2" style={{ height: `${height}px` }}></div>
-              <div className="lines__line-3" style={{ height: `${height}px` }}></div>
-              <div className="lines__line-4" style={{ height: `${height}px` }}></div>
-              <div className="lines__line-5" style={{ height: `${height}px` }}></div>
-            </div>
-          )}
+        </nav>
+        <div className="header__item__block-min">
+          <div className="header__item__sign-up-min">
+            <Link href={LINKS.SignUp}>Sign Up</Link>
+          </div>
+          <button className="icon-menu" type="button" onClick={menuOpen}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              className="svg1"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M3 6.001h18m-18 6h18m-18 6h18"
+              />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              className="svg2"
+            >
+              <path
+                fill="currentColor"
+                d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275L12 13.4Z"
+              />
+            </svg>
+          </button>
         </div>
+        {isVisible && (
+          <div className="lines">
+            <div className="lines__line-1" style={{ height: `${height}px` }}></div>
+            <div className="lines__line-2" style={{ height: `${height}px` }}></div>
+            <div className="lines__line-3" style={{ height: `${height}px` }}></div>
+            <div className="lines__line-4" style={{ height: `${height}px` }}></div>
+            <div className="lines__line-5" style={{ height: `${height}px` }}></div>
+          </div>
+        )}
       </div>
-    </SessionProvider>
+    </div>
   );
 };
 export default Header;

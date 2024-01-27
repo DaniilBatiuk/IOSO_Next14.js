@@ -1,13 +1,13 @@
 "use client";
 import styles from "@/styles/SignIn.module.scss";
+import { registerUser } from "@/utils/lib/actions/authActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import Button from "../UI/Button/Button";
-import { registerUser } from "@/utils/lib/actions/authActions";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 const FormSchema = z
   .object({
@@ -39,7 +39,7 @@ const SignUpForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<InputType>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
 
   const saveUser: SubmitHandler<InputType> = async data => {
@@ -49,11 +49,11 @@ const SignUpForm: React.FC = () => {
       if (error) {
         toast.error(error);
       } else {
-        toast.success("The User Registered Successfully.");
+        toast.success("The user registered successfully.");
         router.push("/SignIn");
       }
     } catch (error) {
-      toast.error("Something Went Wrong!");
+      toast.error("Something went wrong!");
       console.error(error);
     }
   };
@@ -170,10 +170,11 @@ const SignUpForm: React.FC = () => {
 
       <Button
         type="submit"
+        disabled={isSubmitting}
         colorBorder="rgba(255, 255, 255,1)"
         colorHover="rgba(255, 255, 255,0.3)"
       >
-        Sign Up
+        {isSubmitting ? "Sign Up..." : "Sign Up"}
       </Button>
     </form>
   );

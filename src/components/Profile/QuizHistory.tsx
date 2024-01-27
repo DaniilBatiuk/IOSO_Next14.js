@@ -17,7 +17,9 @@ const QuizHistory: React.FC = () => {
         </thead>
         <tbody>
           <tr className={styles.item}>
-            <td className={styles.item__title}>Regular Expression Matching Regular Expression Matching</td>
+            <td className={styles.item__title}>
+              Regular Expression Matching Regular Expression Matching
+            </td>
             <td className={styles.item__creator}>Daniil Batiuk</td>
             <td>
               <div className={`${styles.item__status_open}`}>Passed</div>
@@ -45,7 +47,9 @@ const QuizHistory: React.FC = () => {
             </td>
           </tr>
           <tr className={styles.item}>
-            <td className={styles.item__title}>Regular Expression Matching Regular Expression Matching</td>
+            <td className={styles.item__title}>
+              Regular Expression Matching Regular Expression Matching
+            </td>
             <td className={styles.item__creator}>Daniil Batiuk Daniil Batiuk</td>
             <td>
               <div className={`${styles.item__status_close}`}>Denied</div>

@@ -1,12 +1,12 @@
 "use client";
-import styles from "@/styles/CreateQuiz.module.scss";
-import { clsx } from "clsx";
-import { useState } from "react";
-import TimeSettings from "@/components/CreateQuizOrGroup/TimeSettings";
 import BasicSettings from "@/components/CreateQuizOrGroup/BasicSettings";
 import QuestionsManager from "@/components/CreateQuizOrGroup/QuestionsManager";
 import TestAccess from "@/components/CreateQuizOrGroup/TestAccess";
+import TimeSettings from "@/components/CreateQuizOrGroup/TimeSettings";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import styles from "@/styles/CreateQuiz.module.scss";
+import { clsx } from "clsx";
+import { useState } from "react";
 
 export default function CreateQuiz() {
   const [active, setActive] = useState<number>(0);
@@ -203,7 +203,6 @@ export default function CreateQuiz() {
           )}
         </section>
       </div>
-      
     </ThemeWrapper>
   );
 }

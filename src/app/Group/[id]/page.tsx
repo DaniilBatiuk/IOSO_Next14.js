@@ -353,7 +353,6 @@ const Group: React.FC = () => {
           )}
         </div>
       </div>
-      
     </ThemeWrapper>
   );
 };

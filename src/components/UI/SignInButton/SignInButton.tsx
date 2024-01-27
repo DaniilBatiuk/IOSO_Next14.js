@@ -5,10 +5,10 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 type SignInButtonProp = {
-  setLinkActiveUnderLine: any;
-  linkActiveUnderLine: any;
-  menuActive: any;
-  menuOpen: any;
+  setLinkActiveUnderLine: React.Dispatch<React.SetStateAction<number>>;
+  linkActiveUnderLine: number;
+  menuActive: boolean;
+  menuOpen: () => void;
 };
 
 const SignInButton: React.FC<SignInButtonProp> = ({
@@ -18,13 +18,38 @@ const SignInButton: React.FC<SignInButtonProp> = ({
   menuOpen,
 }: SignInButtonProp) => {
   const { data: session } = useSession();
+
   return (
     <>
       {session && session.user ? (
         <>
-          <button className="header__item__sign-up" onClick={() => signOut()}>
+          <li
+            className={
+              linkActiveUnderLine === 1 && menuActive === false
+                ? "header__item__active"
+                : "header__item"
+            }
+          >
+            <Link
+              href={`/Profile/${session?.user.id}`}
+              onClick={() => {
+                setLinkActiveUnderLine(1);
+                if (menuActive) {
+                  menuOpen();
+                }
+              }}
+            >
+              Profile
+            </Link>
+          </li>
+          <li
+            className="header__item__sign-up"
+            onClick={() => {
+              signOut();
+            }}
+          >
             Sign Out
-          </button>
+          </li>
         </>
       ) : (
         <>

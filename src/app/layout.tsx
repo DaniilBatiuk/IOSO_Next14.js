@@ -1,9 +1,9 @@
 import Footer from "@/components/HeaderFooter/Footer/Footer";
 import Header from "@/components/HeaderFooter/Header/Header";
+import { SessionWrapper } from "@/components/Wrappers/SessionWrapper";
 import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,18 +24,18 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
       <html lang="en">
         <body className={inter.className}>
           <div className="wrapper" id="wrapper">
-            <Header />
-            <main>
-              {children}
-              <ToastContainer />
-            </main>
-            <Footer />
+            <SessionWrapper>
+              <Header />
+
+              <main>
+                {children}
+                <ToastContainer />
+              </main>
+              <Footer />
+            </SessionWrapper>
           </div>
         </body>
       </html>
