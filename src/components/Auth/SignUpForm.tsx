@@ -1,6 +1,7 @@
 "use client";
 import styles from "@/styles/SignIn.module.scss";
 import { registerUser } from "@/utils/lib/actions/authActions";
+import { SignUpFormScheme } from "@/utils/lib/scheme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -9,29 +10,7 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import Button from "../UI/Button/Button";
 
-const FormSchema = z
-  .object({
-    fullName: z
-      .string()
-      .min(4, "Full name must be at least 4 characters")
-      .max(45, "Full name must be less than 45 characters")
-      .regex(new RegExp("^[a-zA-Z]+(?: [a-zA-Z]+)*$"), "No special character allowed!"),
-    email: z.string().email("Please enter a valid email address"),
-    password: z
-      .string()
-      .min(6, "Password must be at least 6 characters ")
-      .max(50, "Password must be less than 50 characters"),
-    confirmPassword: z
-      .string()
-      .min(6, "Password must be at least 6 characters ")
-      .max(50, "Password must be less than 50 characters"),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords doesn't match!",
-    path: ["confirmPassword"],
-  });
-
-type InputType = z.infer<typeof FormSchema>;
+type InputType = z.infer<typeof SignUpFormScheme>;
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -40,7 +19,7 @@ const SignUpForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
+  } = useForm<InputType>({ resolver: zodResolver(SignUpFormScheme), mode: "onSubmit" });
 
   const saveUser: SubmitHandler<InputType> = async data => {
     const { confirmPassword, ...user } = data;

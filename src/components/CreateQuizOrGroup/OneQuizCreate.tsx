@@ -15,11 +15,10 @@ type OneQuizCreateProp = {
   control: any;
   numberQuiz: number;
   remove: UseFieldArrayRemove;
-  key: string;
   register: any;
 };
 
-const OneQuizCreate = ({ control, numberQuiz, remove, key, register }: OneQuizCreateProp) => {
+const OneQuizCreate = ({ control, numberQuiz, remove, register }: OneQuizCreateProp) => {
   const [questionType, setQuestionType] = useState<string>("");
   const [rightAnswer, setRightAnswer] = useState<string>("");
   const [rightMultipleAnswer, setMultipleRightAnswer] = useState<string[]>([]);
@@ -39,13 +38,23 @@ const OneQuizCreate = ({ control, numberQuiz, remove, key, register }: OneQuizCr
     setMultipleRightAnswer(typeof value === "string" ? value.split(",") : value);
   };
 
-  const { fields: answerFields, append: answerAppend, remove: answerRemove } = useFieldArray({ control, name: "answerList" });
-  const { fields: answerMultipleFields, append: answerMultipleAppend, remove: answerMultipleRemove } = useFieldArray({ control, name: "answerMultipleList" });
+  const {
+    fields: answerFields,
+    append: answerAppend,
+    remove: answerRemove,
+  } = useFieldArray({ control, name: "answerList" });
+  const {
+    fields: answerMultipleFields,
+    append: answerMultipleAppend,
+    remove: answerMultipleRemove,
+  } = useFieldArray({ control, name: "answerMultipleList" });
 
   return (
-    <div className={styles.form__list__item} key={key}>
+    <div className={styles.form__list__item}>
       <div className={styles.right__subtitle__number}>{`${numberQuiz + 1}`}</div>
-      {numberQuiz >= 1 && <div className={styles.close}>{ICONS.close({ onClick: () => remove(numberQuiz) })}</div>}
+      {numberQuiz >= 1 && (
+        <div className={styles.close}>{ICONS.close({ onClick: () => remove(numberQuiz) })}</div>
+      )}
       <div className={styles.right__subtitle}>{`Question type`}</div>
       <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
         <InputLabel>Select question type</InputLabel>
@@ -56,7 +65,12 @@ const OneQuizCreate = ({ control, numberQuiz, remove, key, register }: OneQuizCr
         </Select>
       </FormControl>
       <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Question</div>
-      <TextField fullWidth label="Insert question" variant="standard" {...register(`questionList.${numberQuiz}.question`)} />
+      <TextField
+        fullWidth
+        label="Insert question"
+        variant="standard"
+        {...register(`questionList.${numberQuiz}.question`)}
+      />
       {questionType === "1" ? (
         <>
           <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Answers</div>
@@ -70,7 +84,11 @@ const OneQuizCreate = ({ control, numberQuiz, remove, key, register }: OneQuizCr
           </div>
 
           <div>
-            <button className={styles.button__create} type="button" onClick={() => answerAppend({ answer: "" })}>
+            <button
+              className={styles.button__create}
+              type="button"
+              onClick={() => answerAppend({ answer: "" })}
+            >
               Add Answer
             </button>
           </div>
@@ -98,7 +116,11 @@ const OneQuizCreate = ({ control, numberQuiz, remove, key, register }: OneQuizCr
           ))}
 
           <div>
-            <button className={styles.button__create} type="button" onClick={() => answerMultipleAppend({ answer: "" })}>
+            <button
+              className={styles.button__create}
+              type="button"
+              onClick={() => answerMultipleAppend({ answer: "" })}
+            >
               Add answer
             </button>
           </div>

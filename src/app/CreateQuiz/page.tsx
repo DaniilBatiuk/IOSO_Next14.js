@@ -5,12 +5,46 @@ import TestAccess from "@/components/CreateQuizOrGroup/TestAccess";
 import TimeSettings from "@/components/CreateQuizOrGroup/TimeSettings";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/CreateQuiz.module.scss";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { clsx } from "clsx";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { z } from "zod";
+
+const FormSchema = z.object({
+  name: z
+    .string()
+    .min(4, "Full name must be at least 4 characters")
+    .max(60, "Full name must be less than 45 characters"),
+});
+
+type InputType = z.infer<typeof FormSchema>;
 
 export default function CreateQuiz() {
   const [active, setActive] = useState<number>(0);
   const [menuActive, setMenuActive] = useState<boolean>(true);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<InputType>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
+
+  const groupSave: SubmitHandler<InputType> = async data => {
+    try {
+      // const error = await createGroup(data);
+      console.log(data);
+      // if (error) {
+      //   toast.error(error);
+      // } else {
+      //   toast.success("Group created successfully.");
+      // }
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.error(error);
+    }
+  };
 
   return (
     <ThemeWrapper>
@@ -193,7 +227,12 @@ export default function CreateQuiz() {
             </div>
           </div>
           {active === 0 ? (
-            <BasicSettings label="Insert quiz name" />
+            <BasicSettings
+              label="Insert quiz name"
+              errors={errors}
+              register={register}
+              isSubmitting={isSubmitting}
+            />
           ) : active === 1 ? (
             <QuestionsManager />
           ) : active === 2 ? (

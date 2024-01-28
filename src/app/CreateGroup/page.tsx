@@ -1,21 +1,67 @@
 "use client";
-import styles from "@/styles/CreateQuiz.module.scss";
-import { clsx } from "clsx";
-import { useState } from "react";
 import BasicSettings from "@/components/CreateQuizOrGroup/BasicSettings";
-import TestAccess from "@/components/CreateQuizOrGroup/TestAccess";
+import GroupAccess from "@/components/CreateQuizOrGroup/GroupAccess";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import styles from "@/styles/CreateQuiz.module.scss";
+import { createNewGroup } from "@/utils/lib/actions/groupActions";
+import { AccessCodeScheme, CreateGroupFormScheme } from "@/utils/lib/scheme";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AccessTypeForGroup } from "@prisma/client";
+import { clsx } from "clsx";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { z } from "zod";
+
+type CreateGroupType = z.infer<typeof CreateGroupFormScheme>;
 
 export default function CreateGroup() {
+  const { data: session } = useSession();
+
   const [active, setActive] = useState<number>(0);
   const [menuActive, setMenuActive] = useState<boolean>(true);
+  const [accessType, setAccessType] = useState<AccessTypeForGroup>(
+    AccessTypeForGroup.Public_access_code,
+  );
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<CreateGroupType>({ resolver: zodResolver(CreateGroupFormScheme), mode: "onSubmit" });
+
+  const groupSave: SubmitHandler<CreateGroupType> = async data => {
+    if (accessType === AccessTypeForGroup.Public_access_code) {
+      if (!AccessCodeScheme.safeParse(data.accessCode).success) {
+        setError("accessCode", {
+          type: "custom",
+          message: "Password must be within 6 - 50 characters",
+        });
+        return;
+      }
+    }
+    if (session === null) {
+      toast.error("You have to register to create group!");
+      return;
+    }
+    try {
+      const error = await createNewGroup({ ...data, accessType, creatorId: session!.user.id });
+
+      error ? toast.error(error) : toast.success("Group created successfully.");
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.error(error);
+    }
+  };
 
   return (
     <ThemeWrapper>
       {!menuActive && (
         <div className={styles.create__dark} onClick={() => setMenuActive(prev => !prev)}></div>
       )}
-      <div className={styles.create__container}>
+      <form onSubmit={handleSubmit(groupSave)} className={styles.create__container}>
         {!menuActive && (
           <style>{`
           body {
@@ -44,6 +90,7 @@ export default function CreateGroup() {
             </div>
             <div className={styles.create__list}>
               <button
+                type="button"
                 onClick={() => {
                   setActive(0);
                   if (!menuActive) setMenuActive(prev => !prev);
@@ -71,6 +118,7 @@ export default function CreateGroup() {
                 <div className={styles.create__text}>Basic settings</div>
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setActive(1);
                   if (!menuActive) setMenuActive(prev => !prev);
@@ -94,7 +142,9 @@ export default function CreateGroup() {
                 <div className={styles.create__text}>Group access</div>
               </button>
             </div>
-            <button className={styles.create__button}>Activate group</button>
+            <button type="submit" className={styles.create__button}>
+              {isSubmitting ? "Activate group..." : "Activate group"}
+            </button>
           </div>
         </aside>
         <section className={styles.create__right}>
@@ -125,9 +175,18 @@ export default function CreateGroup() {
               {active === 0 ? "Basic settings" : "Group access"}
             </div>
           </div>
-          {active === 0 ? <BasicSettings label="Insert group name" /> : <TestAccess type="group" />}
+          {active === 0 ? (
+            <BasicSettings label="Insert group name" errors={errors} register={register} />
+          ) : (
+            <GroupAccess
+              errors={errors}
+              register={register}
+              accessType={accessType}
+              setAccessType={setAccessType}
+            />
+          )}
         </section>
-      </div>
+      </form>
     </ThemeWrapper>
   );
 }

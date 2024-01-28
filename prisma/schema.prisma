@@ -17,4 +17,82 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  quiz          Quiz[]
+  groups        Group[]
+}
+
+model Quiz {
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  attempts   Int?
+  duration   DateTime?
+  deadline   DateTime?
+  accessType AccessTypeForQuiz
+  accessCode String?
+  groupId    String?
+  questions  Question[]
+  creatorId  String            @db.ObjectId
+  creator    User              @relation(fields: [creatorId], references: [id])
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+}
+
+model Question {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  type      QuestionType
+  answers   Answer[]
+  quizId    String       @db.ObjectId
+  quiz      Quiz         @relation(fields: [quizId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Answer {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  isCorrect  Boolean
+  questionId String   @db.ObjectId
+  question   Question @relation(fields: [questionId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Group {
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  name       String             @unique
+  accessType AccessTypeForGroup
+  accessCode String?
+  creatorId  String             @db.ObjectId
+  creator    User               @relation(fields: [creatorId], references: [id])
+  sections   Section[]
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+}
+
+model Section {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  groupId   String   @db.ObjectId
+  group     Group    @relation(fields: [groupId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum AccessTypeForGroup {
+  Public
+  Public_access_code
+}
+
+enum AccessTypeForQuiz {
+  Public
+  Private
+  Public_access_code
+  Group
+}
+
+enum QuestionType {
+  Single_choice
+  Multiple_choice
+  True_or_false
 }

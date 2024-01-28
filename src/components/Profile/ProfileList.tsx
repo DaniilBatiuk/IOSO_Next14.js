@@ -13,7 +13,6 @@ const ProfileList: React.FC<ProfileListProp> = ({ id }: ProfileListProp) => {
   const [activeMenuItem, setActiveMenuItem] = useState<number>(0);
   const { data: session } = useSession();
 
-  console.log(session);
   return (
     <>
       <>

@@ -1,7 +1,8 @@
 "use client";
 
 import { LINKS } from "@/utils/config/links";
-import { signOut, useSession } from "next-auth/react";
+import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 type SignInButtonProp = {
@@ -9,6 +10,7 @@ type SignInButtonProp = {
   linkActiveUnderLine: number;
   menuActive: boolean;
   menuOpen: () => void;
+  session: Session | null;
 };
 
 const SignInButton: React.FC<SignInButtonProp> = ({
@@ -16,9 +18,8 @@ const SignInButton: React.FC<SignInButtonProp> = ({
   linkActiveUnderLine,
   menuActive,
   menuOpen,
+  session,
 }: SignInButtonProp) => {
-  const { data: session } = useSession();
-
   return (
     <>
       {session && session.user ? (
@@ -43,7 +44,7 @@ const SignInButton: React.FC<SignInButtonProp> = ({
             </Link>
           </li>
           <li
-            className="header__item__sign-up"
+            className={menuActive === false ? "header__item__sign-up" : "header__item"}
             onClick={() => {
               signOut();
             }}

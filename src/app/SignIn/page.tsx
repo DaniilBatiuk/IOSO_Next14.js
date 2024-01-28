@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function SignIn({ searchParams }: Props) {
-  console.log({ searchParams });
   return (
     <ThemeWrapper>
       <div className={`${styles.signIn}`}>

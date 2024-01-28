@@ -1,6 +1,7 @@
 "use client";
 import SignInButton from "@/components/UI/SignInButton/SignInButton";
 import { LINKS } from "@/utils/config/links";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -12,7 +13,9 @@ const Header: React.FC = () => {
 
   const [menuActive, setMenuActive] = useState<boolean>(false);
   const [linkActiveUnderLine, setLinkActiveUnderLine] = useState<number>(0);
+
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   useEffect(() => {
     setIsVisible(pathname === "/");
@@ -91,14 +94,17 @@ const Header: React.FC = () => {
                 menuActive={menuActive}
                 linkActiveUnderLine={linkActiveUnderLine}
                 setLinkActiveUnderLine={setLinkActiveUnderLine}
+                session={session}
               />
             </ul>
           </div>
         </nav>
         <div className="header__item__block-min">
-          <div className="header__item__sign-up-min">
-            <Link href={LINKS.SignUp}>Sign Up</Link>
-          </div>
+          {!session?.user.id && (
+            <div className="header__item__sign-up-min">
+              <Link href={LINKS.SignUp}>Sign Up</Link>
+            </div>
+          )}
           <button className="icon-menu" type="button" onClick={menuOpen}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

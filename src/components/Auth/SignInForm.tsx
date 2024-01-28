@@ -1,5 +1,6 @@
 "use client";
 import styles from "@/styles/SignIn.module.scss";
+import { SignInFormScheme } from "@/utils/lib/scheme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import { signIn } from "next-auth/react";
@@ -13,14 +14,7 @@ interface SignInFormProps {
   callbackUrl?: string;
 }
 
-const FormSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string({
-    required_error: "Please enter your password",
-  }),
-});
-
-type InputType = z.infer<typeof FormSchema>;
+type InputType = z.infer<typeof SignInFormScheme>;
 
 const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
   const router = useRouter();
@@ -30,11 +24,10 @@ const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<InputType>({
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(SignInFormScheme),
   });
 
-  const onSubmit: SubmitHandler<InputType> = async (data, event) => {
-    event?.preventDefault();
+  const onSubmit: SubmitHandler<InputType> = async data => {
     const result = await signIn("credentials", {
       redirect: false,
       username: data.email,
