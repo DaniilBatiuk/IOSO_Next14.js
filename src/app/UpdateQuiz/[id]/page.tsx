@@ -1,12 +1,11 @@
 "use client";
+import QuestionsManager from "@/components/CreateQuizOrGroup/QuestionsManager";
+import TestAccess from "@/components/CreateQuizOrGroup/TestAccess";
+import TimeSettings from "@/components/CreateQuizOrGroup/TimeSettings";
+import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { clsx } from "clsx";
 import { useState } from "react";
-import TimeSettings from "@/components/CreateQuizOrGroup/TimeSettings";
-import BasicSettings from "@/components/CreateQuizOrGroup/BasicSettings";
-import QuestionsManager from "@/components/CreateQuizOrGroup/QuestionsManager";
-import TestAccess from "@/components/CreateQuizOrGroup/TestAccess";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 
 export default function UpdateQuiz() {
   const [active, setActive] = useState<number>(0);
@@ -193,7 +192,8 @@ export default function UpdateQuiz() {
             </div>
           </div>
           {active === 0 ? (
-            <BasicSettings label="Insert quiz name" />
+            // <BasicSettings label="Insert quiz name" />
+            <></>
           ) : active === 1 ? (
             <QuestionsManager />
           ) : active === 2 ? (
