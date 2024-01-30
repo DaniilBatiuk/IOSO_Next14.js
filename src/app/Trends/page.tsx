@@ -1,4 +1,5 @@
 "use client";
+export const revalidate = 0;
 import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/Quizzes.module.scss";
@@ -14,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+
 export default function Trends() {
   const [age, setAge] = useState("");
   const [activeQuiz, setActiveQuiz] = useState(true);
