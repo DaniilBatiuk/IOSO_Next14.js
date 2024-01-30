@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(wrapSuccess(group));
   } catch (error) {
-    console.log("ERROR CREATING TASK: ", error);
-    return NextResponse.json({ error: "Error creating task", status: 500 });
+    console.log("Error finding group: ", error);
+    return NextResponse.json({ error: `Error finding group: ${error}`, status: 500 });
   }
 }

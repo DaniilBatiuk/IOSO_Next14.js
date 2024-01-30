@@ -25,6 +25,6 @@ export async function GET() {
     return NextResponse.json(wrapSuccess(allGroups));
   } catch (error) {
     console.log("Error finding groups: ", error);
-    return NextResponse.json({ error: "Error finding groups", status: 500 });
+    return NextResponse.json({ error: `Error finding groups: ${error}`, status: 500 });
   }
 }

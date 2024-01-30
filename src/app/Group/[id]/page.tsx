@@ -31,11 +31,6 @@ const Group = ({ params }: { params: { id: string } }) => {
     queryFn: () => GroupsService.getGroup(params.id),
   });
 
-  const Managers = data?.result.members.filter(member => member.status === MemberStatus.Manager);
-  const Participants = data?.result.members.filter(
-    member => member.status === MemberStatus.Participant,
-  );
-
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
@@ -125,9 +120,21 @@ const Group = ({ params }: { params: { id: string } }) => {
                           }, 0)}
                           quizzes
                         </div>
-                        <div className={styles.right__text}>{Managers?.length} managers</div>
                         <div className={styles.right__text}>
-                          {Participants?.length} participants
+                          {
+                            data?.result.members.filter(
+                              member => member.status === MemberStatus.Manager,
+                            )?.length
+                          }{" "}
+                          managers
+                        </div>
+                        <div className={styles.right__text}>
+                          {
+                            data?.result.members.filter(
+                              member => member.status === MemberStatus.Participant,
+                            )?.length
+                          }{" "}
+                          participants
                         </div>
                       </div>
                     </div>
@@ -135,15 +142,19 @@ const Group = ({ params }: { params: { id: string } }) => {
                       <div className={styles.right__title}>Participants</div>
                       <div className={styles.right__manager}>Managers</div>
                       <div className={styles.right__block}>
-                        {Managers?.map((manager, index) => (
-                          <Avatar key={index} {...stringAvatar(manager.user.fullName)} />
-                        ))}
+                        {data?.result.members
+                          .filter(member => member.status === MemberStatus.Manager)
+                          ?.map((manager, index) => (
+                            <Avatar key={index} {...stringAvatar(manager.user.fullName)} />
+                          ))}
                       </div>
                       <div className={styles.right__participants}>Participants</div>
                       <div className={styles.right__block}>
-                        {Participants?.map((participants, index) => (
-                          <Avatar key={index} {...stringAvatar(participants.user.fullName)} />
-                        ))}
+                        {data?.result.members
+                          .filter(member => member.status === MemberStatus.Participant)
+                          ?.map((participants, index) => (
+                            <Avatar key={index} {...stringAvatar(participants.user.fullName)} />
+                          ))}
                       </div>
                     </div>
                   </>

@@ -12,6 +12,7 @@ import {
 } from "@/utils/lib/validators/create-group-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForGroup } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -20,6 +21,7 @@ import { toast } from "react-toastify";
 
 export default function CreateGroup() {
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const [active, setActive] = useState<number>(0);
   const [menuActive, setMenuActive] = useState<boolean>(true);
@@ -53,7 +55,17 @@ export default function CreateGroup() {
     try {
       const error = await createNewGroup({ ...data, accessType, creatorId: session!.user.id });
 
-      error ? toast.error(error) : toast.success("Group created successfully.");
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success("Group created successfully.");
+
+        await queryClient.refetchQueries({
+          queryKey: ["allGroups"],
+          type: "active",
+          exact: true,
+        });
+      }
     } catch (error) {
       toast.error("Something went wrong!");
       console.error(error);

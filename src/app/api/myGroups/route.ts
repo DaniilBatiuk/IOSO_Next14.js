@@ -6,6 +6,8 @@ export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
 
+    console.log(id);
+
     if (id === null) {
       return NextResponse.json({ error: "Error no id exist", status: 404 });
     }
@@ -43,9 +45,11 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    console.log(myGroups);
+
     return NextResponse.json(wrapSuccess(myGroups));
   } catch (error) {
-    console.log("Error finding groups: ", error);
-    return NextResponse.json({ error: "Error finding groups", status: 500 });
+    console.log("Error finding my groups: ", error);
+    return NextResponse.json({ error: `Error finding my groups: ${error}`, status: 500 });
   }
 }
