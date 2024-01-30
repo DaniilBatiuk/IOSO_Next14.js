@@ -1,22 +1,37 @@
 "use client";
+import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
+import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/Quizzes.module.scss";
+import { GroupsService } from "@/utils/services/group.service";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useState } from "react";
 import TextField from "@mui/material/TextField";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
-import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 export default function Trends() {
   const [age, setAge] = useState("");
   const [activeQuiz, setActiveQuiz] = useState(true);
+  const { data: session } = useSession();
+
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
+
+  const {
+    isPending,
+    isError,
+    data: groups,
+    error,
+  } = useQuery({
+    queryKey: ["allGroups"],
+    queryFn: () => GroupsService.getAllGroups(),
+  });
 
   return (
     <ThemeWrapper>
@@ -86,14 +101,15 @@ export default function Trends() {
           </div>
           {activeQuiz === true ? (
             <>
-              <QuizOrGroup status="Available" buttonText="Quiz" type="quiz" />
-              <QuizOrGroup status="Access key" buttonText="Quiz" type="quiz" />
+              {/* <QuizOrGroup   type="quiz" />
+              <QuizOrGroup  buttonText="Quiz" type="quiz" /> */}
             </>
           ) : (
             <>
-              <QuizOrGroup status="Available" buttonText="Join" type="group" />
-              <QuizOrGroup status="Access key" buttonText="Join" type="group" />
-              <QuizOrGroup status="Access key" buttonText="Join" type="group" />
+              {groups?.success &&
+                groups.result.map((group, index) => (
+                  <QuizOrGroup key={index} group={group} userId={session?.user.id} />
+                ))}
             </>
           )}
         </section>

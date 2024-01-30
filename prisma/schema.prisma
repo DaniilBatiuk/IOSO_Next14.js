@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   fullName      String
   password      String
-  email         String    @unique
+  email         String       @unique
   emailVerified DateTime?
   image         String?
   quiz          Quiz[]
   groups        Group[]
+  Membership    Membership[]
 }
 
 model Quiz {
@@ -35,6 +36,8 @@ model Quiz {
   creator    User              @relation(fields: [creatorId], references: [id])
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
+  Section    Section?          @relation(fields: [sectionId], references: [id])
+  sectionId  String?           @db.ObjectId
 }
 
 model Question {
@@ -66,6 +69,7 @@ model Group {
   creatorId  String             @db.ObjectId
   creator    User               @relation(fields: [creatorId], references: [id])
   sections   Section[]
+  members    Membership[]
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
 }
@@ -73,15 +77,30 @@ model Group {
 model Section {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
+  quizzes   Quiz[]
   groupId   String   @db.ObjectId
   group     Group    @relation(fields: [groupId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model Membership {
+  id      String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String       @db.ObjectId
+  groupId String       @db.ObjectId
+  status  MemberStatus @default(Participant)
+  user    User         @relation(fields: [userId], references: [id])
+  group   Group        @relation(fields: [groupId], references: [id])
+}
+
 enum AccessTypeForGroup {
   Public
   Public_access_code
+}
+
+enum MemberStatus {
+  Participant
+  Manager
 }
 
 enum AccessTypeForQuiz {
@@ -96,3 +115,83 @@ enum QuestionType {
   Multiple_choice
   True_or_false
 }
+
+// model User {
+//   id        String    @id @default(auto()) @map("_id") @db.ObjectId
+//   fullName  String
+//   email     String    @unique
+//   password  String
+//   quizzes   QuizResult[]
+//   groups    Membership[]
+// }
+
+// model Quiz {
+//   id          String     @id @default(auto()) @map("_id") @db.ObjectId
+//   title       String
+//   attempts    Int
+//   duration    String
+//   deadline    String
+//   accessType  String
+//   accessCode  String?
+//   groupId     String?
+//   creatorId   String
+//   questions   Question[]
+//   results     QuizResult[]
+//   creator     User       @relation(fields: [creatorId], references: [id])
+//   group       Group?     @relation(fields: [groupId], references: [id])
+// }
+
+// model Group {
+//   id        String     @id @default(auto()) @map("_id") @db.ObjectId
+//   name      String
+//   accessType String
+//   accessCode String?
+//   managerId String
+//   manager   User       @relation(fields: [managerId], references: [id])
+//   members   Membership[]
+//   sections  Section[]
+// }
+
+// model Section {
+//   id        String     @id @default(auto()) @map("_id") @db.ObjectId
+//   name      String
+//   groupId   String
+//   group     Group      @relation(fields: [groupId], references: [id])
+// }
+
+// model Membership {
+//   userId    String
+//   groupId   String
+//   status    String
+//   user      User       @relation(fields: [userId], references: [id])
+//   group     Group      @relation(fields: [groupId], references: [id])
+//   @@id([userId, groupId])
+// }
+
+// model QuizResult {
+//   id          String     @id @default(auto()) @map("_id") @db.ObjectId
+//   userId      String
+//   quizId      String
+//   score       Int
+//   totalQuestions Int
+//   percentage  Int
+//   user        User       @relation(fields: [userId], references: [id])
+//   quiz        Quiz       @relation(fields: [quizId], references: [id])
+// }
+
+// model Question {
+//   id       String    @id @default(auto()) @map("_id") @db.ObjectId
+//   text     String
+//   type     String
+//   quizId   String
+//   quiz     Quiz      @relation(fields: [quizId], references: [id])
+//   answers  Answer[]
+// }
+
+// model Answer {
+//   id         String    @id @default(auto()) @map("_id") @db.ObjectId
+//   text       String
+//   isCorrect  Boolean
+//   questionId String
+//   question   Question  @relation(fields: [questionId], references: [id])
+// }

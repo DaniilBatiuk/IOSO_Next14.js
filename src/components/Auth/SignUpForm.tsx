@@ -1,16 +1,13 @@
 "use client";
 import styles from "@/styles/SignIn.module.scss";
 import { registerUser } from "@/utils/lib/actions/authActions";
-import { SignUpFormScheme } from "@/utils/lib/scheme";
+import { SignUpFormScheme, SignUpFormType } from "@/utils/lib/validators/sign-up-form-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { z } from "zod";
 import Button from "../UI/Button/Button";
-
-type InputType = z.infer<typeof SignUpFormScheme>;
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -19,9 +16,9 @@ const SignUpForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({ resolver: zodResolver(SignUpFormScheme), mode: "onSubmit" });
+  } = useForm<SignUpFormType>({ resolver: zodResolver(SignUpFormScheme), mode: "onSubmit" });
 
-  const saveUser: SubmitHandler<InputType> = async data => {
+  const saveUser: SubmitHandler<SignUpFormType> = async data => {
     const { confirmPassword, ...user } = data;
     try {
       const error = await registerUser(user);

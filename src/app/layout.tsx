@@ -1,6 +1,6 @@
 import Footer from "@/components/HeaderFooter/Footer/Footer";
 import Header from "@/components/HeaderFooter/Header/Header";
-import { SessionWrapper } from "@/components/Wrappers/SessionWrapper";
+import { SessionWrapper } from "@/components/Wrappers/ProviderWrapper";
 import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

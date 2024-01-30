@@ -1,111 +1,96 @@
 "use client";
 import styles from "@/styles/Quiz.module.scss";
+import { addNewMember } from "@/utils/lib/actions/membersActions";
+import { AllGroups } from "@/utils/lib/types/index";
+import { AccessTypeForGroup, Quiz } from "@prisma/client";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Modal from "../UI/Modal/Modal";
-import { useRouter } from "next/navigation";
 
 type QuizOrGroupProp = {
-  status: string;
-  buttonText: string;
-  type: string;
+  group?: AllGroups;
+  quiz?: Quiz;
+  userId: string | undefined;
 };
 
-const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ status, buttonText, type }: QuizOrGroupProp) => {
-  const router = useRouter();
+const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrGroupProp) => {
   const [activeModal, setActiveModal] = useState(false);
+  const { data: session } = useSession();
+  const CheckCanIView =
+    (group && group.creator.id === userId) ||
+    (group && userId && group.members.some(member => member.userId === userId));
 
-  const handleRedirect = () => {
-    if (buttonText === "Activate") {
-      router.push("/UpdateQuiz/1");
+  const joinGroup = async () => {
+    if (session === null) {
+      toast.error("You have to register to join the group");
+      return;
+    }
+
+    if (group?.id !== undefined && session !== null) {
+      const error = await addNewMember(group?.id, session?.user.id);
+      error ? toast.error(error) : toast.success("You have successfully joined the group.");
     }
   };
 
   return (
     <div
-      onClick={handleRedirect}
       className={clsx(styles.quiz__item, {
-        [styles.quiz__item__active]:
-          status === "Active" || status === "Available" || status === "Participant",
-        [styles.quiz__item__ended]: status === "Ended",
-        [styles.quiz__item__progress]: status === "In progress" || status === "Manager",
-        [styles.quiz__item__key]: status === "Access key",
-        [styles.quiz__item__link]: buttonText === "Activate",
+        [styles.quiz__item__active]: group?.accessType === AccessTypeForGroup.Public,
+        [styles.quiz__item__key]: group?.accessType === AccessTypeForGroup.Public_access_code,
       })}
     >
       <Modal active={activeModal} setActive={setActiveModal} maxDivWidth="600px">
         <div className={styles.modal__head}>
-          <h2 className={styles.modal__title}>
-            {buttonText === "Activate"
-              ? "Activate the quiz?"
-              : buttonText === "Quiz"
-              ? "Pass the quiz?"
-              : "Leave the group?"}
-          </h2>
-          <div className={styles.modal__text}>
-            {buttonText === "Activate"
-              ? "You will be able to pass the quiz after activation"
-              : buttonText === "Quiz"
-              ? "Attempts left: 2"
-              : "You will be removed from the group"}
-          </div>
+          <h2 className={styles.modal__title}>Quiz</h2>
+          <div className={styles.modal__text}>Attempts left: 2</div>
         </div>
         <div className={styles.modal__buttons}>
           <button className={styles.modal__button__cancel} onClick={() => setActiveModal(false)}>
             Cancel
           </button>
-          <button
-            className={
-              buttonText === "View" ? styles.modal__button__leave : styles.modal__button__activate
-            }
-          >
-            {buttonText === "View" ? "Leave" : buttonText}
-          </button>
+          <button className={styles.modal__button__activate}>{group ? "Join" : "Quiz"}</button>
         </div>
       </Modal>
       <div className={styles.quiz__item_head}>
         <div className={styles.quiz__item_head_left}>
           <div
             className={clsx(styles.quiz__item_status, {
-              [styles.quiz__item_status_active]:
-                status === "Active" || status === "Available" || status === "Participant",
-              [styles.quiz__item_status_ended]: status === "Ended",
-              [styles.quiz__item_status_progress]: status === "In progress" || status === "Manager",
-              [styles.quiz__item_status_key]: status === "Access key",
+              [styles.quiz__item_status_active]: group?.accessType === AccessTypeForGroup.Public,
+              [styles.quiz__item_status_key]:
+                group?.accessType === AccessTypeForGroup.Public_access_code,
             })}
           >
-            {status}
+            {group?.accessType === AccessTypeForGroup.Public ? "Available" : "Access key"}
           </div>
         </div>
         <div className={styles.quiz__item_deadline}>
-          {type === "quiz" ? "Deadline: 2024-1-03" : "Daniil Batiuk"}
+          {quiz ? quiz.deadline?.toDateString() : group?.creator.fullName}
         </div>
       </div>
-      <div className={styles.quiz__item_title}>Add Two Numbers Add Two Numbers</div>
+      <div className={styles.quiz__item_title}>{group ? group.name : quiz?.name}</div>
       <div className={styles.quiz__item_bottom}>
         <div className={styles.quiz__item_question}>
-          {type === "quiz" ? "10 Questions" : "10 Participants"}
+          {quiz ? "10 Questions" : `${group?.members.length} Participants`}
         </div>
-        {buttonText !== "View" ? (
-          <button
-            className={styles.quiz__item_button}
-            onClick={e => {
-              if (buttonText !== "Join") {
-                e.stopPropagation();
-                setActiveModal(true);
+
+        <button
+          className={styles.quiz__item_button}
+          onClick={e => {
+            if (quiz) {
+              e.stopPropagation();
+              setActiveModal(true);
+            } else {
+              if (!CheckCanIView) {
+                joinGroup();
               }
-            }}
-          >
-            {buttonText}
-          </button>
-        ) : (
-          <div className={styles.quiz__item_group_button}>
-            <button className={styles.quiz__item_button}>{buttonText}</button>
-            <button className={styles.quiz__item_button_right} onClick={() => setActiveModal(true)}>
-              Leave
-            </button>
-          </div>
-        )}
+            }
+          }}
+        >
+          {CheckCanIView ? <Link href={`/Group/${group?.id}`}>View</Link> : group ? "Join" : "Quiz"}
+        </button>
       </div>
     </div>
   );

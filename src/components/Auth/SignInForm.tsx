@@ -1,20 +1,17 @@
 "use client";
 import styles from "@/styles/SignIn.module.scss";
-import { SignInFormScheme } from "@/utils/lib/scheme";
+import { SignInFormScheme, SignInFormType } from "@/utils/lib/validators/sign-in-form-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { z } from "zod";
 import Button from "../UI/Button/Button";
 
 interface SignInFormProps {
   callbackUrl?: string;
 }
-
-type InputType = z.infer<typeof SignInFormScheme>;
 
 const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
   const router = useRouter();
@@ -23,11 +20,11 @@ const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({
+  } = useForm<SignInFormType>({
     resolver: zodResolver(SignInFormScheme),
   });
 
-  const onSubmit: SubmitHandler<InputType> = async data => {
+  const onSubmit: SubmitHandler<SignInFormType> = async data => {
     const result = await signIn("credentials", {
       redirect: false,
       username: data.email,

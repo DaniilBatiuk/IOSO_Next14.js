@@ -1,22 +1,36 @@
 "use client";
 import styles from "@/styles/Profile.module.scss";
+import { GroupsService } from "@/utils/services/group.service";
 import { Button, ButtonGroup } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import QuizOrGroup from "../QuizOrGroup/QuizOrGroup";
+import MyQuizOrGroup from "../QuizOrGroup/MyQuizOrGroup";
 
 const MyQuizzes: React.FC = () => {
   const [age, setAge] = useState("");
   const [activeQuiz, setActiveQuiz] = useState(true);
+  const { data: session } = useSession();
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
+
+  const {
+    isPending,
+    isError,
+    data: groups,
+    error,
+  } = useQuery({
+    queryKey: ["myGroups"],
+    queryFn: () => GroupsService.getMyGroups(session?.user.id),
+  });
 
   return (
     <section className={styles.main}>
@@ -84,15 +98,17 @@ const MyQuizzes: React.FC = () => {
       </div>
       {activeQuiz === true ? (
         <>
-          <QuizOrGroup status="Active" buttonText="Activate" type="quiz" />
+          {/* <QuizOrGroup status="Active" buttonText="Activate" type="quiz" />
           <QuizOrGroup status="In progress" buttonText="Activate" type="quiz" />
-          <QuizOrGroup status="Ended" buttonText="Activate" type="quiz" />
+          <QuizOrGroup status="Ended" buttonText="Activate" type="quiz" /> */}
         </>
       ) : (
         <>
-          <QuizOrGroup status="Participant" buttonText="View" type="group" />
-          <QuizOrGroup status="Manager" buttonText="View" type="group" />
-          <QuizOrGroup status="Participant" buttonText="View" type="group" />
+          {groups?.success &&
+            session?.user.id !== undefined &&
+            groups.result.map((group, index) => (
+              <MyQuizOrGroup key={index} group={group} id={session?.user.id} />
+            ))}
         </>
       )}
     </section>

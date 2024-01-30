@@ -1,8 +1,9 @@
 "use client";
-import Complete from "@/../public/Complete.svg";
 import Modal from "@/components/UI/Modal/Modal";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/Group.module.scss";
+import { stringAvatar } from "@/utils/lib/helpers/stringAvatar";
+import { GroupsService } from "@/utils/services/group.service";
 import {
   Avatar,
   FormControl,
@@ -10,71 +11,30 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Skeleton,
   TextField,
 } from "@mui/material";
-import Image from "next/image";
+import { MemberStatus } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-function stringToColor(string: string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  let color = "#";
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.slice(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-function darkenColor(color: string, percent: number) {
-  // Convert hex to RGB
-  const hex = color.substring(1);
-  const bigint = parseInt(hex, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  // Darken each component
-  const darkenedR = Math.floor(r * (1 - percent / 100));
-  const darkenedG = Math.floor(g * (1 - percent / 100));
-  const darkenedB = Math.floor(b * (1 - percent / 100));
-
-  // Convert back to hex
-  const darkenedHex =
-    "#" + (darkenedR * 65536 + darkenedG * 256 + darkenedB).toString(16).padStart(6, "0");
-
-  return darkenedHex;
-}
-
-function stringAvatar(name: string) {
-  const bgColor = stringToColor(name);
-  const textColor = darkenColor(bgColor, 40); // Adjust the percentage as needed
-
-  return {
-    sx: {
-      bgcolor: bgColor,
-      color: textColor,
-    },
-    children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-  };
-}
-
-const Group: React.FC = () => {
+const Group = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   const [activeMenu, setActiveMenu] = useState<string>("Group");
   const [activeModal, setActiveModal] = useState(false);
   const [age, setAge] = useState("");
+
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["group"],
+    queryFn: () => GroupsService.getGroup(params.id),
+  });
+
+  const Managers = data?.result.members.filter(member => member.status === MemberStatus.Manager);
+  const Participants = data?.result.members.filter(
+    member => member.status === MemberStatus.Participant,
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
@@ -101,137 +61,95 @@ const Group: React.FC = () => {
             </button>
           </div>
         </Modal>
-        <div className={styles.group__title}>Quiz for english level</div>
-        <div className={styles.left__buttons}>
-          <button
-            className={activeMenu === "Group" ? styles.left__button__active : styles.left__button}
-            onClick={() => setActiveMenu("Group")}
-          >
-            Group
-          </button>
-          <button
-            className={
-              activeMenu === "Statistic" ? styles.left__button__active : styles.left__button
-            }
-            onClick={() => setActiveMenu("Statistic")}
-          >
-            Statistic
-          </button>
+        <div className={styles.group__title}>
+          {data ? data.result.name : <Skeleton variant="text" sx={{ height: "44px" }} />}
         </div>
+        {data ? (
+          <div className={styles.left__buttons}>
+            <button
+              className={activeMenu === "Group" ? styles.left__button__active : styles.left__button}
+              onClick={() => setActiveMenu("Group")}
+            >
+              Group
+            </button>
+            <button
+              className={
+                activeMenu === "Statistic" ? styles.left__button__active : styles.left__button
+              }
+              onClick={() => setActiveMenu("Statistic")}
+            >
+              Statistic
+            </button>
+          </div>
+        ) : (
+          <Skeleton variant="text" sx={{ height: "44px", width: "250px" }} />
+        )}
         <div className={styles.group__main}>
           {activeMenu === "Group" ? (
             <>
-              <section className={styles.left}>
-                <div className={styles.left__section}>
-                  <div className={styles.left__section__title}>
-                    Create group 123 in progress Create group 123 in progress{" "}
-                  </div>
-                  <div className={styles.left__section__body}>
-                    <div
-                      className={styles.left__section__test}
-                      onClick={() => setActiveModal(true)}
-                    >
-                      <div className={styles.left__section__test__title}>Quiz in 1 mun</div>
-                      <Image src={Complete.src} alt="Icon" width={35} height={35} />
-                    </div>
-                    <div
-                      className={styles.left__section__test}
-                      onClick={() => setActiveModal(true)}
-                    >
-                      <div className={styles.left__section__test__title}>Quiz in 1 mun</div>
-                    </div>
-                    <div
-                      className={styles.left__section__test}
-                      onClick={() => setActiveModal(true)}
-                    >
-                      <div className={styles.left__section__test__title}>
-                        Quiz in 1 mun Create group 123 in progress Create group 123 in progress
-                        Create group 123 in Create group 123 in progress
+              {data ? (
+                <section className={styles.left}>
+                  {data.result.sections.map((section, index) => (
+                    <div className={styles.left__section} key={index}>
+                      <div className={styles.left__section__title}>{section.name}</div>
+                      <div className={styles.left__section__body}>
+                        {section.quizzes.map((quiz, index) => (
+                          <div
+                            key={index}
+                            className={styles.left__section__test}
+                            onClick={() => setActiveModal(true)}
+                          >
+                            <div className={styles.left__section__test__title}>{quiz.name}</div>
+                            {/* <Image src={Complete.src} alt="Icon" width={35} height={35} /> */}
+                          </div>
+                        ))}
                       </div>
-                      <Image src={Complete.src} alt="Icon" width={35} height={35} />
                     </div>
-                  </div>
-                </div>
-                <div className={styles.left__section}>
-                  <div className={styles.left__section__title}>
-                    Create group 123 in progress Create group 123 in progress{" "}
-                  </div>
-                  <div className={styles.left__section__body}>
-                    <div className={styles.left__section__test}>
-                      <div className={styles.left__section__test__title}>Quiz in 1 mun</div>
-                      <Image src={Complete.src} alt="Icon" width={35} height={35} />
-                    </div>
-                    <div className={styles.left__section__test}>
-                      <div className={styles.left__section__test__title}>Quiz in 1 mun</div>
-                    </div>
-                    <div className={styles.left__section__test}>
-                      <div className={styles.left__section__test__title}>
-                        Quiz in 1 mun Create group 123 in progress Create group 123 in progress
-                        Create group 123 in Create group 123 in progress
-                      </div>
-                      <Image src={Complete.src} alt="Icon" width={35} height={35} />
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.left__section}>
-                  <div className={styles.left__section__title}>
-                    Create group 123 in progress Create group 123 in progress{" "}
-                  </div>
-                  <div className={styles.left__section__body}>
-                    <div className={styles.left__section__test}>
-                      <div className={styles.left__section__test__title}>
-                        Quiz in 1 mun Create group 123 in progress Create group 123 in progress
-                        Create group 123 in Create group 123 in progress
-                      </div>
-                      <Image src={Complete.src} alt="Icon" width={35} height={35} />
-                    </div>
-                  </div>
-                </div>
-              </section>
-
+                  ))}
+                </section>
+              ) : (
+                <Skeleton variant="rectangular" height={500} width={1000} />
+              )}
               <section className={styles.right}>
-                <div className={styles.right__item}>
-                  <div className={styles.right__title}>Summary</div>
-                  <div className={styles.right__block__text}>
-                    <div className={styles.right__text}>20 sections</div>
-                    <div className={styles.right__text}>26 quizzes</div>
-                    <div className={styles.right__text}>6 managers</div>
-                    <div className={styles.right__text}>1241 participants</div>
-                  </div>
-                </div>
-                <div className={styles.right__item}>
-                  <div className={styles.right__title}>Participants</div>
-                  <div className={styles.right__manager}>Managers</div>
-                  <div className={styles.right__block}>
-                    <Avatar {...stringAvatar("Kent Dodds")} />
-                    <Avatar {...stringAvatar("Jed Watson")} />
-                    <Avatar {...stringAvatar("Tim Neutkens")} />
-                    <Avatar {...stringAvatar("Daniil Batiuk")} />
-                    <Avatar {...stringAvatar("Olex Temch")} />
-                    <Avatar {...stringAvatar("Kioto Miva")} />
-                    <Avatar {...stringAvatar("Melli Dava")} />
-                    <Avatar {...stringAvatar("Kot Leopold")} />
-                    <Avatar {...stringAvatar("Kira Mi")} />
-                  </div>
-                  <div className={styles.right__participants}>Participants</div>
-                  <div className={styles.right__block}>
-                    <Avatar {...stringAvatar("Kent Dodds")} />
-                    <Avatar {...stringAvatar("Jed Watson")} />
-                    <Avatar {...stringAvatar("Tim Neutkens")} />
-                    <Avatar {...stringAvatar("Daniil Batiuk")} />
-                    <Avatar {...stringAvatar("Olex Temch")} />
-                    <Avatar {...stringAvatar("Kioto Miva")} />
-                    <Avatar {...stringAvatar("Melli Dava")} />
-                    <Avatar {...stringAvatar("Kot Leopold")} />
-                    <Avatar {...stringAvatar("Kira Mi")} />
-                    <Avatar {...stringAvatar("Koki Moli")} />
-                    <Avatar {...stringAvatar("Dali Namisa")} />
-                    <Avatar {...stringAvatar("Gsatr Gasje")} />
-                    <Avatar {...stringAvatar("Rsadf Ldfnb")} />
-                    <Avatar {...stringAvatar("Ofsm Kima")} />
-                    <Avatar {...stringAvatar("Lieea Naritave")} />
-                  </div>
-                </div>
+                {data ? (
+                  <>
+                    <div className={styles.right__item}>
+                      <div className={styles.right__title}>Summary</div>
+                      <div className={styles.right__block__text}>
+                        <div className={styles.right__text}>
+                          {data.result.sections.length} sections
+                        </div>
+                        <div className={styles.right__text}>
+                          {data.result.sections.reduce((acc, section) => {
+                            return acc + section.quizzes.length;
+                          }, 0)}
+                          quizzes
+                        </div>
+                        <div className={styles.right__text}>{Managers?.length} managers</div>
+                        <div className={styles.right__text}>
+                          {Participants?.length} participants
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.right__item}>
+                      <div className={styles.right__title}>Participants</div>
+                      <div className={styles.right__manager}>Managers</div>
+                      <div className={styles.right__block}>
+                        {Managers?.map((manager, index) => (
+                          <Avatar key={index} {...stringAvatar(manager.user.fullName)} />
+                        ))}
+                      </div>
+                      <div className={styles.right__participants}>Participants</div>
+                      <div className={styles.right__block}>
+                        {Participants?.map((participants, index) => (
+                          <Avatar key={index} {...stringAvatar(participants.user.fullName)} />
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Skeleton variant="rectangular" height={500} />
+                )}
               </section>
             </>
           ) : (
