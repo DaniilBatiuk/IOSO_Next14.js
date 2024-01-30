@@ -57,9 +57,9 @@ const Group = ({ params }: { params: { id: string } }) => {
           </div>
         </Modal>
         <div className={styles.group__title}>
-          {data ? data.result.name : <Skeleton variant="text" sx={{ height: "44px" }} />}
+          {data?.result ? data.result.name : <Skeleton variant="text" sx={{ height: "44px" }} />}
         </div>
-        {data ? (
+        {data?.result ? (
           <div className={styles.left__buttons}>
             <button
               className={activeMenu === "Group" ? styles.left__button__active : styles.left__button}
@@ -82,7 +82,7 @@ const Group = ({ params }: { params: { id: string } }) => {
         <div className={styles.group__main}>
           {activeMenu === "Group" ? (
             <>
-              {data ? (
+              {data?.result ? (
                 <section className={styles.left}>
                   {data.result.sections.map((section, index) => (
                     <div className={styles.left__section} key={index}>
@@ -106,7 +106,7 @@ const Group = ({ params }: { params: { id: string } }) => {
                 <Skeleton variant="rectangular" height={500} width={1000} />
               )}
               <section className={styles.right}>
-                {data ? (
+                {data?.result ? (
                   <>
                     <div className={styles.right__item}>
                       <div className={styles.right__title}>Summary</div>
@@ -117,7 +117,7 @@ const Group = ({ params }: { params: { id: string } }) => {
                         <div className={styles.right__text}>
                           {data.result.sections.reduce((acc, section) => {
                             return acc + section.quizzes.length;
-                          }, 0)}
+                          }, 0)}{" "}
                           quizzes
                         </div>
                         <div className={styles.right__text}>

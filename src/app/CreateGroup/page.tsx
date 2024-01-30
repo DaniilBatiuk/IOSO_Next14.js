@@ -60,7 +60,7 @@ export default function CreateGroup() {
       } else {
         toast.success("Group created successfully.");
 
-        await queryClient.refetchQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["allGroups"],
           type: "active",
           exact: true,
