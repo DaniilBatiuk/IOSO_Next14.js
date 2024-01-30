@@ -1,5 +1,5 @@
 "use client";
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/Quizzes.module.scss";
