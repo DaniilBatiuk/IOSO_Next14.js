@@ -51,3 +51,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: `Error finding group: ${error}`, status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {}
