@@ -1,7 +1,7 @@
 "use client";
 import styles from "@/styles/Profile.module.scss";
 import { GroupsService } from "@/utils/services/group.service";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, Skeleton } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,12 +22,7 @@ const MyQuizzes: React.FC = () => {
     setAge(event.target.value);
   };
 
-  const {
-    isPending,
-    isError,
-    data: groups,
-    error,
-  } = useQuery({
+  const { data: groups } = useQuery({
     queryKey: ["myGroups"],
     queryFn: () => GroupsService.getMyGroups(session?.user.id),
   });
@@ -104,11 +99,21 @@ const MyQuizzes: React.FC = () => {
         </>
       ) : (
         <>
-          {groups?.success &&
+          {groups?.success ? (
             session?.user.id !== undefined &&
             groups.result.map((group, index) => (
               <MyQuizOrGroup key={index} group={group} id={session?.user.id} />
-            ))}
+            ))
+          ) : (
+            <div className={styles.skeleton}>
+              <Skeleton variant="rectangular" height={137} />
+              <Skeleton variant="rectangular" height={137} />
+              <Skeleton variant="rectangular" height={137} />
+              <Skeleton variant="rectangular" height={137} />
+              <Skeleton variant="rectangular" height={137} />
+              <Skeleton variant="rectangular" height={137} />
+            </div>
+          )}
         </>
       )}
     </section>

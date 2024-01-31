@@ -2,7 +2,6 @@
 
 import { Group, MemberStatus } from "@prisma/client";
 import prisma from "../prisma";
-import { removeMember } from "./membersActions";
 
 export async function createNewGroup(
   group: Omit<Group, "id" | "createdAt" | "updatedAt" | "accessCode">,
@@ -32,16 +31,23 @@ export async function createNewGroup(
   });
 }
 
-export async function removeGroup(groupId: string) {
-  const removeM = await removeMember(groupId);
+export async function removeGroup(groupId: string, userId: string | undefined) {
+  try {
+    await prisma.membership.deleteMany({
+      where: {
+        groupId: groupId,
+      },
+    });
 
-  const groupDelete = await prisma.group.delete({
-    where: {
-      id: groupId,
-    },
-  });
-
-  if (!groupDelete || removeM) {
+    const groupDelete = await prisma.group.delete({
+      where: {
+        id: groupId,
+      },
+    });
+    if (!groupDelete) {
+      return "Something went wrong.";
+    }
+  } catch {
     return "Something went wrong.";
   }
 }

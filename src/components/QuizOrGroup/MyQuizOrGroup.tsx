@@ -1,10 +1,12 @@
 "use client";
 import styles from "@/styles/Quiz.module.scss";
 import { removeGroup } from "@/utils/lib/actions/groupActions";
+import { removeMember } from "@/utils/lib/actions/membersActions";
 import { AllGroups } from "@/utils/lib/types/index";
-import { Quiz } from "@prisma/client";
+import { MemberStatus, Quiz } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -21,6 +23,7 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
   const router = useRouter();
   const [activeModal, setActiveModal] = useState(false);
   const queryClient = useQueryClient();
+  const { data: session } = useSession();
 
   const handleRedirect = () => {
     // if (buttonText === "Activate") {
@@ -29,14 +32,24 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
   };
 
   const confirmHandler = async () => {
-    if (group?.members.length === 1) {
-      console.log("ok");
-      const error = await removeGroup(group.id);
+    let error = null;
+
+    if (quiz) {
+    } else {
+      if (
+        (group?.members?.filter(member => member.status === MemberStatus.Manager)?.length ?? 0) <=
+          1 &&
+        group?.creator.id === session?.user.id
+      ) {
+        error = await removeGroup(group!.id, session?.user.id);
+      } else {
+        error = await removeMember(group!.id, session?.user.id);
+      }
       setActiveModal(false);
       if (error) {
         toast.error(error);
       } else {
-        toast.success("You successfully removed the group.");
+        toast.success("You successfully leaved the group.");
 
         await queryClient.refetchQueries({
           queryKey: ["myGroups"],
@@ -68,7 +81,8 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
           <div className={styles.modal__text}>
             {quiz
               ? "You will be able to pass the quiz after activation"
-              : group?.members.length === 1
+              : (group?.members?.filter(member => member.status === MemberStatus.Manager)?.length ??
+                  0) <= 1 && group?.creator.id === session?.user.id
               ? "Group will be removed"
               : "You will be removed from the group"}
           </div>

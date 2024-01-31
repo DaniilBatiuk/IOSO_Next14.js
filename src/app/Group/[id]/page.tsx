@@ -84,6 +84,9 @@ const Group = ({ params }: { params: { id: string } }) => {
             <>
               {data?.result ? (
                 <section className={styles.left}>
+                  {data.result.sections.length === 0 && (
+                    <div className={styles.left__no__data}>No data exist</div>
+                  )}
                   {data.result.sections.map((section, index) => (
                     <div className={styles.left__section} key={index}>
                       <div className={styles.left__section__title}>{section.name}</div>

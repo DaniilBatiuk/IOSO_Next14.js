@@ -1,6 +1,6 @@
 import { wrapSuccess } from "@/utils/lib/helpers/wrapSuccess";
 import prisma from "@/utils/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -9,6 +9,7 @@ export async function GET() {
         id: true,
         name: true,
         accessType: true,
+        accessCode: true,
         creator: {
           select: {
             id: true,
@@ -28,3 +29,5 @@ export async function GET() {
     return NextResponse.json({ error: `Error finding groups: ${error}`, status: 500 });
   }
 }
+
+export async function POST(req: NextRequest) {}

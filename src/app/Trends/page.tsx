@@ -1,9 +1,10 @@
 "use client";
-export const dynamic = "force-dynamic";
+
 import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/Quizzes.module.scss";
 import { GroupsService } from "@/utils/services/group.service";
+import { Skeleton } from "@mui/material";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import FormControl from "@mui/material/FormControl";
@@ -25,12 +26,7 @@ export default function Trends() {
     setAge(event.target.value);
   };
 
-  const {
-    isPending,
-    isError,
-    data: groups,
-    error,
-  } = useQuery({
+  const { data: groups } = useQuery({
     queryKey: ["allGroups"],
     queryFn: () => GroupsService.getAllGroups(),
   });
@@ -108,10 +104,20 @@ export default function Trends() {
             </>
           ) : (
             <>
-              {groups?.success &&
+              {groups?.success ? (
                 groups.result.map((group, index) => (
                   <QuizOrGroup key={index} group={group} userId={session?.user.id} />
-                ))}
+                ))
+              ) : (
+                <div className={styles.skeleton}>
+                  <Skeleton variant="rectangular" height={137} />
+                  <Skeleton variant="rectangular" height={137} />
+                  <Skeleton variant="rectangular" height={137} />
+                  <Skeleton variant="rectangular" height={137} />
+                  <Skeleton variant="rectangular" height={137} />
+                  <Skeleton variant="rectangular" height={137} />
+                </div>
+              )}
             </>
           )}
         </section>

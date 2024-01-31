@@ -2,13 +2,16 @@
 import styles from "@/styles/Quiz.module.scss";
 import { addNewMember } from "@/utils/lib/actions/membersActions";
 import { AllGroups } from "@/utils/lib/types/index";
+import { TextField } from "@mui/material";
 import { AccessTypeForGroup, Quiz } from "@prisma/client";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Modal from "../UI/Modal/Modal";
+import { ThemeWrapper } from "../Wrappers/ThemeWrapper";
 
 type QuizOrGroupProp = {
   group?: AllGroups;
@@ -18,7 +21,11 @@ type QuizOrGroupProp = {
 
 const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrGroupProp) => {
   const [activeModal, setActiveModal] = useState(false);
+  const [passwordCorrect, setPasswordCorrect] = useState(true);
+  const inputRef = useRef<HTMLInputElement>();
   const { data: session } = useSession();
+  const router = useRouter();
+
   const CheckCanIView =
     (group && group.creator.id === userId) ||
     (group && userId && group.members.some(member => member.userId === userId));
@@ -29,10 +36,20 @@ const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrG
       return;
     }
 
-    if (group?.id !== undefined && session !== null) {
+    if (group?.id && session) {
       const error = await addNewMember(group?.id, session?.user.id);
-      error ? toast.error(error) : toast.success("You have successfully joined the group.");
+
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success("You have successfully joined the group.");
+        router.push(`/Group/${group.id}`);
+      }
     }
+  };
+
+  const checkPassword = () => {
+    inputRef?.current?.value === group?.accessCode ? joinGroup() : setPasswordCorrect(false);
   };
 
   return (
@@ -42,18 +59,50 @@ const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrG
         [styles.quiz__item__key]: group?.accessType === AccessTypeForGroup.Public_access_code,
       })}
     >
-      <Modal active={activeModal} setActive={setActiveModal} maxDivWidth="600px">
-        <div className={styles.modal__head}>
-          <h2 className={styles.modal__title}>Quiz</h2>
-          <div className={styles.modal__text}>Attempts left: 2</div>
-        </div>
-        <div className={styles.modal__buttons}>
-          <button className={styles.modal__button__cancel} onClick={() => setActiveModal(false)}>
-            Cancel
-          </button>
-          <button className={styles.modal__button__activate}>{group ? "Join" : "Quiz"}</button>
-        </div>
-      </Modal>
+      <ThemeWrapper>
+        <Modal active={activeModal} setActive={setActiveModal} maxDivWidth="600px">
+          <div className={styles.modal__head}>
+            <h2 className={styles.modal__title}>{quiz ? "Quiz" : "Group"}</h2>
+            {quiz ? (
+              <div className={styles.modal__text}>Attempts left: 2</div>
+            ) : (
+              <TextField
+                inputRef={inputRef}
+                error={!passwordCorrect}
+                label={passwordCorrect ? "Insert password" : "Incorrect password"}
+                fullWidth
+                variant="standard"
+                type="password"
+                sx={{
+                  "& label.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInput-underline:after": {
+                    borderBottomColor: "white",
+                  },
+                  "& .MuiInput-root:before": {
+                    borderBottomColor: "white",
+                  },
+                  "& .MuiInput-root:after": {
+                    borderBottomColor: "white",
+                  },
+                  ".MuiInput-root:hover:not(.Mui-disabled):before": {
+                    borderBottomColor: "white",
+                  },
+                }}
+              />
+            )}
+          </div>
+          <div className={styles.modal__buttons}>
+            <button className={styles.modal__button__cancel} onClick={() => setActiveModal(false)}>
+              Cancel
+            </button>
+            <button className={styles.modal__button__activate} onClick={checkPassword}>
+              {group ? "Join" : "Quiz"}
+            </button>
+          </div>
+        </Modal>
+      </ThemeWrapper>
       <div className={styles.quiz__item_head}>
         <div className={styles.quiz__item_head_left}>
           <div
@@ -84,7 +133,9 @@ const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrG
               setActiveModal(true);
             } else {
               if (!CheckCanIView) {
-                joinGroup();
+                group?.accessType === AccessTypeForGroup.Public
+                  ? joinGroup()
+                  : setActiveModal(true);
               }
             }
           }}

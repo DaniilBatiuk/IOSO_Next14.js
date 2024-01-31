@@ -6,8 +6,6 @@ export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
 
-    console.log(id);
-
     if (id === null) {
       return NextResponse.json({ error: "Error no id exist", status: 404 });
     }
@@ -40,12 +38,11 @@ export async function GET(req: NextRequest) {
         members: {
           select: {
             id: true,
+            status: true,
           },
         },
       },
     });
-
-    console.log(myGroups);
 
     return NextResponse.json(wrapSuccess(myGroups));
   } catch (error) {

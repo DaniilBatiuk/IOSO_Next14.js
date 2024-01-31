@@ -1,15 +1,17 @@
-import { AccessTypeForGroup } from "@prisma/client";
+import { AccessTypeForGroup, MemberStatus } from "@prisma/client";
 
 export type AllGroups = {
   id: string;
   name: string;
   accessType: AccessTypeForGroup;
+  accessCode: string;
   creator: {
     id: string;
     fullName: string;
   };
   members: {
     userId: string;
+    status: MemberStatus;
   }[];
 };
 
@@ -33,7 +35,7 @@ export type Group = {
   }[];
   members: {
     id: string;
-    status: string;
+    status: MemberStatus;
     user: {
       id: string;
       fullName: string;
