@@ -25,9 +25,6 @@ const BasicSettings: React.FC<BasicSettingsProp> = ({
           id="standard-basic"
           variant="standard"
         />
-        {/* <button type="submit" className={styles.button__save}>
-          {isSubmitting ? "Save..." : "Save"}
-        </button> */}
       </div>
     </div>
   );

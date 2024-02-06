@@ -29,7 +29,6 @@ export default function RootLayout({
           <div className="wrapper" id="wrapper">
             <SessionWrapper>
               <Header />
-
               <main>
                 {children}
                 <ToastContainer />

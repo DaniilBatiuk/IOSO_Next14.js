@@ -12,7 +12,7 @@ type GroupAccessProp = {
   errors: any;
   register: any;
   accessType: AccessTypeForGroup;
-  setAccessType: any;
+  setAccessType: (value: AccessTypeForGroup) => void;
 };
 
 const GroupAccess: React.FC<GroupAccessProp> = ({
@@ -66,10 +66,9 @@ const GroupAccess: React.FC<GroupAccessProp> = ({
             <div className={styles.right__subtitle}>Access code</div>
             <TextField
               error={Boolean(errors.accessCode?.message)}
-              label={errors.accessCode?.message || "Insert quiz access code"}
+              label={errors.accessCode?.message || "Insert group access code"}
               {...register("accessCode")}
               fullWidth
-              id="standard-basic"
               type="password"
               variant="standard"
             />

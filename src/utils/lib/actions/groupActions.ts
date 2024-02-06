@@ -3,9 +3,7 @@
 import { Group, MemberStatus } from "@prisma/client";
 import prisma from "../prisma";
 
-export async function createNewGroup(
-  group: Omit<Group, "id" | "createdAt" | "updatedAt" | "accessCode">,
-) {
+export async function createNewGroup(group: Omit<Group, "id" | "createdAt" | "updatedAt">) {
   const groupExist = await prisma.group.findUnique({
     where: {
       name: group.name,
@@ -13,12 +11,15 @@ export async function createNewGroup(
   });
 
   if (groupExist) {
-    return "Group with this name has been already exist.";
+    return { error: "Group with this name has been already exist." };
   }
 
   const newGroup = await prisma.group.create({
     data: {
-      ...group,
+      name: group.name,
+      accessType: group.accessType,
+      creatorId: group.creatorId,
+      accessCode: group.accessCode,
     },
   });
 
@@ -29,6 +30,8 @@ export async function createNewGroup(
       status: MemberStatus.Manager,
     },
   });
+
+  return { groupId: newGroup.id };
 }
 
 export async function removeGroup(groupId: string, userId: string | undefined) {

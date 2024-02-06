@@ -1,9 +1,17 @@
 import axios from "@/axios";
-import { AllGroups, Group, WrapSuccessType } from "@/utils/lib/types/index";
+import { AllGroups, Group, MyManagerGroups, WrapSuccessType } from "@/utils/lib/types/index";
 export const GroupsService = {
   async getMyGroups(id: string | undefined) {
     if (id === undefined) return;
     const { data } = await axios.get<WrapSuccessType<AllGroups[]>>(`/api/myGroups?id=${id}`);
+    console.log(data);
+    return data;
+  },
+  async getMyManagerGroups(id: string | undefined) {
+    if (id === undefined) return;
+    const { data } = await axios.get<WrapSuccessType<MyManagerGroups[]>>(
+      `/api/myManagerGroups?id=${id}`,
+    );
     console.log(data);
     return data;
   },

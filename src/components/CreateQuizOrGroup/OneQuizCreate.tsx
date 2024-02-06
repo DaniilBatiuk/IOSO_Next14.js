@@ -1,178 +1,206 @@
+"use client";
+
+import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { ICONS } from "@/utils/config/icons";
-import Checkbox from "@mui/material/Checkbox";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import ListItemText from "@mui/material/ListItemText";
-import MenuItem from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import { useState } from "react";
-import { UseFieldArrayRemove, useFieldArray } from "react-hook-form";
+import { useQuizEffect } from "@/utils/hooks/useQuizEffect";
+import {
+  Checkbox,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField,
+} from "@mui/material";
+import React from "react";
+import {
+  Control,
+  FieldErrors,
+  UseFieldArrayRemove,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 
 type OneQuizCreateProp = {
-  control: any;
   numberQuiz: number;
   remove: UseFieldArrayRemove;
-  register: any;
+  control: Control<CreateQuizType>;
+  register: UseFormRegister<CreateQuizType>;
+  setValue: UseFormSetValue<CreateQuizType>;
+  watch: UseFormWatch<CreateQuizType>;
+  errors: FieldErrors<CreateQuizType>;
 };
 
-const OneQuizCreate = ({ control, numberQuiz, remove, register }: OneQuizCreateProp) => {
-  const [questionType, setQuestionType] = useState<string>("");
-  const [rightAnswer, setRightAnswer] = useState<string>("");
-  const [rightMultipleAnswer, setMultipleRightAnswer] = useState<string[]>([]);
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setQuestionType(event.target.value);
-    setRightAnswer("");
-  };
-  const handleChange2 = (event: SelectChangeEvent) => {
-    setRightAnswer(event.target.value);
-  };
-
-  const handleChange3 = (event: SelectChangeEvent<typeof rightMultipleAnswer>) => {
+const OneQuizCreate = React.memo(
+  ({ numberQuiz, remove, register, setValue, watch, errors, control }: OneQuizCreateProp) => {
     const {
-      target: { value },
-    } = event;
-    setMultipleRightAnswer(typeof value === "string" ? value.split(",") : value);
-  };
+      rightMultipleAnswer,
+      answerFields,
+      answerAppend,
+      answerRemove,
+      handlerSelectRightAnswer,
+      handlerSelectMultipleRightAnswer,
+      handleChangeSelectQuizType,
+      selectValue,
+      selectRightAnswerValue,
+    } = useQuizEffect(watch, numberQuiz, setValue, control, register);
 
-  const {
-    fields: answerFields,
-    append: answerAppend,
-    remove: answerRemove,
-  } = useFieldArray({ control, name: "answerList" });
-  const {
-    fields: answerMultipleFields,
-    append: answerMultipleAppend,
-    remove: answerMultipleRemove,
-  } = useFieldArray({ control, name: "answerMultipleList" });
+    return (
+      <div className={styles.form__list__item}>
+        <div className={styles.right__subtitle__number}>{`${numberQuiz + 1}`}</div>
+        {numberQuiz >= 1 && (
+          <div className={styles.close}>{ICONS.close({ onClick: () => remove(numberQuiz) })}</div>
+        )}
+        <div className={styles.right__subtitle}>{`Question type`}</div>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
+          <InputLabel>Select question type</InputLabel>
+          <Select value={selectValue} onChange={handleChangeSelectQuizType}>
+            <MenuItem value={"Single_choice"}>Single choice</MenuItem>
+            <MenuItem value={"Multiple_choice"}>Multiple choice</MenuItem>
+            <MenuItem value={"True_or_false"}>True or False</MenuItem>
+          </Select>
+        </FormControl>
+        <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Question</div>
+        <TextField
+          fullWidth
+          error={Boolean(errors?.questions?.[numberQuiz]?.text?.message)}
+          label={errors?.questions?.[numberQuiz]?.text?.message || "Insert question"}
+          variant="standard"
+          {...register(`questions.${numberQuiz}.text`)}
+        />
+        {selectValue === "Single_choice" ? (
+          <>
+            <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Answers</div>
+            <div className={`${styles.form__answers}`}>
+              {answerFields.map((field, index) => (
+                <div key={field.id} className={`${styles.form__answers__div}`}>
+                  <TextField
+                    fullWidth
+                    error={Boolean(
+                      errors?.questions?.[numberQuiz]?.answers?.[index]?.text?.message,
+                    )}
+                    label={
+                      errors?.questions?.[numberQuiz]?.answers?.[index]?.text?.message ||
+                      `Insert answer ${index + 1}`
+                    }
+                    {...register(`questions.${numberQuiz}.answers.${index}.text` as const)}
+                    variant="standard"
+                  />
+                  {index > 1 && ICONS.close({ onClick: () => answerRemove(index) })}
+                </div>
+              ))}
+            </div>
 
-  return (
-    <div className={styles.form__list__item}>
-      <div className={styles.right__subtitle__number}>{`${numberQuiz + 1}`}</div>
-      {numberQuiz >= 1 && (
-        <div className={styles.close}>{ICONS.close({ onClick: () => remove(numberQuiz) })}</div>
-      )}
-      <div className={styles.right__subtitle}>{`Question type`}</div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
-        <InputLabel>Select question type</InputLabel>
-        <Select value={questionType} onChange={handleChange}>
-          <MenuItem value={"1"}>Single choice</MenuItem>
-          <MenuItem value={"2"}>Multiple choice</MenuItem>
-          <MenuItem value={"3"}>True or False</MenuItem>
-        </Select>
-      </FormControl>
-      <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Question</div>
-      <TextField
-        fullWidth
-        label="Insert question"
-        variant="standard"
-        {...register(`questionList.${numberQuiz}.question`)}
-      />
-      {questionType === "1" ? (
-        <>
-          <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Answers</div>
-          <div className={`${styles.form__answers}`}>
+            <div>
+              <button
+                className={styles.button__create}
+                type="button"
+                onClick={() => answerAppend({ text: "", isCorrect: false })}
+              >
+                Add Answer
+              </button>
+            </div>
+
+            <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Right Answer</div>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
+              <InputLabel>Select right answer</InputLabel>
+              <Select
+                value={selectRightAnswerValue === -1 ? "" : String(selectRightAnswerValue)}
+                onChange={handlerSelectRightAnswer}
+              >
+                {answerFields.map((answer, index) => (
+                  <MenuItem value={index} key={answer.id}>
+                    {`${index + 1}`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </>
+        ) : selectValue === "Multiple_choice" ? (
+          <>
+            <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Answers</div>
             {answerFields.map((field, index) => (
               <div key={field.id} className={`${styles.form__answers__div}`}>
-                <TextField fullWidth label={`Insert answer ${index + 1}`} variant="standard" />
-                {index > 1 && ICONS.close({ onClick: () => answerRemove(numberQuiz) })}
+                <TextField
+                  error={Boolean(errors?.questions?.[numberQuiz]?.answers?.[index]?.text?.message)}
+                  label={
+                    errors?.questions?.[numberQuiz]?.answers?.[index]?.text?.message ||
+                    `Insert answer ${index + 1}`
+                  }
+                  {...register(`questions.${numberQuiz}.answers.${index}.text`)}
+                  fullWidth
+                  variant="standard"
+                />
+                {index > 2 && ICONS.close({ onClick: () => answerRemove(numberQuiz) })}
               </div>
             ))}
-          </div>
 
-          <div>
-            <button
-              className={styles.button__create}
-              type="button"
-              onClick={() => answerAppend({ answer: "" })}
-            >
-              Add Answer
-            </button>
-          </div>
-
-          <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Right Answer</div>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
-            <InputLabel>Select right answer</InputLabel>
-            <Select value={rightAnswer} onChange={handleChange2}>
-              {answerFields.map((answer, index) => (
-                <MenuItem value={`${index}`} key={answer.id}>
-                  {`${index + 1}`}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </>
-      ) : questionType === "2" ? (
-        <>
-          <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Answers</div>
-          {answerMultipleFields.map((field, index) => (
-            <div key={field.id} className={`${styles.form__answers__div}`}>
-              <TextField fullWidth label={`Insert answer ${index + 1}`} variant="standard" />
-              {index > 2 && ICONS.close({ onClick: () => answerMultipleRemove(numberQuiz) })}
+            <div>
+              <button
+                className={styles.button__create}
+                type="button"
+                onClick={() => answerAppend({ text: "", isCorrect: false })}
+              >
+                Add answer
+              </button>
             </div>
-          ))}
 
-          <div>
-            <button
-              className={styles.button__create}
-              type="button"
-              onClick={() => answerMultipleAppend({ answer: "" })}
-            >
-              Add answer
-            </button>
-          </div>
-
-          <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Right Answer</div>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
-            <InputLabel id="demo-multiple-checkbox-label">Select right answer</InputLabel>
-            <Select
-              multiple
-              value={rightMultipleAnswer}
-              onChange={handleChange3}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={selected => selected.join(", ")}
-              sx={{
-                "& .MuiSelect-multiple": {
-                  paddingBottom: "5px",
-                },
-              }}
-            >
-              {answerMultipleFields.map((answer, index) => (
-                <MenuItem value={`${index}`} key={answer.id}>
-                  <Checkbox
-                    sx={{
-                      color: "white",
-                      "&.Mui-checked": {
+            <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Right Answer</div>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
+              <InputLabel>Select right answer</InputLabel>
+              <Select
+                multiple
+                value={rightMultipleAnswer}
+                onChange={handlerSelectMultipleRightAnswer}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={selected => selected.map(index => `${+index + 1}`).join(", ")}
+                sx={{
+                  "& .MuiSelect-multiple": {
+                    paddingBottom: "5px",
+                  },
+                }}
+              >
+                {answerFields.map((answer, index) => (
+                  <MenuItem value={`${index}`} key={answer.id}>
+                    <Checkbox
+                      sx={{
                         color: "white",
-                      },
-                    }}
-                    checked={rightMultipleAnswer.indexOf(`${index}`) > -1}
-                  />
-                  <ListItemText primary={index + 1} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </>
-      ) : questionType === "3" ? (
-        <>
-          <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Right Answer</div>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
-            <InputLabel>Select right answer</InputLabel>
-            <Select value={rightAnswer} onChange={handleChange2}>
-              <MenuItem value={"True"}>True </MenuItem>
-              <MenuItem value={"False"}>False </MenuItem>
-            </Select>
-          </FormControl>
-        </>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
-};
+                        "&.Mui-checked": {
+                          color: "white",
+                        },
+                      }}
+                      checked={rightMultipleAnswer.includes(`${index}`)}
+                    />
+                    <ListItemText primary={index + 1} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </>
+        ) : selectValue === "True_or_false" ? (
+          <>
+            <div className={`${styles.right__subtitle} ${styles.marginTop}`}>Right Answer</div>
+
+            <FormControl variant="standard" sx={{ m: 1, minWidth: "100% " }}>
+              <InputLabel>Select right answer</InputLabel>
+              <Select
+                value={selectRightAnswerValue === -1 ? "" : selectRightAnswerValue.toString()}
+                onChange={handlerSelectRightAnswer}
+              >
+                <MenuItem value={0}>True</MenuItem>
+                <MenuItem value={1}>False</MenuItem>
+              </Select>
+            </FormControl>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+    );
+  },
+);
 
 export default OneQuizCreate;

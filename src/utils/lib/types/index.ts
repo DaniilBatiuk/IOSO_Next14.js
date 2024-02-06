@@ -42,3 +42,19 @@ export type Group = {
     };
   }[];
 };
+
+export type Answer = {
+  text: string;
+  isCorrect: boolean;
+};
+
+export type Answers = Answer[];
+
+export type MyManagerGroups = {
+  id: string;
+  name: string;
+  sections: {
+    id: string;
+    name: string;
+  }[];
+};

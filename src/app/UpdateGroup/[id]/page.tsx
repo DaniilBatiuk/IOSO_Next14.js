@@ -18,7 +18,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-export default function CreateGroup() {
+export default function UpdateGroup({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
 
   const [active, setActive] = useState<number>(0);
@@ -32,11 +32,9 @@ export default function CreateGroup() {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-    control,
   } = useForm<CreateGroupType>({ resolver: zodResolver(CreateGroupFormScheme), mode: "onSubmit" });
 
   const groupSave: SubmitHandler<CreateGroupType> = async data => {
-    console.log(data);
     if (accessType === AccessTypeForGroup.Public_access_code) {
       if (!AccessCodeScheme.safeParse(data.accessCode).success) {
         setError("accessCode", {
@@ -52,32 +50,13 @@ export default function CreateGroup() {
       toast.error("You have to register to create the group!");
       return;
     }
-    // const hasDuplicates = data.sections.some(
-    //   (section, index, array) => array.findIndex(item => item.name === section.name) !== index,
-    // );
-    // if (hasDuplicates) {
-    //   toast.error("You have sections with the same names!");
-    //   return;
-    // }
     try {
-      const { groupId, error } = await createNewGroup({
-        ...data,
-        accessType,
-        creatorId: session!.user.id,
-      });
+      const error = await createNewGroup({ ...data, accessType, creatorId: session!.user.id });
 
       if (error) {
         toast.error(error);
       } else {
-        // if (groupId) {
-        //   let error;
-        //   for (let section of data.sections) {
-        //     error = await createSection({ name: section.name, groupId: groupId });
-        //   }
-        //   error ? toast.error(error) : toast.success("Group created successfully.");
-        // }
-
-        error ? toast.error(error) : toast.success("Group created successfully.");
+        toast.success("Group created successfully.");
       }
     } catch (error) {
       toast.error("Something went wrong!");
@@ -118,7 +97,7 @@ export default function CreateGroup() {
                 {ICONS.basicSettings()}
                 <div className={styles.create__text}>Basic settings</div>
               </button>
-              {/* <button
+              <button
                 type="button"
                 onClick={() => {
                   setActive(1);
@@ -126,19 +105,6 @@ export default function CreateGroup() {
                 }}
                 className={clsx(styles.create__item, {
                   [styles.create__item_active]: active === 1,
-                })}
-              >
-                {ICONS.QuestionsManager()}
-                <div className={styles.create__text}>Section settings</div>
-              </button> */}
-              <button
-                type="button"
-                onClick={() => {
-                  setActive(2);
-                  if (!menuActive) setMenuActive(prev => !prev);
-                }}
-                className={clsx(styles.create__item, {
-                  [styles.create__item_active]: active === 2,
                 })}
               >
                 {ICONS.GroupAccess()}
@@ -160,14 +126,12 @@ export default function CreateGroup() {
               {ICONS.MenuOpen()}
             </button>
             <div className={styles.right__title}>
-              {active === 0 ? "Basic settings" : active === 1 ? "Section settings" : "Group access"}
+              {active === 0 ? "Basic settings" : "Group access"}
             </div>
           </div>
           {active === 0 ? (
             <BasicSettings label="Insert group name" errors={errors} register={register} />
           ) : (
-            // ) : active === 1 ? (
-            //   <SectionSettings control={control} errors={errors} register={register} />
             <GroupAccess
               errors={errors}
               register={register}

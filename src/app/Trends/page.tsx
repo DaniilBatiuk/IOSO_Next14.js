@@ -52,44 +52,26 @@ export default function Trends() {
             </ButtonGroup>
 
             <form className={`${styles.form}`}>
-              <TextField id="standard-basic" label="Find by name" variant="standard" />
+              <TextField label="Find by name" variant="standard" />
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">Status</InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Status"
-                >
+                <InputLabel>Status</InputLabel>
+                <Select value={age} onChange={handleChange} label="Status">
                   <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
                   <MenuItem value={30}>Thirty</MenuItem>
                 </Select>
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">Difficulty</InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Difficulty"
-                >
+                <InputLabel>Difficulty</InputLabel>
+                <Select value={age} onChange={handleChange} label="Difficulty">
                   <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
                   <MenuItem value={30}>Thirty</MenuItem>
                 </Select>
               </FormControl>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 220 }}>
-                <InputLabel id="demo-simple-select-standard-label">Filter by name</InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Filter by name"
-                >
+                <InputLabel>Filter by name</InputLabel>
+                <Select value={age} onChange={handleChange} label="Filter by name">
                   <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
                   <MenuItem value={30}>Thirty</MenuItem>

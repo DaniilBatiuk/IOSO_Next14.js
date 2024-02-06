@@ -1,0 +1,57 @@
+@import "../styles/variables.scss";
+
+.error {
+  &__container {
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+
+    @media (max-width: 767.98px) {
+      margin-top: 30px;
+      flex-direction: column;
+    }
+  }
+  &__title {
+    font-size: clamp(80px, 4vw, 100px);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 4px $colorTitle;
+  }
+  &__subtitle {
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 2px $colorTitle;
+  }
+  &__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+
+    @media (max-width: 767.98px) {
+      width: 100%;
+    }
+
+    a button {
+      margin-top: 40px;
+      width: 290px;
+      height: 90px;
+    }
+  }
+  &__right {
+    width: 50%;
+
+    & img {
+      width: 100%;
+      height: 100%;
+    }
+
+    @media (max-width: 767.98px) {
+      margin-top: 20px;
+      width: 100%;
+    }
+  }
+}

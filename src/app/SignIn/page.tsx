@@ -7,13 +7,13 @@ import { LINKS } from "@/utils/config/links";
 import Image from "next/image";
 import Link from "next/link";
 
-interface Props {
+interface SignInProps {
   searchParams: {
     callbackUrl?: string;
   };
 }
 
-export default function SignIn({ searchParams }: Props) {
+export default function SignIn({ searchParams }: SignInProps) {
   return (
     <ThemeWrapper>
       <div className={`${styles.signIn}`}>

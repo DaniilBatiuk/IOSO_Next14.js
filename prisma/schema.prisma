@@ -19,25 +19,27 @@ model User {
   image         String?
   quiz          Quiz[]
   groups        Group[]
-  Membership    Membership[]
+  membership    Membership[]
 }
 
 model Quiz {
-  id         String            @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  attempts   Int?
-  duration   DateTime?
-  deadline   DateTime?
-  accessType AccessTypeForQuiz
-  accessCode String?
-  groupId    String?
-  questions  Question[]
-  creatorId  String            @db.ObjectId
-  creator    User              @relation(fields: [creatorId], references: [id])
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @updatedAt
-  Section    Section?          @relation(fields: [sectionId], references: [id])
-  sectionId  String?           @db.ObjectId
+  id             String            @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  attempts       Int?
+  percentagePass Int
+  duration       DateTime?
+  deadline       DateTime?
+  accessType     AccessTypeForQuiz
+  accessCode     String?
+  groupId        String?
+  status         QuizStatus        @default(In_progress)
+  questions      Question[]
+  creatorId      String            @db.ObjectId
+  creator        User              @relation(fields: [creatorId], references: [id])
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  section        Section?          @relation(fields: [sectionId], references: [id])
+  sectionId      String?           @db.ObjectId
 }
 
 model Question {
@@ -101,6 +103,12 @@ enum AccessTypeForGroup {
 enum MemberStatus {
   Participant
   Manager
+}
+
+enum QuizStatus {
+  Active
+  In_progress
+  Ended
 }
 
 enum AccessTypeForQuiz {

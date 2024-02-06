@@ -1,7 +1,4 @@
 "use client";
-import QuestionsManager from "@/components/CreateQuizOrGroup/QuestionsManager";
-import TestAccess from "@/components/CreateQuizOrGroup/TestAccess";
-import TimeSettings from "@/components/CreateQuizOrGroup/TimeSettings";
 import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { clsx } from "clsx";
@@ -191,7 +188,7 @@ export default function UpdateQuiz() {
                 : "Time settings"}
             </div>
           </div>
-          {active === 0 ? (
+          {/* {active === 0 ? (
             // <BasicSettings label="Insert quiz name" />
             <></>
           ) : active === 1 ? (
@@ -200,7 +197,7 @@ export default function UpdateQuiz() {
             <TestAccess type="quiz" />
           ) : (
             <TimeSettings />
-          )}
+          )} */}
         </section>
       </div>
     </ThemeWrapper>
