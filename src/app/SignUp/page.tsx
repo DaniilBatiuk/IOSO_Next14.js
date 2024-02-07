@@ -1,11 +1,11 @@
-import styles from "@/styles/SignIn.module.scss";
-import Image from "next/image";
 import SignUpBack from "@/../public/SignUpBack.png";
 import SignUpFront from "@/../public/SignUpFront.png";
-import Link from "next/link";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { SignUpForm, ThemeWrapper } from "@/components";
+import styles from "@/styles/SignIn.module.scss";
 import { LINKS } from "@/utils/config/links";
-import SignUpForm from "@/components/Auth/SignUpForm";
+import Image from "next/image";
+import Link from "next/link";
+
 export default function SignUp() {
   return (
     <ThemeWrapper>

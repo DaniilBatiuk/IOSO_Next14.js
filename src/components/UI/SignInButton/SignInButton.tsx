@@ -13,7 +13,7 @@ type SignInButtonProp = {
   session: Session | null;
 };
 
-const SignInButton: React.FC<SignInButtonProp> = ({
+export const SignInButton: React.FC<SignInButtonProp> = ({
   setLinkActiveUnderLine,
   linkActiveUnderLine,
   menuActive,
@@ -81,5 +81,3 @@ const SignInButton: React.FC<SignInButtonProp> = ({
     </>
   );
 };
-
-export default SignInButton;

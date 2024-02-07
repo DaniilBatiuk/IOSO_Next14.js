@@ -1,5 +1,5 @@
+import "@/styles/Modal.scss";
 import React from "react";
-import "../Modal/Modal.scss";
 export interface ModalProps {
   active: boolean;
   children: React.ReactNode;
@@ -7,7 +7,12 @@ export interface ModalProps {
   setActive: any;
 }
 
-const Modal: React.FC<ModalProps> = ({ active, children, maxDivWidth, setActive }: ModalProps) => {
+export const Modal: React.FC<ModalProps> = ({
+  active,
+  children,
+  maxDivWidth,
+  setActive,
+}: ModalProps) => {
   return (
     <section className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
       <div
@@ -20,5 +25,3 @@ const Modal: React.FC<ModalProps> = ({ active, children, maxDivWidth, setActive 
     </section>
   );
 };
-
-export default Modal;

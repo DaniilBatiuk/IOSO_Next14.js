@@ -1,6 +1,7 @@
-import styles from "@/styles/CreateQuiz.module.scss";
+"use client";
 
 import { CreateQuizType } from "@/app/CreateQuiz/page";
+import styles from "@/styles/CreateQuiz.module.scss";
 import { Skeleton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -11,7 +12,7 @@ import {
   UseFormWatch,
   useFieldArray,
 } from "react-hook-form";
-import OneQuizCreate from "./OneQuizCreate";
+import { OneQuizCreate } from "..";
 
 type Prop = {
   control: Control<CreateQuizType>;
@@ -21,7 +22,7 @@ type Prop = {
   errors: FieldErrors<CreateQuizType>;
 };
 
-const QuestionsManager: React.FC<Prop> = React.memo(
+export const QuestionsManager: React.FC<Prop> = React.memo(
   ({ control, register, setValue, watch, errors }: Prop) => {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -84,4 +85,3 @@ const QuestionsManager: React.FC<Prop> = React.memo(
     }
   },
 );
-export default QuestionsManager;

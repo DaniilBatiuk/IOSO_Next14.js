@@ -15,7 +15,7 @@ type GroupAccessProp = {
   setAccessType: (value: AccessTypeForGroup) => void;
 };
 
-const GroupAccess: React.FC<GroupAccessProp> = ({
+export const GroupAccess: React.FC<GroupAccessProp> = ({
   errors,
   register,
   accessType,
@@ -78,4 +78,3 @@ const GroupAccess: React.FC<GroupAccessProp> = ({
     </div>
   );
 };
-export default GroupAccess;

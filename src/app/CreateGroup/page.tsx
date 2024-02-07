@@ -1,10 +1,9 @@
 "use client";
-import BasicSettings from "@/components/CreateQuizOrGroup/BasicSettings";
-import GroupAccess from "@/components/CreateQuizOrGroup/GroupAccess";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+
+import { BasicSettings, GroupAccess, ThemeWrapper } from "@/components";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { ICONS } from "@/utils/config/icons";
-import { createNewGroup } from "@/utils/lib/actions/groupActions";
+import { createNewGroup } from "@/utils/lib/actions";
 import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
 import {
   CreateGroupFormScheme,

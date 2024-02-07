@@ -1,5 +1,5 @@
 import { removeItemFromArray } from "@/utils/lib/helpers/removeItemFromArray";
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 type MyCheckBoxData = {
   variant: string;
@@ -12,7 +12,13 @@ type MyCheckBoxProp = MyCheckBoxData & {
   rightAnswers?: string | string[];
 };
 
-const MyCheckBox: React.FC<MyCheckBoxProp> = ({ variants, variant, updateFields, selected, rightAnswers }: MyCheckBoxProp) => {
+export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
+  variants,
+  variant,
+  updateFields,
+  selected,
+  rightAnswers,
+}: MyCheckBoxProp) => {
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (updateFields !== undefined) {
       if (!selected.includes(variant) && Array.isArray(selected)) {
@@ -38,17 +44,32 @@ const MyCheckBox: React.FC<MyCheckBoxProp> = ({ variants, variant, updateFields,
             color: "#ffffff",
 
             "&.Mui-checked": {
-              color: rightAnswers?.includes(variant) ? "#24d800" : rightAnswers !== undefined && !rightAnswers.includes(variant) && selected.includes(variant) ? "#a80101" : "#ffffff",
+              color: rightAnswers?.includes(variant)
+                ? "#24d800"
+                : rightAnswers !== undefined &&
+                  !rightAnswers.includes(variant) &&
+                  selected.includes(variant)
+                ? "#a80101"
+                : "#ffffff",
             },
           }}
         />
       }
       label={
-        <span style={{ color: rightAnswers?.includes(variant) ? "#24d800" : rightAnswers !== undefined && !rightAnswers.includes(variant) && selected.includes(variant) ? "#a80101" : "#ffffff" }}>
+        <span
+          style={{
+            color: rightAnswers?.includes(variant)
+              ? "#24d800"
+              : rightAnswers !== undefined &&
+                !rightAnswers.includes(variant) &&
+                selected.includes(variant)
+              ? "#a80101"
+              : "#ffffff",
+          }}
+        >
           {variant}
         </span>
       }
     />
   );
 };
-export default MyCheckBox;

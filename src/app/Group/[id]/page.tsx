@@ -1,6 +1,6 @@
 "use client";
-import Modal from "@/components/UI/Modal/Modal";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+
+import { Modal, ThemeWrapper } from "@/components";
 import styles from "@/styles/Group.module.scss";
 import { stringAvatar } from "@/utils/lib/helpers/stringAvatar";
 import { GroupsService } from "@/utils/services/group.service";

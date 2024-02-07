@@ -1,15 +1,14 @@
 "use client";
-import MyQuizzes from "@/components/Profile/MyQuizzes";
 import styles from "@/styles/Profile.module.scss";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
-import QuizHistory from "./QuizHistory";
+import { MyQuizzes, QuizHistory } from "..";
 
 type ProfileListProp = {
   id: string;
 };
 
-const ProfileList: React.FC<ProfileListProp> = ({ id }: ProfileListProp) => {
+export const ProfileList: React.FC<ProfileListProp> = ({ id }: ProfileListProp) => {
   const [activeMenuItem, setActiveMenuItem] = useState<number>(0);
   const { data: session } = useSession();
 
@@ -44,4 +43,3 @@ const ProfileList: React.FC<ProfileListProp> = ({ id }: ProfileListProp) => {
     </>
   );
 };
-export default ProfileList;

@@ -1,5 +1,6 @@
+import styles from "@/styles/Button.module.scss";
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
-import styles from "@/components/UI/Button/Button.module.scss";
+
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
   type?: "button" | "submit";
@@ -7,7 +8,12 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   colorHover?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ children, colorBorder, colorHover, ...props }: ButtonProps) => {
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  colorBorder,
+  colorHover,
+  ...props
+}: ButtonProps) => {
   return (
     <button className={`${styles.button}`} {...props} style={{ borderColor: colorBorder }}>
       <style>{`
@@ -31,4 +37,3 @@ const Button: React.FC<ButtonProps> = ({ children, colorBorder, colorHover, ...p
     </button>
   );
 };
-export default Button;

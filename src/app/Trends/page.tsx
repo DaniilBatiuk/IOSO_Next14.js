@@ -1,7 +1,6 @@
 "use client";
 
-import QuizOrGroup from "@/components/QuizOrGroup/QuizOrGroup";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { QuizOrGroup, ThemeWrapper } from "@/components";
 import styles from "@/styles/Quizzes.module.scss";
 import { GroupsService } from "@/utils/services/group.service";
 import { QuizService } from "@/utils/services/quiz.servise";

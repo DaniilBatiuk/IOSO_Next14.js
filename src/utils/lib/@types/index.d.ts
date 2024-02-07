@@ -1,6 +1,6 @@
 import { AccessTypeForGroup, AccessTypeForQuiz, MemberStatus, QuizStatus } from "@prisma/client";
 
-export type AllGroups = {
+type AllGroups = {
   id: string;
   name: string;
   accessType: AccessTypeForGroup;
@@ -15,12 +15,12 @@ export type AllGroups = {
   }[];
 };
 
-export type WrapSuccessType<T> = {
+type WrapSuccessType<T> = {
   success: boolean;
   result: T;
 };
 
-export type Group = {
+type Group = {
   id: string;
   name: string;
   accessType: AccessTypeForGroup;
@@ -43,14 +43,14 @@ export type Group = {
   }[];
 };
 
-export type Answer = {
+type Answer = {
   text: string;
   isCorrect: boolean;
 };
 
-export type Answers = Answer[];
+type Answers = Answer[];
 
-export type MyManagerGroups = {
+type MyManagerGroups = {
   id: string;
   name: string;
   sections: {
@@ -59,7 +59,7 @@ export type MyManagerGroups = {
   }[];
 };
 
-export type MyQuiz = {
+type MyQuiz = {
   id: string;
   name: string;
   attempts?: number;

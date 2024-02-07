@@ -1,6 +1,5 @@
-import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
-import { useState } from "react";
 import styles from "@/styles/QuizPass.module.scss";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 type RadioQuizPassData = {
   question: string;
@@ -13,7 +12,13 @@ type RadioQuizPassProps = RadioQuizPassData & {
   rightAnswers?: string | string[];
 };
 
-const RadioQuizPass: React.FC<RadioQuizPassProps> = ({ question, variants, selected, updateFields, rightAnswers }: RadioQuizPassProps) => {
+export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
+  question,
+  variants,
+  selected,
+  updateFields,
+  rightAnswers,
+}: RadioQuizPassProps) => {
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (updateFields !== undefined) {
       const selectedVariant = event.target.value;
@@ -24,7 +29,11 @@ const RadioQuizPass: React.FC<RadioQuizPassProps> = ({ question, variants, selec
   return (
     <>
       <div className={styles.left__text}>{question}</div>
-      <RadioGroup onChange={handlerChange} aria-labelledby="demo-radio-buttons-group-label" name="radio-buttons-group">
+      <RadioGroup
+        onChange={handlerChange}
+        aria-labelledby="demo-radio-buttons-group-label"
+        name="radio-buttons-group"
+      >
         {variants.map((variant, index) => (
           <FormControlLabel
             key={index}
@@ -34,14 +43,30 @@ const RadioQuizPass: React.FC<RadioQuizPassProps> = ({ question, variants, selec
               <Radio
                 sx={{
                   "&.Mui-checked": {
-                    color: rightAnswers === variant.variant ? "#24d800" : rightAnswers !== variant.variant && selected === variant.variant && rightAnswers !== undefined ? "#a80101" : "#ffffff",
+                    color:
+                      rightAnswers === variant.variant
+                        ? "#24d800"
+                        : rightAnswers !== variant.variant &&
+                          selected === variant.variant &&
+                          rightAnswers !== undefined
+                        ? "#a80101"
+                        : "#ffffff",
                   },
                 }}
               />
             }
             label={
               <span
-                style={{ color: rightAnswers === variant.variant ? "#24d800" : rightAnswers !== variant.variant && selected === variant.variant && rightAnswers !== undefined ? "#a80101" : "#ffffff" }}
+                style={{
+                  color:
+                    rightAnswers === variant.variant
+                      ? "#24d800"
+                      : rightAnswers !== variant.variant &&
+                        selected === variant.variant &&
+                        rightAnswers !== undefined
+                      ? "#a80101"
+                      : "#ffffff",
+                }}
               >
                 {variant.variant}
               </span>
@@ -52,4 +77,3 @@ const RadioQuizPass: React.FC<RadioQuizPassProps> = ({ question, variants, selec
     </>
   );
 };
-export default RadioQuizPass;

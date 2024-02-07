@@ -1,9 +1,7 @@
 "use client";
 import styles from "@/styles/Quiz.module.scss";
-import { removeGroup } from "@/utils/lib/actions/groupActions";
-import { removeMember } from "@/utils/lib/actions/membersActions";
-import { updateQuiz } from "@/utils/lib/actions/quizActions";
-import { AllGroups, MyQuiz } from "@/utils/lib/types/index";
+import { AllGroups, MyQuiz } from "@/utils/lib/@types";
+import { removeGroup, removeMember, updateQuiz } from "@/utils/lib/actions";
 import { MemberStatus, QuizStatus } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -12,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import Modal from "../UI/Modal/Modal";
+import { Modal } from "..";
 
 type MyQuizOrGroupProp = {
   group?: AllGroups;
@@ -20,7 +18,11 @@ type MyQuizOrGroupProp = {
   id: string;
 };
 
-const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizOrGroupProp) => {
+export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
+  group,
+  quiz,
+  id,
+}: MyQuizOrGroupProp) => {
   const router = useRouter();
   const [activeModal, setActiveModal] = useState(false);
   const queryClient = useQueryClient();
@@ -195,4 +197,3 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
     </div>
   );
 };
-export default MyQuizOrGroup;

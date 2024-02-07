@@ -1,7 +1,7 @@
 import styles from "@/styles/Profile.module.scss";
 import Link from "next/link";
 
-const QuizHistory: React.FC = () => {
+export const QuizHistory: React.FC = () => {
   return (
     <div className={styles.profile__main_2}>
       <table className={styles.profile__table}>
@@ -67,4 +67,3 @@ const QuizHistory: React.FC = () => {
     </div>
   );
 };
-export default QuizHistory;

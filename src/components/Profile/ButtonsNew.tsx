@@ -7,7 +7,7 @@ import Link from "next/link";
 type ButtonsNewProp = {
   id: string;
 };
-const ButtonsNew: React.FC<ButtonsNewProp> = ({ id }: ButtonsNewProp) => {
+export const ButtonsNew: React.FC<ButtonsNewProp> = ({ id }: ButtonsNewProp) => {
   const { data: session } = useSession();
 
   return (
@@ -25,4 +25,3 @@ const ButtonsNew: React.FC<ButtonsNewProp> = ({ id }: ButtonsNewProp) => {
     </div>
   );
 };
-export default ButtonsNew;

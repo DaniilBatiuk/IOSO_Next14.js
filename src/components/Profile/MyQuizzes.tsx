@@ -12,9 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import MyQuizOrGroup from "../QuizOrGroup/MyQuizOrGroup";
+import { MyQuizOrGroup } from "..";
 
-const MyQuizzes: React.FC = () => {
+export const MyQuizzes: React.FC = () => {
   const [age, setAge] = useState("");
   const [activeQuiz, setActiveQuiz] = useState(true);
   const { data: session } = useSession();
@@ -137,4 +137,3 @@ const MyQuizzes: React.FC = () => {
     </section>
   );
 };
-export default MyQuizzes;

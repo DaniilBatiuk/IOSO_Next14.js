@@ -1,14 +1,15 @@
 "use client";
-import BasicSettings from "@/components/CreateQuizOrGroup/BasicSettings";
-import QuestionsManager from "@/components/CreateQuizOrGroup/QuestionsManager";
-import QuizAccess from "@/components/CreateQuizOrGroup/QuizAccess";
-import RestrictionsSettings from "@/components/CreateQuizOrGroup/RestrictionsSettings";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+
+import {
+  BasicSettings,
+  QuestionsManager,
+  QuizAccess,
+  RestrictionsSettings,
+  ThemeWrapper,
+} from "@/components";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { ICONS } from "@/utils/config/icons";
-import { createAnswer } from "@/utils/lib/actions/answerActions";
-import { createQuestion } from "@/utils/lib/actions/questionActions";
-import { createQuiz } from "@/utils/lib/actions/quizActions";
+import { createAnswer, createQuestion, createQuiz } from "@/utils/lib/actions";
 import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForQuiz } from "@prisma/client";

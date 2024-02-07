@@ -1,6 +1,6 @@
 import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
-import { useRestrictionsSettings } from "@/utils/hooks/useRestrictionsSettings";
+import { useRestrictionsSettings } from "@/utils/hooks";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -18,7 +18,7 @@ type RestrictionsSettings = {
 
 const TOMORROW = dayjs().add(1, "day");
 
-const RestrictionsSettings: React.FC<RestrictionsSettings> = ({
+export const RestrictionsSettings: React.FC<RestrictionsSettings> = ({
   control,
   setValue,
 }: RestrictionsSettings) => {
@@ -177,4 +177,3 @@ const RestrictionsSettings: React.FC<RestrictionsSettings> = ({
     </div>
   );
 };
-export default RestrictionsSettings;

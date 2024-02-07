@@ -1,7 +1,7 @@
 "use client";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-export function ThemeWrapper({ children }: { children: React.ReactNode }) {
+export const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {
   const theme = createTheme({
     palette: {
       primary: {
@@ -65,4 +65,4 @@ export function ThemeWrapper({ children }: { children: React.ReactNode }) {
   });
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-}
+};

@@ -1,5 +1,5 @@
 "use client";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { ThemeWrapper } from "@/components";
 import styles from "@/styles/CreateQuiz.module.scss";
 
 export default function UpdateQuiz() {

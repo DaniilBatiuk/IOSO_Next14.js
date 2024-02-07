@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import styles from "../Footer/Footer.module.scss";
+import styles from "@/styles/Footer.module.scss";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const Footer: React.FC = () => {
+export const Footer: React.FC = () => {
   const [displayActive, setDisplayActive] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -97,4 +97,3 @@ const Footer: React.FC = () => {
     </footer>
   );
 };
-export default Footer;

@@ -1,10 +1,8 @@
 import ProfileSvg from "@/../public/Profile.svg";
-import ButtonsNew from "@/components/Profile/ButtonsNew";
-import ProfileList from "@/components/Profile/ProfileList";
-import PieChartActivity from "@/components/UI/PieChartActivity/PieChartActivity";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { ButtonsNew, PieChartActivity, ProfileList, ThemeWrapper } from "@/components";
+
 import styles from "@/styles/Profile.module.scss";
-import { FindUserById } from "@/utils/lib/actions/userActions";
+import { FindUserById } from "@/utils/lib/actions";
 import Image from "next/image";
 import { Suspense } from "react";
 

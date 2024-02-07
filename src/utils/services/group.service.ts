@@ -1,5 +1,5 @@
 import axios from "@/axios";
-import { AllGroups, Group, MyManagerGroups, WrapSuccessType } from "@/utils/lib/types/index";
+import { AllGroups, Group, MyManagerGroups, WrapSuccessType } from "../lib/@types";
 export const GroupsService = {
   async getMyGroups(id: string | undefined) {
     if (id === undefined) return;

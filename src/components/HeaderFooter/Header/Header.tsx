@@ -1,13 +1,14 @@
 "use client";
-import SignInButton from "@/components/UI/SignInButton/SignInButton";
+
+import { SignInButton } from "@/components";
+import "@/styles/Header.scss";
 import { LINKS } from "@/utils/config/links";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import "../Header/Header.scss";
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [height, setHeight] = useState(0);
 
@@ -149,4 +150,3 @@ const Header: React.FC = () => {
     </div>
   );
 };
-export default Header;

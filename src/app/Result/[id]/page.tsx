@@ -1,9 +1,7 @@
 "use client";
-import CheckboxQuizPass from "@/components/QuizPass/CheckboxQuizPass";
-import RadioQuizPass from "@/components/QuizPass/RadioQuizPass";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { CheckboxQuizPass, RadioQuizPass, ThemeWrapper } from "@/components";
 import styles from "@/styles/Result.module.scss";
-import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
 
 type FormData = {

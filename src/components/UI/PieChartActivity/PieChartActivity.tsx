@@ -11,7 +11,7 @@ const COLORS = {
   colors: ["rgb(27, 200, 231)", "rgba(255, 251, 9, 0.966)", "rgba(245, 22, 226, 0.842)"],
 };
 
-const PieChartActivity: React.FC = () => {
+export const PieChartActivity: React.FC = () => {
   return (
     <PieChart
       series={[
@@ -32,4 +32,3 @@ const PieChartActivity: React.FC = () => {
     />
   );
 };
-export default PieChartActivity;

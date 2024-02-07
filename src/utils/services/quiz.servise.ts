@@ -1,5 +1,5 @@
 import axios from "@/axios";
-import { MyQuiz, WrapSuccessType } from "@/utils/lib/types/index";
+import { MyQuiz, WrapSuccessType } from "../lib/@types";
 export const QuizService = {
   async getMyQuizzes(id: string | undefined) {
     if (id === undefined) return;

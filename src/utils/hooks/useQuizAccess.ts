@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
-import { createSection } from "../lib/actions/sectionActions";
+import { createSection } from "../lib/actions";
 import { GroupsService } from "../services/group.service";
 
 export const useQuizAccess = (

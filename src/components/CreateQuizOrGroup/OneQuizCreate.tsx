@@ -3,7 +3,7 @@
 import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { ICONS } from "@/utils/config/icons";
-import { useQuizEffect } from "@/utils/hooks/useQuizEffect";
+import { useQuizEffect } from "@/utils/hooks";
 import {
   Checkbox,
   FormControl,
@@ -34,7 +34,7 @@ type OneQuizCreateProp = {
   errors: FieldErrors<CreateQuizType>;
 };
 
-const OneQuizCreate = React.memo(
+export const OneQuizCreate = React.memo(
   ({ numberQuiz, remove, register, setValue, watch, errors, control }: OneQuizCreateProp) => {
     const {
       rightMultipleAnswer,
@@ -202,5 +202,3 @@ const OneQuizCreate = React.memo(
     );
   },
 );
-
-export default OneQuizCreate;

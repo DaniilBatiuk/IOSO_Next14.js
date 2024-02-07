@@ -1,7 +1,6 @@
 import SignInBack from "@/../public/SignInBack.png";
 import SignInFront from "@/../public/SignInFront.png";
-import SignInForm from "@/components/Auth/SignInForm";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+import { SignInForm, ThemeWrapper } from "@/components";
 import styles from "@/styles/SignIn.module.scss";
 import { LINKS } from "@/utils/config/links";
 import Image from "next/image";

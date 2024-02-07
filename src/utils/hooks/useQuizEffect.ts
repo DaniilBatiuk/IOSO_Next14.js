@@ -9,7 +9,7 @@ import {
   useFieldArray,
   useWatch,
 } from "react-hook-form";
-import { Answer, Answers } from "../lib/types/index";
+import { Answer, Answers } from "../lib/@types";
 
 export const useQuizEffect = (
   watch: UseFormWatch<CreateQuizType>,

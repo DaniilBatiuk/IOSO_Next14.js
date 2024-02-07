@@ -1,5 +1,5 @@
 import Svg from "@/../public/404.svg";
-import Button from "@/components/UI/Button/Button";
+import { Button } from "@/components";
 import styles from "@/styles/Error.module.scss";
 import Image from "next/image";
 import Link from "next/link";

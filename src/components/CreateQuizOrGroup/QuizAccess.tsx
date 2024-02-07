@@ -8,7 +8,7 @@ import Planet from "@/../public/Planet.svg";
 import Private from "@/../public/Private.svg";
 import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
-import { useQuizAccess } from "@/utils/hooks/useQuizAccess";
+import { useQuizAccess } from "@/utils/hooks";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,7 +24,7 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import Modal from "../UI/Modal/Modal";
+import { Modal } from "..";
 
 type QuizAccessProp = {
   accessType: AccessTypeForQuiz;
@@ -35,7 +35,7 @@ type QuizAccessProp = {
   setValue: UseFormSetValue<CreateQuizType>;
 };
 
-const QuizAccess: React.FC<QuizAccessProp> = ({
+export const QuizAccess: React.FC<QuizAccessProp> = ({
   accessType,
   setAccessType,
   register,
@@ -267,4 +267,3 @@ const QuizAccess: React.FC<QuizAccessProp> = ({
     </div>
   );
 };
-export default QuizAccess;

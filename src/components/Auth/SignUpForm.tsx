@@ -1,15 +1,15 @@
 "use client";
 import styles from "@/styles/SignIn.module.scss";
-import { registerUser } from "@/utils/lib/actions/authActions";
+import { registerUser } from "@/utils/lib/actions";
 import { SignUpFormScheme, SignUpFormType } from "@/utils/lib/validators/sign-up-form-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Button from "../UI/Button/Button";
+import { Button } from "..";
 
-const SignUpForm: React.FC = () => {
+export const SignUpForm: React.FC = () => {
   const router = useRouter();
 
   const {
@@ -155,4 +155,3 @@ const SignUpForm: React.FC = () => {
     </form>
   );
 };
-export default SignUpForm;

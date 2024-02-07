@@ -8,7 +8,7 @@ type BasicSettingsProp = {
   register: any;
 };
 
-const BasicSettings: React.FC<BasicSettingsProp> = ({
+export const BasicSettings: React.FC<BasicSettingsProp> = ({
   label,
   errors,
   register,
@@ -29,4 +29,3 @@ const BasicSettings: React.FC<BasicSettingsProp> = ({
     </div>
   );
 };
-export default BasicSettings;

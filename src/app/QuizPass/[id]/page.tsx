@@ -1,9 +1,8 @@
 "use client";
-import CheckboxQuizPass from "@/components/QuizPass/CheckboxQuizPass";
-import RadioQuizPass from "@/components/QuizPass/RadioQuizPass";
-import { ThemeWrapper } from "@/components/Wrappers/ThemeWrapper";
+
+import { CheckboxQuizPass, RadioQuizPass, ThemeWrapper } from "@/components";
 import styles from "@/styles/QuizPass.module.scss";
-import { useMultistepForm } from "@/utils/hooks/useMultistepForm";
+import { useMultistepForm } from "@/utils/hooks";
 import clsx from "clsx";
 import { FormEvent, useState } from "react";
 

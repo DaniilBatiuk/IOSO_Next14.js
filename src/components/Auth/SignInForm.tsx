@@ -7,13 +7,13 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Button from "../UI/Button/Button";
+import { Button } from "..";
 
 interface SignInFormProps {
   callbackUrl?: string;
 }
 
-const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
+export const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
   const router = useRouter();
 
   const {
@@ -105,4 +105,3 @@ const SignInForm: React.FC<SignInFormProps> = (props: SignInFormProps) => {
     </form>
   );
 };
-export default SignInForm;

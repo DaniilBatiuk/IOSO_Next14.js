@@ -1,7 +1,7 @@
 "use client";
 import styles from "@/styles/Quiz.module.scss";
-import { addNewMember } from "@/utils/lib/actions/membersActions";
-import { AllGroups, MyQuiz } from "@/utils/lib/types/index";
+import { AllGroups, MyQuiz } from "@/utils/lib/@types";
+import { addNewMember } from "@/utils/lib/actions";
 import { TextField } from "@mui/material";
 import { AccessTypeForGroup, AccessTypeForQuiz } from "@prisma/client";
 import clsx from "clsx";
@@ -10,8 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import Modal from "../UI/Modal/Modal";
-import { ThemeWrapper } from "../Wrappers/ThemeWrapper";
+import { Modal, ThemeWrapper } from "..";
 
 type QuizOrGroupProp = {
   group?: AllGroups;
@@ -19,7 +18,11 @@ type QuizOrGroupProp = {
   userId: string | undefined;
 };
 
-const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrGroupProp) => {
+export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
+  group,
+  quiz,
+  userId,
+}: QuizOrGroupProp) => {
   const [activeModal, setActiveModal] = useState(false);
   const [passwordCorrect, setPasswordCorrect] = useState(true);
   const inputRef = useRef<HTMLInputElement>();
@@ -183,4 +186,3 @@ const QuizOrGroup: React.FC<QuizOrGroupProp> = ({ group, quiz, userId }: QuizOrG
     </div>
   );
 };
-export default QuizOrGroup;
