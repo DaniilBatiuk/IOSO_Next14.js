@@ -48,6 +48,12 @@
     column-gap: 10px;
   }
 
+  &_question {
+    @media (max-width: 565.98px) {
+      max-width: 80px;
+    }
+  }
+
   &_title {
     color: rgb(255, 255, 255);
     min-height: 22px;

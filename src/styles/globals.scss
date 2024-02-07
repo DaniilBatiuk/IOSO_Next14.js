@@ -229,3 +229,16 @@ input:-webkit-autofill:active {
 .MuiTypography-root {
   font-size: clamp(20px, 4vw, 22px) !important;
 }
+
+.blur {
+  backdrop-filter: blur(2px);
+  background-color: rgb(78, 56, 106);
+  padding-top: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  height: 40vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(18px, 4vw, 20px);
+}

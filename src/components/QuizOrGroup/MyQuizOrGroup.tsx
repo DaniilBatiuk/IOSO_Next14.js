@@ -2,8 +2,9 @@
 import styles from "@/styles/Quiz.module.scss";
 import { removeGroup } from "@/utils/lib/actions/groupActions";
 import { removeMember } from "@/utils/lib/actions/membersActions";
-import { AllGroups } from "@/utils/lib/types/index";
-import { MemberStatus, Quiz } from "@prisma/client";
+import { updateQuiz } from "@/utils/lib/actions/quizActions";
+import { AllGroups, MyQuiz } from "@/utils/lib/types/index";
+import { MemberStatus, QuizStatus } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
@@ -15,7 +16,7 @@ import Modal from "../UI/Modal/Modal";
 
 type MyQuizOrGroupProp = {
   group?: AllGroups;
-  quiz?: Quiz;
+  quiz?: MyQuiz;
   id: string;
 };
 
@@ -31,10 +32,40 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
     // }
   };
 
+  const deactivateHandler = async () => {
+    if (quiz) {
+      const error = await updateQuiz(quiz.id, QuizStatus.In_progress);
+      if (error) {
+        toast.error(error);
+      } else {
+        toast.success("You successfully activated the quiz.");
+
+        await queryClient.refetchQueries({
+          queryKey: ["myQuizzes"],
+          type: "active",
+          exact: true,
+        });
+      }
+    }
+  };
+
   const confirmHandler = async () => {
     let error = null;
 
     if (quiz) {
+      error = await updateQuiz(quiz.id, QuizStatus.Active);
+      if (error) {
+        toast.error(error);
+      } else {
+        setActiveModal(false);
+        toast.success("You successfully activated the quiz.");
+
+        await queryClient.refetchQueries({
+          queryKey: ["myQuizzes"],
+          type: "active",
+          exact: true,
+        });
+      }
     } else {
       if (
         (group?.members?.filter(member => member.status === MemberStatus.Manager)?.length ?? 0) <=
@@ -45,10 +76,11 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
       } else {
         error = await removeMember(group!.id, session?.user.id);
       }
-      setActiveModal(false);
+
       if (error) {
         toast.error(error);
       } else {
+        setActiveModal(false);
         toast.success("You successfully leaved the group.");
 
         await queryClient.refetchQueries({
@@ -64,13 +96,11 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
     <div
       onClick={handleRedirect}
       className={clsx(styles.quiz__item, {
-        // [styles.quiz__item__active]:
-        //   status === "Active"  || status === "Participant",
-        [styles.quiz__item__active]: group && id !== group?.creator.id,
-        // [styles.quiz__item__ended]: status === "Ended",
-        // [styles.quiz__item__progress]: status === "In progress" || group?.creator.id === id,
-        [styles.quiz__item__progress]: group?.creator.id === id,
-        // [styles.quiz__item__link]: buttonText === "Activate",
+        [styles.quiz__item__active]:
+          (group && id !== group?.creator.id) || (quiz && quiz.status === QuizStatus.Active),
+        [styles.quiz__item__ended]: quiz && quiz.status === QuizStatus.Ended,
+        [styles.quiz__item__progress]:
+          group?.creator.id === id || (quiz && quiz.status === QuizStatus.In_progress),
       })}
     >
       <Modal active={activeModal} setActive={setActiveModal} maxDivWidth="600px">
@@ -103,37 +133,54 @@ const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({ group, quiz, id }: MyQuizO
         <div className={styles.quiz__item_head_left}>
           <div
             className={clsx(styles.quiz__item_status, {
-              // [styles.quiz__item_status_active]:
-              //   status === "Active" || status === "Participant",
-              [styles.quiz__item_status_active]: group && id !== group?.creator.id,
-              // [styles.quiz__item_status_ended]: status === "Ended",
-              // [styles.quiz__item_status_progress]: status === "In progress" || status === "Manager",
-              // [styles.quiz__item_status_key]: status === "Access key",
-              [styles.quiz__item_status_progress]: group?.creator.id === id,
+              [styles.quiz__item_status_active]:
+                (group && id !== group?.creator.id) || (quiz && quiz.status === QuizStatus.Active),
+              [styles.quiz__item_status_ended]: quiz && quiz.status === QuizStatus.Ended,
+              [styles.quiz__item_status_progress]:
+                group?.creator.id === id || (quiz && quiz.status === QuizStatus.In_progress),
             })}
           >
-            {group?.creator.id === id ? "Manager" : "Participant"}
+            {group
+              ? group.creator.id === id
+                ? "Manager"
+                : "Participant"
+              : quiz?.status === QuizStatus.In_progress
+              ? "In progress"
+              : quiz?.status === QuizStatus.Active
+              ? "Active"
+              : "Ended"}
           </div>
         </div>
         <div className={styles.quiz__item_deadline}>
-          {quiz ? quiz.deadline?.toDateString() : group?.creator.fullName}
+          {quiz && quiz.deadline
+            ? new Date(quiz?.deadline)?.toLocaleDateString()
+            : group?.creator.fullName}
         </div>
       </div>
       <div className={styles.quiz__item_title}>{group ? group.name : quiz?.name}</div>
       <div className={styles.quiz__item_bottom}>
         <div className={styles.quiz__item_question}>
-          {quiz ? "10 Questions" : `${group?.members.length} Participants`}
+          {quiz ? `${quiz.questions?.length}99 Questions` : `${group?.members.length} Participants`}
         </div>
         {quiz ? (
-          <button
-            className={styles.quiz__item_button}
-            onClick={e => {
-              e.stopPropagation();
-              setActiveModal(true);
-            }}
-          >
-            Activate
-          </button>
+          quiz.status === QuizStatus.In_progress ? (
+            <button
+              className={styles.quiz__item_button}
+              onClick={e => {
+                e.stopPropagation();
+                setActiveModal(true);
+              }}
+            >
+              Activate
+            </button>
+          ) : (
+            <div className={styles.quiz__item_group_button}>
+              <button className={styles.quiz__item_button}>Quiz</button>
+              <button className={styles.quiz__item_button_right} onClick={deactivateHandler}>
+                Deactivate
+              </button>
+            </div>
+          )
         ) : (
           <div className={styles.quiz__item_group_button}>
             <button className={styles.quiz__item_button}>

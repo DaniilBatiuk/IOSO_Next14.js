@@ -1,6 +1,6 @@
 "use server";
 
-import { Quiz } from "@prisma/client";
+import { Quiz, QuizStatus } from "@prisma/client";
 import prisma from "../prisma";
 
 export async function createQuiz(quiz: Omit<Quiz, "id" | "createdAt" | "updatedAt" | "status">) {
@@ -21,4 +21,25 @@ export async function createQuiz(quiz: Omit<Quiz, "id" | "createdAt" | "updatedA
   });
 
   return { newQuizId: newQuiz.id };
+}
+
+export async function updateQuiz(quizId: string, status: QuizStatus) {
+  const quizExist = await prisma.quiz.findFirst({
+    where: {
+      id: quizId,
+    },
+  });
+
+  if (!quizExist) {
+    return "Quiz with this name does not exist.";
+  }
+
+  await prisma.quiz.update({
+    where: {
+      id: quizId,
+    },
+    data: {
+      status: status,
+    },
+  });
 }

@@ -1,6 +1,7 @@
 "use client";
 import styles from "@/styles/Profile.module.scss";
 import { GroupsService } from "@/utils/services/group.service";
+import { QuizService } from "@/utils/services/quiz.servise";
 import { Button, ButtonGroup, Skeleton } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -25,6 +26,11 @@ const MyQuizzes: React.FC = () => {
   const { data: groups } = useQuery({
     queryKey: ["myGroups"],
     queryFn: () => GroupsService.getMyGroups(session?.user.id),
+  });
+
+  const { data: quizzes } = useQuery({
+    queryKey: ["myQuizzes"],
+    queryFn: () => QuizService.getMyQuizzes(session?.user.id),
   });
 
   return (
@@ -92,29 +98,41 @@ const MyQuizzes: React.FC = () => {
         </form>
       </div>
       {activeQuiz === true ? (
-        <>
-          {/* <QuizOrGroup status="Active" buttonText="Activate" type="quiz" />
-          <QuizOrGroup status="In progress" buttonText="Activate" type="quiz" />
-          <QuizOrGroup status="Ended" buttonText="Activate" type="quiz" /> */}
-        </>
-      ) : (
-        <>
-          {groups?.success ? (
-            session?.user.id !== undefined &&
-            groups.result.map((group, index) => (
-              <MyQuizOrGroup key={index} group={group} id={session?.user.id} />
+        quizzes?.success ? (
+          session?.user.id !== undefined && quizzes.result.length > 0 ? (
+            quizzes.result.map((quiz, index) => (
+              <MyQuizOrGroup key={index} quiz={quiz} id={session?.user?.id} />
             ))
           ) : (
-            <div className={styles.skeleton}>
-              <Skeleton variant="rectangular" height={137} />
-              <Skeleton variant="rectangular" height={137} />
-              <Skeleton variant="rectangular" height={137} />
-              <Skeleton variant="rectangular" height={137} />
-              <Skeleton variant="rectangular" height={137} />
-              <Skeleton variant="rectangular" height={137} />
-            </div>
-          )}
-        </>
+            <div className="blur">No data yet</div>
+          )
+        ) : (
+          <div className={styles.skeleton}>
+            <Skeleton variant="rectangular" height={137} />
+            <Skeleton variant="rectangular" height={137} />
+            <Skeleton variant="rectangular" height={137} />
+            <Skeleton variant="rectangular" height={137} />
+            <Skeleton variant="rectangular" height={137} />
+            <Skeleton variant="rectangular" height={137} />
+          </div>
+        )
+      ) : groups?.success ? (
+        session?.user.id !== undefined && groups.result.length > 0 ? (
+          groups.result.map((group, index) => (
+            <MyQuizOrGroup key={index} group={group} id={session?.user.id} />
+          ))
+        ) : (
+          <div className="blur">No data yet</div>
+        )
+      ) : (
+        <div className={styles.skeleton}>
+          <Skeleton variant="rectangular" height={137} />
+          <Skeleton variant="rectangular" height={137} />
+          <Skeleton variant="rectangular" height={137} />
+          <Skeleton variant="rectangular" height={137} />
+          <Skeleton variant="rectangular" height={137} />
+          <Skeleton variant="rectangular" height={137} />
+        </div>
       )}
     </section>
   );

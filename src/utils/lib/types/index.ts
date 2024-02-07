@@ -1,4 +1,4 @@
-import { AccessTypeForGroup, MemberStatus } from "@prisma/client";
+import { AccessTypeForGroup, AccessTypeForQuiz, MemberStatus, QuizStatus } from "@prisma/client";
 
 export type AllGroups = {
   id: string;
@@ -56,5 +56,23 @@ export type MyManagerGroups = {
   sections: {
     id: string;
     name: string;
+  }[];
+};
+
+export type MyQuiz = {
+  id: string;
+  name: string;
+  attempts?: number;
+  deadline?: Date;
+  duration?: Date;
+  accessType: AccessTypeForQuiz;
+  accessCode?: string;
+  status: QuizStatus;
+  creator: {
+    id: string;
+    fullName: string;
+  };
+  questions: {
+    id: string;
   }[];
 };
