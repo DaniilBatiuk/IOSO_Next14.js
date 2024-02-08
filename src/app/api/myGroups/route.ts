@@ -11,6 +11,9 @@ export async function GET(req: NextRequest) {
     }
 
     const myGroups = await prisma.group.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       where: {
         OR: [
           {

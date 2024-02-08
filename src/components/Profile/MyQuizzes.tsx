@@ -1,27 +1,20 @@
 "use client";
 import styles from "@/styles/Profile.module.scss";
+import { AllGroups, MyQuiz } from "@/utils/lib/@types";
+import { filterAndSortItems } from "@/utils/lib/helpers/filterAndSortItems";
 import { GroupsService } from "@/utils/services/group.service";
 import { QuizService } from "@/utils/services/quiz.servise";
-import { Button, ButtonGroup, Skeleton } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
+import { Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { MyQuizOrGroup } from "..";
+import { useDeferredValue, useMemo, useState } from "react";
+import { MyQuizOrGroup, SearchForm } from "..";
 
 export const MyQuizzes: React.FC = () => {
-  const [age, setAge] = useState("");
   const [activeQuiz, setActiveQuiz] = useState(true);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [search, setSearch] = useState<string>("");
   const { data: session } = useSession();
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
 
   const { data: groups } = useQuery({
     queryKey: ["myGroups"],
@@ -33,74 +26,32 @@ export const MyQuizzes: React.FC = () => {
     queryFn: () => QuizService.getMyQuizzes(session?.user.id),
   });
 
+  const sortedGroups = useMemo(
+    () => filterAndSortItems(search, sortOrder, groups?.result),
+    [groups, search, sortOrder],
+  );
+  const sortedQuizzes = useMemo(
+    () => filterAndSortItems(search, sortOrder, quizzes?.result),
+    [quizzes, search, sortOrder],
+  );
+
+  const deferredFinalGroups = useDeferredValue(sortedGroups) as AllGroups[] | undefined;
+  const deferredFinalQuizzes = useDeferredValue(sortedQuizzes) as MyQuiz[] | undefined;
+
   return (
     <section className={styles.main}>
-      <div className={`${styles.my_quizzes__form}`}>
-        <ButtonGroup size="medium" aria-label="medium button group">
-          <Button
-            className={clsx({ [styles.button__active]: activeQuiz === true })}
-            onClick={() => setActiveQuiz(true)}
-          >
-            Quizzes
-          </Button>
-          <Button
-            className={clsx({ [styles.button__active]: activeQuiz === false })}
-            onClick={() => setActiveQuiz(false)}
-          >
-            Groups
-          </Button>
-        </ButtonGroup>
-
-        <form className={`${styles.form}`}>
-          <TextField id="standard-basic" label="Find by name" variant="standard" />
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-standard-label">Status</InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={age}
-              onChange={handleChange}
-              label="Status"
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-standard-label">Difficulty</InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={age}
-              onChange={handleChange}
-              label="Difficulty"
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 220 }}>
-            <InputLabel id="demo-simple-select-standard-label">Filter by name</InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={age}
-              onChange={handleChange}
-              label="Filter by name"
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-        </form>
-      </div>
+      <SearchForm
+        activeQuiz={activeQuiz}
+        setActiveQuiz={setActiveQuiz}
+        search={search}
+        setSearch={setSearch}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+      />
       {activeQuiz === true ? (
-        quizzes?.success ? (
-          session?.user.id !== undefined && quizzes.result.length > 0 ? (
-            quizzes.result.map((quiz, index) => (
+        deferredFinalQuizzes ? (
+          session?.user.id !== undefined && deferredFinalQuizzes.length > 0 ? (
+            deferredFinalQuizzes.map((quiz, index) => (
               <MyQuizOrGroup key={index} quiz={quiz} id={session?.user?.id} />
             ))
           ) : (
@@ -116,9 +67,9 @@ export const MyQuizzes: React.FC = () => {
             <Skeleton variant="rectangular" height={137} />
           </div>
         )
-      ) : groups?.success ? (
-        session?.user.id !== undefined && groups.result.length > 0 ? (
-          groups.result.map((group, index) => (
+      ) : deferredFinalGroups ? (
+        session?.user.id !== undefined && deferredFinalGroups.length > 0 ? (
+          deferredFinalGroups.map((group, index) => (
             <MyQuizOrGroup key={index} group={group} id={session?.user.id} />
           ))
         ) : (

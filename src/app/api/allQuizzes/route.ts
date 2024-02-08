@@ -6,6 +6,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const allQuizzes = await prisma.quiz.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       where: {
         status: QuizStatus.Active,
         OR: [
@@ -35,6 +38,7 @@ export async function GET() {
         },
       },
     });
+
     return NextResponse.json(wrapSuccess(allQuizzes));
   } catch (error) {
     console.log("Error finding quizzes: ", error);

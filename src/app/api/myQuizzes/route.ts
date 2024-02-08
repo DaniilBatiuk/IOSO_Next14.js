@@ -11,6 +11,9 @@ export async function GET(req: NextRequest) {
     }
 
     const myQuizzes = await prisma.quiz.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       where: {
         creatorId: id,
       },

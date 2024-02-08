@@ -31,4 +31,5 @@ export * from "./UI/Button/Button";
 export * from "./UI/Modal/Modal";
 export * from "./UI/MyCheckBox/CheckBox";
 export * from "./UI/PieChartActivity/PieChartActivity";
+export * from "./UI/SearchForm/SearchForm";
 export * from "./UI/SignInButton/SignInButton";

@@ -5,6 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   try {
     const allGroups = await prisma.group.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       select: {
         id: true,
         name: true,
