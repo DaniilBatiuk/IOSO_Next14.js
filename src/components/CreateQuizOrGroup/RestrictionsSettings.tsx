@@ -1,6 +1,6 @@
-import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { useRestrictionsSettings } from "@/utils/hooks";
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";

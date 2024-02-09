@@ -12,7 +12,7 @@ import { MyQuizOrGroup, SearchForm } from "..";
 
 export const MyQuizzes: React.FC = () => {
   const [activeQuiz, setActiveQuiz] = useState(true);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [search, setSearch] = useState<string>("");
   const { data: session } = useSession();
 

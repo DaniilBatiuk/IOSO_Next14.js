@@ -68,9 +68,6 @@ export const Header: React.FC = () => {
         <nav className="header__nav">
           <div className="header__body">
             <ul className="header__list">
-              <li className="header__item">
-                <Link href="/Group/1">Group</Link>
-              </li>
               <li
                 className={
                   linkActiveUnderLine === 2 && menuActive === false

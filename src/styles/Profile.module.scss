@@ -3,15 +3,15 @@
 .profile {
   &__container {
     color: white;
-    margin-bottom: 30px;
-    margin-top: 40px;
+    margin-bottom: 30px !important;
+    margin-top: 40px !important;
 
     @media (max-width: 900.98px) {
-      margin-top: 30px;
+      margin-top: 30px !important;
     }
 
     @media (max-width: 500.98px) {
-      margin-top: 20px;
+      margin-top: 20px !important;
     }
   }
 
@@ -334,16 +334,9 @@
     padding: 5px 36px;
     padding-top: 0px;
 
-    @media (max-width: 1054.98px) {
+    @media (max-width: 673.98px) {
       justify-content: center;
       padding: 10px 36px;
-    }
-    @media (max-width: 952.98px) {
-      gap: 10px;
-    }
-
-    @media (max-width: 441.98px) {
-      padding: 19px 10px;
     }
   }
 }
@@ -356,13 +349,12 @@
   flex-wrap: wrap;
   color: white;
 
-  @media (max-width: 1111.98px) {
-    flex: 1 1 auto;
-    justify-content: center;
-  }
-
   @media (max-width: 952.98px) {
     gap: 10px;
+  }
+
+  @media (max-width: 673.98px) {
+    justify-content: center;
   }
 }
 

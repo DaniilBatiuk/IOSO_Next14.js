@@ -3,13 +3,22 @@
 .create {
   &__container {
     color: white;
-    margin-bottom: 100px;
-    margin-top: 40px;
     display: flex;
     gap: 30px;
 
     @media (max-width: 936.98px) {
       gap: 20px;
+    }
+
+    margin-bottom: 30px !important;
+    margin-top: 40px !important;
+
+    @media (max-width: 900.98px) {
+      margin-top: 30px !important;
+    }
+
+    @media (max-width: 500.98px) {
+      margin-top: 20px !important;
     }
   }
 

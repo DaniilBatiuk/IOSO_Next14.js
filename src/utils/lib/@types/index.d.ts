@@ -13,6 +13,7 @@ type AllGroups = {
     userId: string;
     status: MemberStatus;
   }[];
+  createdAt: Date;
 };
 
 type WrapSuccessType<T> = {
@@ -74,5 +75,22 @@ type MyQuiz = {
   };
   questions: {
     id: string;
+  }[];
+  createdAt: Date;
+};
+
+type PassQuiz = {
+  id: string;
+  name: string;
+  percentagePass: number;
+  duration?: Date;
+  questions: {
+    id: string;
+    text: string;
+    answers: {
+      id: string;
+      text: string;
+      isCorrect: boolean;
+    };
   }[];
 };

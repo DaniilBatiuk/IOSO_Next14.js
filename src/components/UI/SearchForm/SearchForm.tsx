@@ -37,7 +37,7 @@ export const SearchForm: React.FC<SearchFormProp> = ({
           onClick={() => {
             setActiveQuiz(true);
             setSearch("");
-            setSortOrder("asc");
+            setSortOrder("desc");
           }}
         >
           Quizzes
@@ -47,7 +47,7 @@ export const SearchForm: React.FC<SearchFormProp> = ({
           onClick={() => {
             setActiveQuiz(false);
             setSearch("");
-            setSortOrder("asc");
+            setSortOrder("desc");
           }}
         >
           Groups
@@ -61,9 +61,9 @@ export const SearchForm: React.FC<SearchFormProp> = ({
           value={search}
           onChange={event => setSearch(event.target.value)}
         />
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
-          <InputLabel>Filter by name</InputLabel>
-          <Select value={sortOrder} onChange={handlerSortOrderChange} label="Filter by name">
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 130 }}>
+          <InputLabel>Filter by date</InputLabel>
+          <Select value={sortOrder} onChange={handlerSortOrderChange} label="Filter by date">
             <MenuItem value={"asc"}>asc</MenuItem>
             <MenuItem value={"desc"}>desc</MenuItem>
           </Select>

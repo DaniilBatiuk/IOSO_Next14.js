@@ -59,9 +59,13 @@ export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
     if (group) {
       inputRef?.current?.value === group.accessCode ? joinGroup() : setPasswordCorrect(false);
     } else if (quiz) {
-      inputRef?.current?.value === quiz.accessCode
-        ? toast.success("Password correct.")
-        : setPasswordCorrect(false);
+      if (quiz.accessCode) {
+        inputRef?.current?.value === quiz.accessCode
+          ? router.push(`/QuizPass/${quiz.id}`)
+          : setPasswordCorrect(false);
+      } else {
+        router.push(`/QuizPass/${quiz.id}`);
+      }
     }
   };
 

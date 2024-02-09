@@ -25,6 +25,7 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
 }: MyQuizOrGroupProp) => {
   const router = useRouter();
   const [activeModal, setActiveModal] = useState(false);
+  const [activeModal2, setActiveModal2] = useState(false);
   const queryClient = useQueryClient();
   const { data: session } = useSession();
 
@@ -94,6 +95,10 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
     }
   };
 
+  const formatTime = (value: number) => {
+    return value.toString().padStart(2, "0");
+  };
+
   return (
     <div
       onClick={handleRedirect}
@@ -105,6 +110,32 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
           group?.creator.id === id || (quiz && quiz.status === QuizStatus.In_progress),
       })}
     >
+      <Modal active={activeModal2} setActive={setActiveModal2} maxDivWidth="600px">
+        <div className={styles.modal__head}>
+          <h2 className={styles.modal__title}>Quiz</h2>
+          <div className={styles.modal__text}>Attempts left: {quiz?.attempts || "Infinity"}</div>
+          <div className={styles.modal__text}>
+            Quiz duration:{" "}
+            {quiz?.duration
+              ? formatTime(new Date(quiz?.duration).getHours()) +
+                ":" +
+                formatTime(new Date(quiz?.duration).getMinutes())
+              : "Infinity"}
+          </div>
+        </div>
+        <div className={styles.modal__buttons}>
+          <button className={styles.modal__button__cancel} onClick={() => setActiveModal2(false)}>
+            Cancel
+          </button>
+          <button
+            className={styles.modal__button__activate}
+            onClick={() => router.push(`/QuizPass/${quiz?.id}`)}
+          >
+            Quiz
+          </button>
+        </div>
+      </Modal>
+
       <Modal active={activeModal} setActive={setActiveModal} maxDivWidth="600px">
         <div className={styles.modal__head}>
           <h2 className={styles.modal__title}>
@@ -162,7 +193,7 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
       <div className={styles.quiz__item_title}>{group ? group.name : quiz?.name}</div>
       <div className={styles.quiz__item_bottom}>
         <div className={styles.quiz__item_question}>
-          {quiz ? `${quiz.questions?.length}99 Questions` : `${group?.members.length} Participants`}
+          {quiz ? `${quiz.questions?.length} Questions` : `${group?.members.length} Participants`}
         </div>
         {quiz ? (
           quiz.status === QuizStatus.In_progress ? (
@@ -177,7 +208,9 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
             </button>
           ) : (
             <div className={styles.quiz__item_group_button}>
-              <button className={styles.quiz__item_button}>Quiz</button>
+              <button className={styles.quiz__item_button} onClick={() => setActiveModal2(true)}>
+                Quiz
+              </button>
               <button className={styles.quiz__item_button_right} onClick={deactivateHandler}>
                 Deactivate
               </button>

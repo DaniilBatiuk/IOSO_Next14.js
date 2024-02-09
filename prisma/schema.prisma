@@ -20,6 +20,7 @@ model User {
   quiz          Quiz[]
   groups        Group[]
   membership    Membership[]
+  QuizResult    QuizResult[]
 }
 
 model Quiz {
@@ -40,27 +41,30 @@ model Quiz {
   updatedAt      DateTime          @updatedAt
   section        Section?          @relation(fields: [sectionId], references: [id])
   sectionId      String?           @db.ObjectId
+  QuizResult     QuizResult[]
 }
 
 model Question {
-  id        String       @id @default(auto()) @map("_id") @db.ObjectId
-  text      String
-  type      QuestionType
-  answers   Answer[]
-  quizId    String       @db.ObjectId
-  quiz      Quiz         @relation(fields: [quizId], references: [id])
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  text           String
+  type           QuestionType
+  answers        Answer[]
+  quizId         String           @db.ObjectId
+  quiz           Quiz             @relation(fields: [quizId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  QuestionResult QuestionResult[]
 }
 
 model Answer {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  text       String
-  isCorrect  Boolean
-  questionId String   @db.ObjectId
-  question   Question @relation(fields: [questionId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  text           String
+  isCorrect      Boolean
+  questionId     String           @db.ObjectId
+  question       Question         @relation(fields: [questionId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  AnswerSelected AnswerSelected[]
 }
 
 model Group {
@@ -93,6 +97,35 @@ model Membership {
   status  MemberStatus @default(Participant)
   user    User         @relation(fields: [userId], references: [id])
   group   Group        @relation(fields: [groupId], references: [id])
+}
+
+model QuizResult {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String           @db.ObjectId
+  quizId         String           @db.ObjectId
+  questionResult QuestionResult[]
+  user           User             @relation(fields: [userId], references: [id])
+  quiz           Quiz             @relation(fields: [quizId], references: [id])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model QuestionResult {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  quizId         String           @db.ObjectId
+  answerSelected AnswerSelected[]
+  quizResultId   String           @db.ObjectId
+  questionId     String           @db.ObjectId
+  question       Question         @relation(fields: [questionId], references: [id])
+  quizResult     QuizResult       @relation(fields: [quizResultId], references: [id])
+}
+
+model AnswerSelected {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  questionResultId String         @db.ObjectId
+  answerId         String         @db.ObjectId
+  answer           Answer         @relation(fields: [answerId], references: [id])
+  QuestionResult   QuestionResult @relation(fields: [questionResultId], references: [id])
 }
 
 enum AccessTypeForGroup {

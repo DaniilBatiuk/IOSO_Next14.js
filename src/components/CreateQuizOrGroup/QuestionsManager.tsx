@@ -1,7 +1,7 @@
 "use client";
 
-import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 import { Skeleton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {

@@ -3,6 +3,8 @@
 import { CheckboxQuizPass, RadioQuizPass, ThemeWrapper } from "@/components";
 import styles from "@/styles/QuizPass.module.scss";
 import { useMultistepForm } from "@/utils/hooks";
+import { QuizService } from "@/utils/services/quiz.servise";
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { FormEvent, useState } from "react";
 
@@ -35,8 +37,15 @@ const INITIAL_DATA: FormData = [
   },
 ];
 
-const QuizPass: React.FC = () => {
+export default function QuizPass({ params }: { params: { id: string } }) {
   const [data, setData] = useState(INITIAL_DATA);
+
+  const { data: quiz } = useQuery({
+    queryKey: ["Quiz"],
+    queryFn: () => QuizService.getQuiz(params.id),
+  });
+
+  console.log(quiz);
 
   function updateFields(index: number, fields: Partial<FormData[0]>) {
     setData(prev => {
@@ -113,5 +122,4 @@ const QuizPass: React.FC = () => {
       </div>
     </ThemeWrapper>
   );
-};
-export default QuizPass;
+}

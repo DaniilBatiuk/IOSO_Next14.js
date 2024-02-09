@@ -1,5 +1,5 @@
 import axios from "@/axios";
-import { MyQuiz, WrapSuccessType } from "../lib/@types";
+import { MyQuiz, PassQuiz, WrapSuccessType } from "../lib/@types";
 export const QuizService = {
   async getMyQuizzes(id: string | undefined) {
     if (id === undefined) return;
@@ -8,6 +8,10 @@ export const QuizService = {
   },
   async getAllQuizzes() {
     const { data } = await axios.get<WrapSuccessType<MyQuiz[]>>(`/api/allQuizzes`);
+    return data;
+  },
+  async getQuiz(id: string) {
+    const { data } = await axios.get<WrapSuccessType<PassQuiz>>(`/api/quiz?id=${id}`);
     return data;
   },
 };

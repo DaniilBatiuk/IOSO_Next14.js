@@ -11,100 +11,14 @@ import styles from "@/styles/CreateQuiz.module.scss";
 import { ICONS } from "@/utils/config/icons";
 import { createAnswer, createQuestion, createQuiz } from "@/utils/lib/actions";
 import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
+import { CreateQuizFormSchema, CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForQuiz } from "@prisma/client";
 import { clsx } from "clsx";
-import dayjs, { Dayjs } from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { z } from "zod";
-
-const DayjsDateSchema = z.custom<Dayjs>(value => {
-  if (dayjs.isDayjs(value)) {
-    return value;
-  } else {
-    throw new Error("Expected Dayjs object");
-  }
-});
-
-const CreateQuizFormSchema = z.object({
-  name: z
-    .string()
-    .min(3, "Full name must be at least 3 characters")
-    .max(120, "Full name must be less than 120 characters"),
-  accessCode: z.string().nullable(),
-  attempts: z.number().nullable(),
-  groupId: z.string().optional().nullable(),
-  sectionId: z.string().nullable(),
-  deadline: DayjsDateSchema.nullable(),
-  duration: z
-    .object({
-      hours: z.number(),
-      minutes: z.number(),
-    })
-    .optional()
-    .nullable(),
-  percentagePass: z.number(),
-  questions: z.array(
-    z.discriminatedUnion("type", [
-      z.object({
-        text: z
-          .string()
-          .min(3, "Question must be at least 3 characters")
-          .max(120, "Question must be less than 120 characters"),
-        type: z.literal("Single_choice"),
-        answers: z
-          .array(
-            z.object({
-              text: z
-                .string()
-                .min(1, "Question must be at least 1 characters")
-                .max(120, "Question must be less than 120 characters"),
-              isCorrect: z.boolean(),
-            }),
-          )
-          .min(2),
-      }),
-      z.object({
-        text: z
-          .string()
-          .min(3, "Question must be at least 3 characters")
-          .max(120, "Question must be less than 120 characters"),
-        type: z.literal("Multiple_choice"),
-        answers: z
-          .array(
-            z.object({
-              text: z
-                .string()
-                .min(1, "Question must be at least 1 characters")
-                .max(120, "Question must be less than 120 characters"),
-              isCorrect: z.boolean(),
-            }),
-          )
-          .min(3),
-      }),
-      z.object({
-        text: z
-          .string()
-          .min(3, "Question must be at least 3 characters")
-          .max(120, "Question must be less than 120 characters"),
-        type: z.literal("True_or_false"),
-        answers: z
-          .array(
-            z.object({
-              text: z.enum(["true", "false"]),
-              isCorrect: z.boolean(),
-            }),
-          )
-          .length(2),
-      }),
-    ]),
-  ),
-});
-
-export type CreateQuizType = z.infer<typeof CreateQuizFormSchema>;
 
 export default function CreateQuiz() {
   const [active, setActive] = useState<number>(0);
@@ -164,8 +78,11 @@ export default function CreateQuiz() {
       } else {
         data.accessCode = null;
       }
+
       if (data.attempts === 555) data.attempts = null;
+
       if (accessType !== AccessTypeForQuiz.Group) data.groupId = null;
+
       if (accessType === AccessTypeForQuiz.Group && data.sectionId === "") {
         setError("sectionId", {
           type: "custom",
@@ -229,7 +146,7 @@ export default function CreateQuiz() {
 
           if (questionId) {
             for (const answer of questions.answers) {
-              const { answerId } = await createAnswer({
+              await createAnswer({
                 questionId: questionId,
                 text: answer.text,
                 isCorrect: answer.isCorrect,
@@ -323,9 +240,6 @@ export default function CreateQuiz() {
             <div className={styles.create__buttons}>
               <button type="submit" className={styles.create__button__save}>
                 {isSubmitting ? "Save changes..." : "Save changes"}
-              </button>
-              <button type="button" className={styles.create__button}>
-                Activate quiz
               </button>
             </div>
           </div>

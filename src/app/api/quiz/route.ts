@@ -10,37 +10,35 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Error no id exist", status: 404 });
     }
 
-    const myQuizzes = await prisma.quiz.findMany({
+    const quiz = await prisma.quiz.findUnique({
       where: {
-        creatorId: id,
+        id: id,
       },
       select: {
         id: true,
         name: true,
-        attempts: true,
-        deadline: true,
+        percentagePass: true,
         duration: true,
-        accessType: true,
-        status: true,
-        createdAt: true,
-        creator: {
-          select: {
-            id: true,
-            fullName: true,
-          },
-        },
         questions: {
           select: {
             id: true,
+            text: true,
+            answers: {
+              select: {
+                id: true,
+                text: true,
+                isCorrect: true,
+              },
+            },
           },
         },
       },
     });
 
-    return NextResponse.json(wrapSuccess(myQuizzes));
+    return NextResponse.json(wrapSuccess(quiz));
   } catch (error) {
-    console.log("Error finding my quizzes: ", error);
-    return NextResponse.json({ error: `Error finding my quizzes: ${error}`, status: 500 });
+    console.log("Error finding quiz: ", error);
+    return NextResponse.json({ error: `Error finding quiz: ${error}`, status: 500 });
   }
 }
 

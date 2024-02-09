@@ -11,9 +11,6 @@ export async function GET(req: NextRequest) {
     }
 
     const myGroups = await prisma.group.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
       where: {
         OR: [
           {
@@ -32,6 +29,7 @@ export async function GET(req: NextRequest) {
         id: true,
         name: true,
         accessType: true,
+        createdAt: true,
         creator: {
           select: {
             id: true,

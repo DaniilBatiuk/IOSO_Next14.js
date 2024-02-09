@@ -13,7 +13,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 
 export default function Trends() {
   const [activeQuiz, setActiveQuiz] = useState<boolean>(true);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [search, setSearch] = useState<string>("");
 
   const { data: session } = useSession();

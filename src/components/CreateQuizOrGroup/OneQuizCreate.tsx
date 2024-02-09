@@ -1,9 +1,9 @@
 "use client";
 
-import { CreateQuizType } from "@/app/CreateQuiz/page";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { ICONS } from "@/utils/config/icons";
 import { useQuizEffect } from "@/utils/hooks";
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 import {
   Checkbox,
   FormControl,
@@ -134,7 +134,7 @@ export const OneQuizCreate = React.memo(
                   fullWidth
                   variant="standard"
                 />
-                {index > 2 && ICONS.close({ onClick: () => answerRemove(numberQuiz) })}
+                {index > 2 && ICONS.close({ onClick: () => answerRemove(index) })}
               </div>
             ))}
 
