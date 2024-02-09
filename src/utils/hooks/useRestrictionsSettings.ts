@@ -1,6 +1,6 @@
-import { CreateQuizType } from "@/app/CreateQuiz/page";
 import { useEffect, useState } from "react";
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
+import { CreateQuizType } from "../lib/validators/create-quiz-validator";
 
 export const useRestrictionsSettings = (
   control: Control<CreateQuizType>,
