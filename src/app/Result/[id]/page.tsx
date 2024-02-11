@@ -1,5 +1,5 @@
 "use client";
-import { CheckboxQuizPass, RadioQuizPass, ThemeWrapper } from "@/components";
+import { ThemeWrapper } from "@/components";
 import styles from "@/styles/Result.module.scss";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
@@ -51,7 +51,7 @@ export default function Result({ params }: { params: { id: string } }) {
         <div className={styles.result__title}>Quiz for english level</div>
         <div className={styles.result__main}>
           <section className={styles.left}>
-            {data.map((item, index) =>
+            {/* {data.map((item, index) =>
               Array.isArray(item.selected) ? (
                 <div className={styles.left__wrapper} key={index}>
                   <div className={styles.left__title}>Question {index + 1}</div>
@@ -63,7 +63,7 @@ export default function Result({ params }: { params: { id: string } }) {
                   <RadioQuizPass {...item} />
                 </div>
               ),
-            )}
+            )} */}
           </section>
           <aside className={styles.right}>
             <div className={styles.right__title}>Attempt</div>
