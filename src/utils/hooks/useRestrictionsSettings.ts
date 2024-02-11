@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
 import { CreateQuizType } from "../lib/validators/create-quiz-validator";
@@ -19,18 +20,18 @@ export const useRestrictionsSettings = (
   //   name: `percentagePass`,
   // });
 
-  // const durationWatch = useWatch({
-  //   control,
-  //   name: `duration`,
-  // });
+  const durationWatch = useWatch({
+    control,
+    name: `duration`,
+  });
 
   useEffect(() => {
     if (deadlineWatch !== null) {
       setCheckDeadline("Select");
     }
-    // if (durationWatch !== null) {
-    //   setCheckDuration("Select");
-    // }
+    if (durationWatch.hours !== 0 || durationWatch.minutes !== 0) {
+      setCheckDuration("Select");
+    }
   }, []);
 
   // const formatTime = (value: number) => {
@@ -40,7 +41,8 @@ export const useRestrictionsSettings = (
   const handlerSelectDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckDuration(event.target.value);
     if (event.target.value === "Lack") {
-      setValue("duration", null);
+      setValue("duration.hours", 0);
+      setValue("duration.minutes", 0);
     }
   };
 

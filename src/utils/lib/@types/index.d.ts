@@ -1,4 +1,10 @@
-import { AccessTypeForGroup, AccessTypeForQuiz, MemberStatus, QuizStatus } from "@prisma/client";
+import {
+  AccessTypeForGroup,
+  AccessTypeForQuiz,
+  MemberStatus,
+  QuizResultStatus,
+  QuizStatus,
+} from "@prisma/client";
 
 type AllGroups = {
   id: string;
@@ -83,14 +89,40 @@ type PassQuiz = {
   id: string;
   name: string;
   percentagePass: number;
-  duration?: Date;
+  duration?: string;
   questions: {
     id: string;
     text: string;
+    type: QuestionType;
     answers: {
       id: string;
       text: string;
       isCorrect: boolean;
-    };
+    }[];
   }[];
+};
+
+export type QuizPassQuestionType = {
+  id: string;
+  question: string;
+  answers: {
+    id: string;
+    answer: string;
+    isCorrect: boolean;
+  }[];
+  selected: string | string[];
+};
+
+export type QuizPassType = QuizPassQuestionType[];
+
+export type QuizHistory = {
+  id: string;
+  status: QuizResultStatus;
+  score: number;
+  createdAt: string;
+  durationOfAttempt: string;
+  questionCount: number;
+  quiz: {
+    name: string;
+  };
 };

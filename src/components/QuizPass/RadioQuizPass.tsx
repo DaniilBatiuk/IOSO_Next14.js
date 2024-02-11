@@ -3,7 +3,11 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 type RadioQuizPassData = {
   question: string;
-  variants: { variant: string }[];
+  answers: {
+    id: string;
+    answer: string;
+    isCorrect: boolean;
+  }[];
   selected: string | string[];
 };
 
@@ -14,15 +18,15 @@ type RadioQuizPassProps = RadioQuizPassData & {
 
 export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
   question,
-  variants,
+  answers,
   selected,
   updateFields,
   rightAnswers,
 }: RadioQuizPassProps) => {
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (updateFields !== undefined) {
-      const selectedVariant = event.target.value;
-      updateFields({ selected: selectedVariant });
+      const selectedanswer = event.target.value;
+      updateFields({ selected: selectedanswer });
     }
   };
 
@@ -34,20 +38,20 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
         aria-labelledby="demo-radio-buttons-group-label"
         name="radio-buttons-group"
       >
-        {variants.map((variant, index) => (
+        {answers?.map((answer, index) => (
           <FormControlLabel
             key={index}
-            checked={selected === variant.variant}
-            value={variant.variant}
+            checked={selected === answer.id}
+            value={answer.id}
             control={
               <Radio
                 sx={{
                   "&.Mui-checked": {
                     color:
-                      rightAnswers === variant.variant
+                      rightAnswers === answer.id
                         ? "#24d800"
-                        : rightAnswers !== variant.variant &&
-                          selected === variant.variant &&
+                        : rightAnswers !== answer.id &&
+                          selected === answer.id &&
                           rightAnswers !== undefined
                         ? "#a80101"
                         : "#ffffff",
@@ -59,16 +63,16 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
               <span
                 style={{
                   color:
-                    rightAnswers === variant.variant
+                    rightAnswers === answer.id
                       ? "#24d800"
-                      : rightAnswers !== variant.variant &&
-                        selected === variant.variant &&
+                      : rightAnswers !== answer.id &&
+                        selected === answer.id &&
                         rightAnswers !== undefined
                       ? "#a80101"
                       : "#ffffff",
                 }}
               >
-                {variant.variant}
+                {answer.answer}
               </span>
             }
           />

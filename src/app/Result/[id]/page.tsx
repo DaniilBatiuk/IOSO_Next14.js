@@ -6,7 +6,7 @@ import { useState } from "react";
 
 type FormData = {
   question: string;
-  variants: { variant: string }[];
+  answers: { answer: string }[];
   selected: string | string[];
   rightAnswers: string | string[];
 }[];
@@ -14,31 +14,31 @@ type FormData = {
 const INITIAL_DATA: FormData = [
   {
     question: "Where are you now?",
-    variants: [{ variant: "Home" }, { variant: "Hospital" }, { variant: "Cinema" }],
+    answers: [{ answer: "Home" }, { answer: "Hospital" }, { answer: "Cinema" }],
     selected: "Hospital",
     rightAnswers: "Cinema",
   },
   {
     question: "How old are you?",
-    variants: [{ variant: "16" }, { variant: "84" }, { variant: "25" }, { variant: "42" }],
+    answers: [{ answer: "16" }, { answer: "84" }, { answer: "25" }, { answer: "42" }],
     selected: "25",
     rightAnswers: "84",
   },
   {
     question: "How many cats do you have?",
-    variants: [{ variant: "14" }, { variant: "63" }, { variant: "888" }],
+    answers: [{ answer: "14" }, { answer: "63" }, { answer: "888" }],
     selected: "63",
     rightAnswers: "63",
   },
   {
     question: "How many dogs do you have?",
-    variants: [{ variant: "14" }, { variant: "63" }, { variant: "888" }, { variant: "777" }],
+    answers: [{ answer: "14" }, { answer: "63" }, { answer: "888" }, { answer: "777" }],
     selected: ["14", "777"],
     rightAnswers: ["14", "888"],
   },
 ];
 
-export default function Result() {
+export default function Result({ params }: { params: { id: string } }) {
   const [data, setData] = useState(INITIAL_DATA);
   const [age, setAge] = useState("");
   const handleChange = (event: SelectChangeEvent) => {
@@ -68,10 +68,9 @@ export default function Result() {
           <aside className={styles.right}>
             <div className={styles.right__title}>Attempt</div>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-standard-label">Attempt select</InputLabel>
+              <InputLabel>Attempt select</InputLabel>
               <Select
                 labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
                 value={age}
                 onChange={handleChange}
                 label="Status"

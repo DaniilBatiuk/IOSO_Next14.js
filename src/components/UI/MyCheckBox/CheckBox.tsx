@@ -2,9 +2,8 @@ import { removeItemFromArray } from "@/utils/lib/helpers/removeItemFromArray";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
 type MyCheckBoxData = {
-  variant: string;
+  answer: { id: string; text: string };
   selected: string | string[];
-  variants: { variant: string }[];
 };
 
 type MyCheckBoxProp = MyCheckBoxData & {
@@ -13,21 +12,20 @@ type MyCheckBoxProp = MyCheckBoxData & {
 };
 
 export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
-  variants,
-  variant,
+  answer,
   updateFields,
   selected,
   rightAnswers,
 }: MyCheckBoxProp) => {
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (updateFields !== undefined) {
-      if (!selected.includes(variant) && Array.isArray(selected)) {
-        selected.push(variant);
+      if (!selected.includes(answer.id) && Array.isArray(selected)) {
+        selected.push(answer.id);
         const data: string[] = selected;
         updateFields({ selected: data });
       } else {
         if (Array.isArray(selected)) {
-          const data: string[] = removeItemFromArray(selected, variant);
+          const data: string[] = removeItemFromArray(selected, answer.id);
           updateFields({ selected: data });
         }
       }
@@ -38,17 +36,17 @@ export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
     <FormControlLabel
       control={
         <Checkbox
-          checked={selected.includes(variant)}
+          checked={selected.includes(answer.id)}
           onChange={handlerChange}
           sx={{
             color: "#ffffff",
 
             "&.Mui-checked": {
-              color: rightAnswers?.includes(variant)
+              color: rightAnswers?.includes(answer.id)
                 ? "#24d800"
                 : rightAnswers !== undefined &&
-                  !rightAnswers.includes(variant) &&
-                  selected.includes(variant)
+                  !rightAnswers.includes(answer.id) &&
+                  selected.includes(answer.id)
                 ? "#a80101"
                 : "#ffffff",
             },
@@ -58,16 +56,16 @@ export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
       label={
         <span
           style={{
-            color: rightAnswers?.includes(variant)
+            color: rightAnswers?.includes(answer.id)
               ? "#24d800"
               : rightAnswers !== undefined &&
-                !rightAnswers.includes(variant) &&
-                selected.includes(variant)
+                !rightAnswers.includes(answer.id) &&
+                selected.includes(answer.id)
               ? "#a80101"
               : "#ffffff",
           }}
         >
-          {variant}
+          {answer.text}
         </span>
       }
     />

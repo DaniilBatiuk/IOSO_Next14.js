@@ -1,3 +1,4 @@
+"use client";
 import styles from "@/styles/CreateQuiz.module.scss";
 import { useRestrictionsSettings } from "@/utils/hooks";
 import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";

@@ -41,7 +41,10 @@ export default function CreateQuiz() {
       sectionId: null,
       accessCode: null,
       percentagePass: 0,
-      duration: null,
+      duration: {
+        hours: 0,
+        minutes: 0,
+      },
       questions: [
         {
           text: "",
@@ -64,8 +67,8 @@ export default function CreateQuiz() {
   });
 
   const quizSave: SubmitHandler<CreateQuizType> = async data => {
-    //CreateQuizFormSchema.parse(data);
-
+    // console.log(CreateQuizFormSchema.parse(data));
+    // return;
     try {
       if (accessType === AccessTypeForQuiz.Public_access_code) {
         if (!AccessCodeScheme.safeParse(data.accessCode).success) {
@@ -111,7 +114,7 @@ export default function CreateQuiz() {
       }
 
       let duration = null;
-      if (data.duration) {
+      if (data.duration?.hours !== 0 || data.duration?.minutes !== 0) {
         duration = new Date(
           currentDateTime.getFullYear(),
           currentDateTime.getMonth(),

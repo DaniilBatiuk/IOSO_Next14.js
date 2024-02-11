@@ -19,13 +19,10 @@ export const CreateQuizFormSchema = z.object({
   groupId: z.string().optional().nullable(),
   sectionId: z.string().nullable(),
   deadline: DayjsDateSchema.nullable(),
-  duration: z
-    .object({
-      hours: z.number(),
-      minutes: z.number(),
-    })
-    .optional()
-    .nullable(),
+  duration: z.object({
+    hours: z.number(),
+    minutes: z.number(),
+  }),
   percentagePass: z.number(),
   questions: z.array(
     z.discriminatedUnion("type", [

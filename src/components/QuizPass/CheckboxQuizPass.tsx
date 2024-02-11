@@ -3,7 +3,11 @@ import { MyCheckBox } from "..";
 
 type CheckboxQuizPassData = {
   question: string;
-  variants: { variant: string }[];
+  answers: {
+    id: string;
+    answer: string;
+    isCorrect: boolean;
+  }[];
   selected: string | string[];
 };
 
@@ -14,7 +18,7 @@ type CheckboxQuizPassProps = CheckboxQuizPassData & {
 
 export const CheckboxQuizPass: React.FC<CheckboxQuizPassProps> = ({
   question,
-  variants,
+  answers,
   selected,
   updateFields,
   rightAnswers,
@@ -24,23 +28,21 @@ export const CheckboxQuizPass: React.FC<CheckboxQuizPassProps> = ({
       <div className={styles.left__text}>{question}</div>
       <div className={styles.left__checkBox}>
         {updateFields !== undefined &&
-          variants.map((variant, index) => (
+          answers.map((answer, index) => (
             <MyCheckBox
               key={index}
               updateFields={updateFields}
               selected={selected}
-              variants={variants}
-              variant={variant.variant}
+              answer={{ id: answer.id, text: answer.answer }}
             />
           ))}
         {rightAnswers !== undefined &&
-          variants.map((variant, index) => (
+          answers.map((answer, index) => (
             <MyCheckBox
               key={index}
               selected={selected}
-              variants={variants}
               rightAnswers={rightAnswers}
-              variant={variant.variant}
+              answer={{ id: answer.id, text: answer.answer }}
             />
           ))}
       </div>

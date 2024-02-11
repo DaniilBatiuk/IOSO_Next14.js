@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
           select: {
             id: true,
             text: true,
+            type: true,
             answers: {
               select: {
                 id: true,

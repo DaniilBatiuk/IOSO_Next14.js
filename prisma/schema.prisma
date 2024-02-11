@@ -100,19 +100,24 @@ model Membership {
 }
 
 model QuizResult {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String           @db.ObjectId
-  quizId         String           @db.ObjectId
-  questionResult QuestionResult[]
-  user           User             @relation(fields: [userId], references: [id])
-  quiz           Quiz             @relation(fields: [quizId], references: [id])
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
+  durationOfAttempt DateTime
+  status            QuizResultStatus
+  score             Float
+  questionCount     Int
+  rightAnswerCount  Int
+  userId            String           @db.ObjectId
+  quizId            String           @db.ObjectId
+  questionResult    QuestionResult[]
+  user              User             @relation(fields: [userId], references: [id])
+  quiz              Quiz             @relation(fields: [quizId], references: [id])
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model QuestionResult {
   id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  quizId         String           @db.ObjectId
+  score          Float
   answerSelected AnswerSelected[]
   quizResultId   String           @db.ObjectId
   questionId     String           @db.ObjectId
@@ -131,6 +136,11 @@ model AnswerSelected {
 enum AccessTypeForGroup {
   Public
   Public_access_code
+}
+
+enum QuizResultStatus {
+  Passed
+  Denied
 }
 
 enum MemberStatus {
