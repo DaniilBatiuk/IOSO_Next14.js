@@ -126,3 +126,33 @@ export type QuizHistory = {
     name: string;
   };
 };
+
+export type QuizResult = {
+  id: string;
+  durationOfAttempt: string;
+  status: QuizResultStatus;
+  score: number;
+  questionCount: number;
+  rightAnswerCount: number;
+  createdAt: string;
+  questionResult: {
+    id: string;
+    score: number;
+    question: {
+      id: string;
+      text: string;
+      type: QuestionType;
+      answers: {
+        id: string;
+        text: string;
+        isCorrect: boolean;
+      }[];
+    }[];
+    answerSelected: {
+      id: string;
+      answer: {
+        id: string;
+      };
+    }[];
+  }[];
+};

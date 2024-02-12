@@ -5,11 +5,11 @@ import { Timer } from "@/components/QuizPass/Timer";
 import styles from "@/styles/QuizPass.module.scss";
 import { useMultistepForm } from "@/utils/hooks";
 import { QuizPassType } from "@/utils/lib/@types";
-import { createAnswerSelected } from "@/utils/lib/actions/answerSelectedActions";
-import { createQuestionResult } from "@/utils/lib/actions/questionResultActions";
-import { createQuizResult } from "@/utils/lib/actions/quizResultActions";
+import {
+  createAllQuestionsAnswersAndAnswerSelected,
+  createQuizResult,
+} from "@/utils/lib/actions/quizResultActions";
 import { calculateScore } from "@/utils/lib/helpers/calculateScore";
-import { calculateScoreForOneQuestion } from "@/utils/lib/helpers/calculateScoreForOneQuestion";
 import { QuizService } from "@/utils/services/quiz.servise";
 import { Skeleton } from "@mui/material";
 import { QuestionType, QuizResultStatus } from "@prisma/client";
@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-type Result = {
+export type Result = {
   durationOfAttempt: Date;
   score: number;
   questionCount: number;
@@ -29,7 +29,7 @@ type Result = {
 
 export default function QuizPass({ params }: { params: { id: string } }) {
   const { data: quiz } = useQuery({
-    queryKey: ["Quiz"],
+    queryKey: ["Quiz", params.id],
     queryFn: () => QuizService.getQuiz(params.id),
   });
 
@@ -118,7 +118,6 @@ export default function QuizPass({ params }: { params: { id: string } }) {
     };
 
     setResult(res);
-
     try {
       const { newQuizResultId } = await createQuizResult({
         userId: session.user.id,
@@ -129,30 +128,9 @@ export default function QuizPass({ params }: { params: { id: string } }) {
             ? QuizResultStatus.Denied
             : QuizResultStatus.Passed,
       });
-      for (const question of quizResult) {
-        const { newQuestionResultId } = await createQuestionResult({
-          quizResultId: newQuizResultId,
-          questionId: question.id,
-          score: calculateScoreForOneQuestion(question),
-        });
-        setNewQuizResultId(newQuestionResultId);
 
-        if (newQuestionResultId) {
-          if (Array.isArray(question.selected)) {
-            for (const selectedAnswer of question.selected) {
-              await createAnswerSelected({
-                questionResultId: newQuestionResultId,
-                answerId: selectedAnswer,
-              });
-            }
-          } else {
-            await createAnswerSelected({
-              questionResultId: newQuestionResultId,
-              answerId: question.selected,
-            });
-          }
-        }
-      }
+      setNewQuizResultId(newQuizResultId);
+      await createAllQuestionsAnswersAndAnswerSelected(newQuizResultId, quizResult);
       await queryClient.refetchQueries({
         queryKey: ["quizHistory"],
         type: "active",
@@ -223,7 +201,7 @@ export default function QuizPass({ params }: { params: { id: string } }) {
               isSubmitting ? styles.modal__button__disable : styles.modal__button__activate
             }
             disabled={isSubmitting}
-            onClick={() => router.push(`/Result/${newQuizResultId}`)}
+            onClick={() => router.push(`/Result/${newQuizResultId}?quizName=${quiz?.result.name}`)}
           >
             {isSubmitting ? "Saving..." : "View result"}
           </button>

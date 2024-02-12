@@ -27,7 +27,7 @@ const Group = ({ params }: { params: { id: string } }) => {
   const [age, setAge] = useState("");
 
   const { data } = useQuery({
-    queryKey: ["group"],
+    queryKey: ["group", params.id],
     queryFn: () => GroupsService.getGroup(params.id),
   });
 

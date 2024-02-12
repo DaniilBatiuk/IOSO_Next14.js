@@ -17,6 +17,7 @@
     "@next/font": "^14.1.0",
     "@prisma/client": "^5.8.1",
     "@tanstack/react-query": "^5.17.19",
+    "@tanstack/react-query-devtools": "^5.20.1",
     "@types/bcrypt": "^5.0.2",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",

@@ -1,8 +1,13 @@
 "use client";
 import { ThemeWrapper } from "@/components";
 import styles from "@/styles/Result.module.scss";
+import { QuizResult } from "@/utils/lib/@types";
+import { QuizResultService } from "@/utils/services/quizResult.servise";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type FormData = {
   question: string;
@@ -41,30 +46,47 @@ const INITIAL_DATA: FormData = [
 export default function Result({ params }: { params: { id: string } }) {
   const [data, setData] = useState(INITIAL_DATA);
   const [age, setAge] = useState("");
+  const [quizResultsSelect, setQuizResultsSelect] = useState<QuizResult>();
+  const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const quizName = searchParams.get("quizName");
+
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
+
+  const { data: quizResults } = useQuery({
+    queryKey: ["QuizResults", quizName],
+    queryFn: () => QuizResultService.getQuizResults(session?.user.id, quizName),
+  });
+
+  console.log(quizResultsSelect);
+
+  useEffect(() => {
+    if (quizResults) {
+      setQuizResultsSelect(quizResults.result.filter(quizResult => quizResult.id === params.id)[0]);
+    }
+  }, [quizResults]);
 
   return (
     <ThemeWrapper>
       <div className={styles.result__container}>
         <div className={styles.result__title}>Quiz for english level</div>
         <div className={styles.result__main}>
-          <section className={styles.left}>
-            {/* {data.map((item, index) =>
-              Array.isArray(item.selected) ? (
-                <div className={styles.left__wrapper} key={index}>
+          {/* <section className={styles.left}>
+            {quizResultsSelect?.questionResult.map((questionResult, index) =>
+            questionResult.question.map((question,index) => question.type  === QuestionType.Multiple_choice ?(
+            <div className={styles.left__wrapper} key={index}>
+              <div className={styles.left__title}>Question {index + 1}</div>
+              <CheckboxQuizPass question={question.text} answers={question.answers}  selected={quizResultsSelect.answerSelected}/>
+            </div>) :
+            (<div className={styles.left__wrapper} key={index}>
                   <div className={styles.left__title}>Question {index + 1}</div>
-                  <CheckboxQuizPass {...item} />
-                </div>
-              ) : (
-                <div className={styles.left__wrapper} key={index}>
-                  <div className={styles.left__title}>Question {index + 1}</div>
-                  <RadioQuizPass {...item} />
-                </div>
-              ),
-            )} */}
-          </section>
+                  <RadioQuizPass question={question.text} answers={question.answers} />
+                </div>))
+
+            )}
+          </section> */}
           <aside className={styles.right}>
             <div className={styles.right__title}>Attempt</div>
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>

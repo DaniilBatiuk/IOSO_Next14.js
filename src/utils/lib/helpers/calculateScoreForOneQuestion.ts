@@ -13,7 +13,6 @@ export const calculateScoreForOneQuestion = (question: QuizPassQuestionType) => 
         return acc;
       }, 0);
       const ScoreForOneRightAnswer = parseFloat((1 / countCorrectAnswers).toFixed(2));
-      console.log(ScoreForOneRightAnswer);
       if (question.selected.includes(answer.id) && answer.isCorrect) {
         score += ScoreForOneRightAnswer;
       } else if (question.selected.includes(answer.id)) {
