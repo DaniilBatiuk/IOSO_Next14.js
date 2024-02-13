@@ -59,11 +59,7 @@ export default function QuizPass({ params }: { params: { id: string } }) {
         ? quiz.result.questions.map(question => ({
             id: question.id,
             question: question.text,
-            answers: question.answers.map(answer => ({
-              id: answer.id,
-              answer: answer.text,
-              isCorrect: answer.isCorrect,
-            })),
+            answers: question.answers,
             selected: question.type === QuestionType.Multiple_choice ? [] : "",
           }))
         : [],
@@ -156,12 +152,14 @@ export default function QuizPass({ params }: { params: { id: string } }) {
           <CheckboxQuizPass
             key={index}
             {...question}
+            showResults={false}
             updateFields={fields => updateFields(index, fields)}
           />
         ) : (
           <RadioQuizPass
             key={index}
             {...question}
+            showResults={false}
             updateFields={fields => updateFields(index, fields)}
           />
         ),

@@ -18,6 +18,11 @@ export async function GET(req: NextRequest) {
         id: true,
         name: true,
         sections: {
+          where: {
+            quizzes: {
+              some: {},
+            },
+          },
           select: {
             id: true,
             name: true,
@@ -26,6 +31,7 @@ export async function GET(req: NextRequest) {
                 id: true,
                 name: true,
                 attempts: true,
+                duration: true,
               },
             },
           },

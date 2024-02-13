@@ -5,15 +5,15 @@ type RadioQuizPassData = {
   question: string;
   answers: {
     id: string;
-    answer: string;
+    text: string;
     isCorrect: boolean;
   }[];
   selected: string | string[];
+  showResults: boolean;
 };
 
 type RadioQuizPassProps = RadioQuizPassData & {
   updateFields?: (fields: Partial<RadioQuizPassData>) => void;
-  rightAnswers?: string | string[];
 };
 
 export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
@@ -21,7 +21,7 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
   answers,
   selected,
   updateFields,
-  rightAnswers,
+  showResults,
 }: RadioQuizPassProps) => {
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (updateFields !== undefined) {
@@ -41,20 +41,20 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
         {answers?.map((answer, index) => (
           <FormControlLabel
             key={index}
-            checked={selected === answer.id}
+            checked={selected.includes(answer.id)}
             value={answer.id}
             control={
               <Radio
                 sx={{
                   "&.Mui-checked": {
-                    color:
-                      rightAnswers === answer.id
-                        ? "#24d800"
-                        : rightAnswers !== answer.id &&
-                          selected === answer.id &&
-                          rightAnswers !== undefined
-                        ? "#a80101"
-                        : "#ffffff",
+                    color: !showResults
+                      ? "#ffffff"
+                      : (selected.includes(answer.id) && answer.isCorrect) ||
+                        (!selected.includes(answer.id) && answer.isCorrect)
+                      ? "#24d800"
+                      : selected.includes(answer.id) && !answer.isCorrect
+                      ? "#a80101"
+                      : "#ffffff",
                   },
                 }}
               />
@@ -62,17 +62,17 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
             label={
               <span
                 style={{
-                  color:
-                    rightAnswers === answer.id
-                      ? "#24d800"
-                      : rightAnswers !== answer.id &&
-                        selected === answer.id &&
-                        rightAnswers !== undefined
-                      ? "#a80101"
-                      : "#ffffff",
+                  color: !showResults
+                    ? "#ffffff"
+                    : (selected.includes(answer.id) && answer.isCorrect) ||
+                      (!selected.includes(answer.id) && answer.isCorrect)
+                    ? "#24d800"
+                    : selected.includes(answer.id) && !answer.isCorrect
+                    ? "#a80101"
+                    : "#ffffff",
                 }}
               >
-                {answer.answer}
+                {answer.text}
               </span>
             }
           />

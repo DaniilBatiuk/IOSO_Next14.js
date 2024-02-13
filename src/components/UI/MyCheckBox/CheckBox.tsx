@@ -2,20 +2,24 @@ import { removeItemFromArray } from "@/utils/lib/helpers/removeItemFromArray";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
 type MyCheckBoxData = {
-  answer: { id: string; text: string };
+  answer: {
+    id: string;
+    text: string;
+    isCorrect: boolean;
+  };
   selected: string | string[];
+  showResults: boolean;
 };
 
 type MyCheckBoxProp = MyCheckBoxData & {
   updateFields?: (fields: Partial<MyCheckBoxData>) => void;
-  rightAnswers?: string | string[];
 };
 
 export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
   answer,
   updateFields,
   selected,
-  rightAnswers,
+  showResults,
 }: MyCheckBoxProp) => {
   const handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (updateFields !== undefined) {
@@ -42,11 +46,12 @@ export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
             color: "#ffffff",
 
             "&.Mui-checked": {
-              color: rightAnswers?.includes(answer.id)
+              color: !showResults
+                ? "#ffffff"
+                : (selected.includes(answer.id) && answer.isCorrect) ||
+                  (!selected.includes(answer.id) && answer.isCorrect)
                 ? "#24d800"
-                : rightAnswers !== undefined &&
-                  !rightAnswers.includes(answer.id) &&
-                  selected.includes(answer.id)
+                : selected.includes(answer.id) && !answer.isCorrect
                 ? "#a80101"
                 : "#ffffff",
             },
@@ -56,11 +61,12 @@ export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
       label={
         <span
           style={{
-            color: rightAnswers?.includes(answer.id)
+            color: !showResults
+              ? "#ffffff"
+              : (selected.includes(answer.id) && answer.isCorrect) ||
+                (!selected.includes(answer.id) && answer.isCorrect)
               ? "#24d800"
-              : rightAnswers !== undefined &&
-                !rightAnswers.includes(answer.id) &&
-                selected.includes(answer.id)
+              : selected.includes(answer.id) && !answer.isCorrect
               ? "#a80101"
               : "#ffffff",
           }}

@@ -19,11 +19,13 @@ export const MyQuizzes: React.FC = () => {
   const { data: groups } = useQuery({
     queryKey: ["myGroups"],
     queryFn: () => GroupsService.getMyGroups(session?.user.id),
+    enabled: !!session?.user.id,
   });
 
   const { data: quizzes } = useQuery({
     queryKey: ["myQuizzes"],
     queryFn: () => QuizService.getMyQuizzes(session?.user.id),
+    enabled: !!session?.user.id,
   });
 
   const sortedGroups = useMemo(

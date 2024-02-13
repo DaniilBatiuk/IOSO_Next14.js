@@ -1,5 +1,5 @@
 import axios from "@/axios";
-import { AllGroups, Group, MyManagerGroups, WrapSuccessType } from "../lib/@types";
+import { AllGroups, Group, MyManagerGroups, QuizHistory, WrapSuccessType } from "../lib/@types";
 export const GroupsService = {
   async getMyGroups(id: string | undefined) {
     if (id === undefined) return;
@@ -19,6 +19,13 @@ export const GroupsService = {
   },
   async getGroup(id: string) {
     const { data } = await axios.get<WrapSuccessType<Group>>(`/api/group?id=${id}`);
+    return data;
+  },
+  async getGroupQuizHistory(id: string | undefined, groupId: string) {
+    if (!id) return;
+    const { data } = await axios.get<WrapSuccessType<QuizHistory[]>>(
+      `/api/groupQuizHistory?id=${id}&groupId=${groupId}`,
+    );
     return data;
   },
 };

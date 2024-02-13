@@ -22,6 +22,7 @@ export const useQuizAccess = (
   const { data: groups } = useQuery({
     queryKey: ["myManagerGroups"],
     queryFn: () => GroupsService.getMyManagerGroups(session?.user.id),
+    enabled: !!session?.user.id,
   });
 
   const changeGroupId = useWatch({

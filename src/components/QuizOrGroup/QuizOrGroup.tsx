@@ -2,6 +2,7 @@
 import styles from "@/styles/Quiz.module.scss";
 import { AllGroups, MyQuiz } from "@/utils/lib/@types";
 import { addNewMember } from "@/utils/lib/actions";
+import { formatTime } from "@/utils/lib/helpers/formatTime";
 import { TextField } from "@mui/material";
 import { AccessTypeForGroup, AccessTypeForQuiz } from "@prisma/client";
 import clsx from "clsx";
@@ -49,10 +50,6 @@ export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
         router.push(`/Group/${group.id}`);
       }
     }
-  };
-
-  const formatTime = (value: number) => {
-    return value.toString().padStart(2, "0");
   };
 
   const checkPassword = () => {

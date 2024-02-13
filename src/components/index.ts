@@ -10,6 +10,9 @@ export * from "./CreateQuizOrGroup/QuestionsManager";
 export * from "./CreateQuizOrGroup/QuizAccess";
 export * from "./CreateQuizOrGroup/RestrictionsSettings";
 
+export * from "./Group/GroupQuizHistory";
+export * from "./Group/GroupSections";
+
 export * from "./HeaderFooter/Footer/Footer";
 export * from "./HeaderFooter/Header/Header";
 

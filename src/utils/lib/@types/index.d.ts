@@ -38,6 +38,7 @@ type Group = {
       id: string;
       name: string;
       attempts?: number;
+      duration?: Date;
     }[];
   }[];
   members: {
@@ -107,7 +108,7 @@ export type QuizPassQuestionType = {
   question: string;
   answers: {
     id: string;
-    answer: string;
+    text: string;
     isCorrect: boolean;
   }[];
   selected: string | string[];
@@ -147,7 +148,7 @@ export type QuizResult = {
         text: string;
         isCorrect: boolean;
       }[];
-    }[];
+    };
     answerSelected: {
       id: string;
       answer: {

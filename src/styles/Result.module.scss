@@ -36,6 +36,10 @@
     width: 100%;
   }
 
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
   &__wrapper {
     background-color: rgba(66, 233, 255, 0.08);
     padding: 15px;
@@ -47,6 +51,44 @@
     font-size: clamp(18px, 4vw, 20px);
     font-weight: 700;
     margin-bottom: 30px;
+  }
+
+  &__score {
+    color: rgb(82, 208, 247);
+    font-size: clamp(18px, 4vw, 20px);
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+
+  &__statistic {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      width: calc(50% - 5px);
+      border-radius: 10px;
+      background-color: rgba(66, 233, 255, 0.1);
+      padding: 15px;
+
+      @media (max-width: 693.98px) {
+        width: 100%;
+        padding: 13px;
+        border-radius: 5px;
+      }
+
+      &__text {
+        color: rgb(82, 208, 247);
+        font-size: clamp(18px, 4vw, 20px);
+        font-weight: 600;
+      }
+
+      &__result {
+        font-size: clamp(18px, 4vw, 20px);
+        font-weight: 600;
+      }
+    }
   }
 }
 

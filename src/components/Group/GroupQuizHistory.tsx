@@ -1,25 +1,20 @@
 "use client";
 import styles from "@/styles/Profile.module.scss";
-import { QuizResultService } from "@/utils/services/quizResult.servise";
-import { Skeleton } from "@mui/material";
+import { QuizHistory, WrapSuccessType } from "@/utils/lib/@types";
 import { QuizResultStatus } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-export const QuizHistory: React.FC = () => {
-  const { data: session } = useSession();
+type GroupQuizHistoryProp = {
+  groupQuizHistory: WrapSuccessType<QuizHistory[]> | undefined;
+};
 
-  const { data: quizHistory } = useQuery({
-    queryKey: ["quizHistory"],
-    queryFn: () => QuizResultService.getQuizHistory(session?.user.id),
-    enabled: !!session?.user.id,
-  });
-
+export const GroupQuizHistory: React.FC<GroupQuizHistoryProp> = ({
+  groupQuizHistory,
+}: GroupQuizHistoryProp) => {
   return (
-    <div className={styles.profile__main_2}>
-      {quizHistory ? (
-        quizHistory.success && session?.user.id !== undefined && quizHistory.result.length > 0 ? (
+    <div className={styles.main_2}>
+      {groupQuizHistory && groupQuizHistory.success && groupQuizHistory.result.length > 0 ? (
+        <div className={styles.profile__main_2}>
           <table className={styles.profile__table}>
             <thead>
               <tr>
@@ -33,7 +28,7 @@ export const QuizHistory: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {quizHistory.result.map((quiz, index) => (
+              {groupQuizHistory.result.map((quiz, index) => (
                 <tr className={styles.item} key={index}>
                   <td className={styles.item__title}>{quiz.quiz.name}</td>
                   <td>
@@ -66,20 +61,9 @@ export const QuizHistory: React.FC = () => {
               ))}
             </tbody>
           </table>
-        ) : (
-          <div className="blur">No data yet</div>
-        )
-      ) : (
-        <div className={styles.skeleton2}>
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
-          <Skeleton variant="rectangular" height={67} />
         </div>
+      ) : (
+        <div className={styles.left__no__data}>No data yet</div>
       )}
     </div>
   );
