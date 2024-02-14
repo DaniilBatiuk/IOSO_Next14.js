@@ -1,5 +1,5 @@
 "use client";
-import styles from "@/styles/Profile.module.scss";
+
 import { Button, ButtonGroup } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -7,6 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import clsx from "clsx";
+
+import styles from "@/styles/Profile.module.scss";
 
 type SearchFormProp = {
   activeQuiz: boolean;

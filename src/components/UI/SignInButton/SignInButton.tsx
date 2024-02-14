@@ -1,9 +1,10 @@
 "use client";
 
-import { LINKS } from "@/utils/config/links";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+
+import { LINKS } from "@/utils/config/links";
 
 type SignInButtonProp = {
   setLinkActiveUnderLine: React.Dispatch<React.SetStateAction<number>>;

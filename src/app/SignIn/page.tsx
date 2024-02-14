@@ -1,10 +1,13 @@
+import Image from "next/image";
+import Link from "next/link";
+
+import { LINKS } from "@/utils/config/links";
+
+import styles from "@/styles/SignIn.module.scss";
+
 import SignInBack from "@/../public/SignInBack.png";
 import SignInFront from "@/../public/SignInFront.png";
 import { SignInForm, ThemeWrapper } from "@/components";
-import styles from "@/styles/SignIn.module.scss";
-import { LINKS } from "@/utils/config/links";
-import Image from "next/image";
-import Link from "next/link";
 
 interface SignInProps {
   searchParams: {

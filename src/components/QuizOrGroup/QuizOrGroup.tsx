@@ -1,8 +1,6 @@
 "use client";
-import styles from "@/styles/Quiz.module.scss";
-import { AllGroups, MyQuiz } from "@/utils/lib/@types";
-import { addNewMember } from "@/utils/lib/actions";
-import { formatTime } from "@/utils/lib/helpers/formatTime";
+
+import { Modal, ThemeWrapper } from "..";
 import { TextField } from "@mui/material";
 import { AccessTypeForGroup, AccessTypeForQuiz } from "@prisma/client";
 import clsx from "clsx";
@@ -11,7 +9,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { Modal, ThemeWrapper } from "..";
+
+import styles from "@/styles/Quiz.module.scss";
+
+import { formatTime } from "@/utils/lib/helpers/formatTime";
+
+import { AllGroups, MyQuiz } from "@/utils/lib/@types";
+import { addNewMember } from "@/utils/lib/actions";
 
 type QuizOrGroupProp = {
   group?: AllGroups;
@@ -154,8 +158,8 @@ export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
                 ? "Available"
                 : "Access key"
               : quiz?.accessType === AccessTypeForQuiz.Public
-              ? "Available"
-              : "Access key"}
+                ? "Available"
+                : "Access key"}
           </div>
         </div>
         <div className={styles.quiz__item_deadline}>

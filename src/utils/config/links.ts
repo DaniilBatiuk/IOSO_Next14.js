@@ -1,4 +1,5 @@
 export const LINKS = {
+  Home: "/",
   SignIn: "/SignIn",
   SignUp: "/SignUp",
   CreateQuiz: "/CreateQuiz",

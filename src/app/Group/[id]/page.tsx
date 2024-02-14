@@ -1,12 +1,14 @@
 "use client";
 
-import { GroupQuizHistory, GroupSections, ThemeWrapper } from "@/components";
-import styles from "@/styles/Group.module.scss";
-import { GroupsService } from "@/utils/services/group.service";
 import { Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+
+import styles from "@/styles/Group.module.scss";
+
+import { GroupQuizHistory, GroupSections, ThemeWrapper } from "@/components";
+import { GroupsService } from "@/utils/services/group.service";
 
 const Group = ({ params }: { params: { id: string } }) => {
   const [activeMenu, setActiveMenu] = useState<string>("Group");

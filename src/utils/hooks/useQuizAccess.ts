@@ -1,9 +1,11 @@
 "use client";
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
+
 import { createSection } from "../lib/actions";
 import { CreateQuizType } from "../lib/validators/create-quiz-validator";
 import { GroupsService } from "../services/group.service";
@@ -30,9 +32,22 @@ export const useQuizAccess = (
     name: `groupId`,
   });
 
+  const changeSectionId = useWatch({
+    control,
+    name: `sectionId`,
+  });
+
   useEffect(() => {
     setValue("sectionId", "");
   }, [changeGroupId]);
+
+  useEffect(() => {
+    if (changeSectionId) {
+      setValue("sectionId", changeSectionId);
+    } else {
+      setValue("sectionId", "");
+    }
+  }, []);
 
   useEffect(() => {
     if (

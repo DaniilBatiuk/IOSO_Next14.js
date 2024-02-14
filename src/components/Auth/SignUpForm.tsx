@@ -1,13 +1,17 @@
 "use client";
-import styles from "@/styles/SignIn.module.scss";
-import { registerUser } from "@/utils/lib/actions";
-import { SignUpFormScheme, SignUpFormType } from "@/utils/lib/validators/sign-up-form-validator";
+
+import { Button } from "..";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { Button } from "..";
+
+import styles from "@/styles/SignIn.module.scss";
+
+import { SignUpFormScheme, SignUpFormType } from "@/utils/lib/validators/sign-up-form-validator";
+
+import { registerUser } from "@/utils/lib/actions";
 
 export const SignUpForm: React.FC = () => {
   const router = useRouter();

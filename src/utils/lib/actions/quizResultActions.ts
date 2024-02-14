@@ -1,9 +1,11 @@
 "use server";
 
 import { QuizResult } from "@prisma/client";
+
 import { QuizPassType } from "../@types";
 import { calculateScoreForOneQuestion } from "../helpers/calculateScoreForOneQuestion";
 import prisma from "../prisma";
+
 import { createAnswerSelected } from "./answerSelectedActions";
 import { createQuestionResult } from "./questionResultActions";
 

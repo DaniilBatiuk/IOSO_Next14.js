@@ -19,8 +19,14 @@ export async function GET(req: NextRequest) {
       select: {
         id: true,
         name: true,
+        attempts: true,
         percentagePass: true,
         duration: true,
+        deadline: true,
+        accessType: true,
+        accessCode: true,
+        groupId: true,
+        sectionId: true,
         questions: {
           select: {
             id: true,
@@ -33,6 +39,12 @@ export async function GET(req: NextRequest) {
                 isCorrect: true,
               },
             },
+          },
+        },
+        section: {
+          select: {
+            id: true,
+            name: true,
           },
         },
       },

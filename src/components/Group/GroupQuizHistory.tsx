@@ -1,8 +1,11 @@
 "use client";
-import styles from "@/styles/Profile.module.scss";
-import { QuizHistory, WrapSuccessType } from "@/utils/lib/@types";
+
 import { QuizResultStatus } from "@prisma/client";
 import Link from "next/link";
+
+import styles from "@/styles/Profile.module.scss";
+
+import { QuizHistory, WrapSuccessType } from "@/utils/lib/@types";
 
 type GroupQuizHistoryProp = {
   groupQuizHistory: WrapSuccessType<QuizHistory[]> | undefined;

@@ -1,4 +1,5 @@
 "use client";
+
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 export const ThemeWrapper = ({ children }: { children: React.ReactNode }) => {

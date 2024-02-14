@@ -1,7 +1,9 @@
-import { wrapSuccess } from "@/utils/lib/helpers/wrapSuccess";
-import prisma from "@/utils/lib/prisma";
 import { MemberStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+
+import { wrapSuccess } from "@/utils/lib/helpers/wrapSuccess";
+
+import prisma from "@/utils/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {

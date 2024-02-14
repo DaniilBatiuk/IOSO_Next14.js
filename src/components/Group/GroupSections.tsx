@@ -1,15 +1,18 @@
 "use client";
 
-import { Modal } from "@/components";
-import styles from "@/styles/Group.module.scss";
-import { Group, WrapSuccessType } from "@/utils/lib/@types";
-import { formatTime } from "@/utils/lib/helpers/formatTime";
-import { stringAvatar } from "@/utils/lib/helpers/stringAvatar";
 import { Avatar, Skeleton } from "@mui/material";
 import { MemberStatus } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+
+import styles from "@/styles/Group.module.scss";
+
+import { formatTime } from "@/utils/lib/helpers/formatTime";
+import { stringAvatar } from "@/utils/lib/helpers/stringAvatar";
+
+import { Modal } from "@/components";
+import { Group, WrapSuccessType } from "@/utils/lib/@types";
 
 type GroupSectionsProp = {
   group: WrapSuccessType<Group> | undefined;

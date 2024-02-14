@@ -1,7 +1,6 @@
 "use client";
-import styles from "@/styles/Quiz.module.scss";
-import { AllGroups, MyQuiz } from "@/utils/lib/@types";
-import { removeGroup, removeMember, updateQuiz } from "@/utils/lib/actions";
+
+import { Modal } from "..";
 import { MemberStatus, QuizStatus } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -10,7 +9,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { Modal } from "..";
+
+import styles from "@/styles/Quiz.module.scss";
+
+import { AllGroups, MyQuiz } from "@/utils/lib/@types";
+import { removeGroup, removeMember, updateQuizStatus } from "@/utils/lib/actions";
+import { formatTime } from "@/utils/lib/helpers";
 
 type MyQuizOrGroupProp = {
   group?: AllGroups;
@@ -30,18 +34,18 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
   const { data: session } = useSession();
 
   const handleRedirect = () => {
-    // if (buttonText === "Activate") {
-    //   router.push("/UpdateQuiz/1");
-    // }
+    if (quiz?.status === QuizStatus.In_progress) {
+      router.push(`/UpdateQuiz/${quiz?.id}`);
+    }
   };
 
   const deactivateHandler = async () => {
     if (quiz) {
-      const error = await updateQuiz(quiz.id, QuizStatus.In_progress);
+      const error = await updateQuizStatus(quiz.id, QuizStatus.In_progress);
       if (error) {
         toast.error(error);
       } else {
-        toast.success("You successfully activated the quiz.");
+        toast.success("You successfully deactivated the quiz.");
 
         await queryClient.refetchQueries({
           queryKey: ["myQuizzes"],
@@ -56,7 +60,7 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
     let error = null;
 
     if (quiz) {
-      error = await updateQuiz(quiz.id, QuizStatus.Active);
+      error = await updateQuizStatus(quiz.id, QuizStatus.Active);
       if (error) {
         toast.error(error);
       } else {
@@ -95,10 +99,6 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
     }
   };
 
-  const formatTime = (value: number) => {
-    return value.toString().padStart(2, "0");
-  };
-
   return (
     <div
       onClick={handleRedirect}
@@ -106,8 +106,8 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
         [styles.quiz__item__active]:
           (group && id !== group?.creator.id) || (quiz && quiz.status === QuizStatus.Active),
         [styles.quiz__item__ended]: quiz && quiz.status === QuizStatus.Ended,
-        [styles.quiz__item__progress]:
-          group?.creator.id === id || (quiz && quiz.status === QuizStatus.In_progress),
+        [styles.quiz__item__progress]: group?.creator.id === id,
+        [styles.quiz__item__progress_quiz]: quiz && quiz.status === QuizStatus.In_progress,
       })}
     >
       <Modal active={activeModal2} setActive={setActiveModal2} maxDivWidth="600px">
@@ -145,9 +145,9 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
             {quiz
               ? "You will be able to pass the quiz after activation"
               : (group?.members?.filter(member => member.status === MemberStatus.Manager)?.length ??
-                  0) <= 1 && group?.creator.id === session?.user.id
-              ? "Group will be removed"
-              : "You will be removed from the group"}
+                    0) <= 1 && group?.creator.id === session?.user.id
+                ? "Group will be removed"
+                : "You will be removed from the group"}
           </div>
         </div>
         <div className={styles.modal__buttons}>
@@ -178,10 +178,10 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
                 ? "Manager"
                 : "Participant"
               : quiz?.status === QuizStatus.In_progress
-              ? "In progress"
-              : quiz?.status === QuizStatus.Active
-              ? "Active"
-              : "Ended"}
+                ? "In progress"
+                : quiz?.status === QuizStatus.Active
+                  ? "Active"
+                  : "Ended"}
           </div>
         </div>
         <div className={styles.quiz__item_deadline}>

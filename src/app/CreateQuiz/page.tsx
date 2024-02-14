@@ -1,5 +1,21 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AccessTypeForQuiz } from "@prisma/client";
+import { clsx } from "clsx";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
+import { ICONS } from "@/utils/config/icons";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
+import { CreateQuizFormSchema, CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+
 import {
   BasicSettings,
   QuestionsManager,
@@ -7,24 +23,14 @@ import {
   RestrictionsSettings,
   ThemeWrapper,
 } from "@/components";
-import styles from "@/styles/CreateQuiz.module.scss";
-import { ICONS } from "@/utils/config/icons";
 import { createAnswer, createQuestion, createQuiz } from "@/utils/lib/actions";
-import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
-import { CreateQuizFormSchema, CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AccessTypeForQuiz } from "@prisma/client";
-import { clsx } from "clsx";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
 export default function CreateQuiz() {
   const [active, setActive] = useState<number>(0);
   const [menuActive, setMenuActive] = useState<boolean>(true);
   const [accessType, setAccessType] = useState<AccessTypeForQuiz>(AccessTypeForQuiz.Private);
   const { data: session } = useSession();
+  const router = useRouter();
 
   const {
     register,
@@ -158,6 +164,7 @@ export default function CreateQuiz() {
           }
         }
 
+        router.push(`/Profile/${session.user.id}`);
         toast.success("Quiz created successfully.");
       }
     } catch (error) {
@@ -260,10 +267,10 @@ export default function CreateQuiz() {
               {active === 0
                 ? "Basic settings"
                 : active === 1
-                ? "Questions manager"
-                : active === 2
-                ? "Test access"
-                : "Restriction settings"}
+                  ? "Questions manager"
+                  : active === 2
+                    ? "Test access"
+                    : "Restriction settings"}
             </div>
           </div>
           {active === 0 ? (

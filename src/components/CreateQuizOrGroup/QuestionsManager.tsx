@@ -1,7 +1,6 @@
 "use client";
 
-import styles from "@/styles/CreateQuiz.module.scss";
-import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+import { OneQuizCreate } from "..";
 import { Skeleton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -12,7 +11,10 @@ import {
   UseFormWatch,
   useFieldArray,
 } from "react-hook-form";
-import { OneQuizCreate } from "..";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 
 type Prop = {
   control: Control<CreateQuizType>;

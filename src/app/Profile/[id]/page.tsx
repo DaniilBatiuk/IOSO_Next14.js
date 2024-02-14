@@ -1,14 +1,13 @@
-import ProfileSvg from "@/../public/Profile.svg";
-import { ButtonsNew, PieChartActivity, ProfileList, ThemeWrapper } from "@/components";
+import Image from "next/image";
 
 import styles from "@/styles/Profile.module.scss";
+
+import ProfileSvg from "@/../public/Profile.svg";
+import { ButtonsNew, ProfileList, ThemeWrapper } from "@/components";
 import { FindUserById } from "@/utils/lib/actions";
-import Image from "next/image";
-import { Suspense } from "react";
 
 export default async function Profile({ params }: { params: { id: string } }) {
   const user = await FindUserById(params.id);
-
   return (
     <ThemeWrapper>
       <div className={styles.profile__container}>
@@ -26,9 +25,9 @@ export default async function Profile({ params }: { params: { id: string } }) {
           <div className={styles.info__right}>
             <div className={styles.info__right__item}>
               <div className={styles.info__title}>Activity</div>
-              <Suspense fallback={<div className={styles.profile__blur}>Loading data...</div>}>
+              {/* <Suspense fallback={<div className={styles.profile__blur}>Loading data...</div>}>
                 <PieChartActivity />
-              </Suspense>
+              </Suspense> */}
             </div>
           </div>
         </section>

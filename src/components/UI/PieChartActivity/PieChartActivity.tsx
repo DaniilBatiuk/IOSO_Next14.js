@@ -1,4 +1,5 @@
 "use client";
+
 import { PieChart } from "@mui/x-charts";
 
 const DATA = [

@@ -1,9 +1,5 @@
 "use client";
 
-import styles from "@/styles/CreateQuiz.module.scss";
-import { ICONS } from "@/utils/config/icons";
-import { useQuizEffect } from "@/utils/hooks";
-import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 import {
   Checkbox,
   FormControl,
@@ -23,6 +19,14 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+
+import { ICONS } from "@/utils/config/icons";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+
+import { useQuizEffect } from "@/utils/hooks";
 
 type OneQuizCreateProp = {
   numberQuiz: number;

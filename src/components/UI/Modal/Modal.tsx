@@ -1,5 +1,7 @@
-import "@/styles/Modal.scss";
 import React from "react";
+
+import "@/styles/Modal.scss";
+
 export interface ModalProps {
   active: boolean;
   children: React.ReactNode;

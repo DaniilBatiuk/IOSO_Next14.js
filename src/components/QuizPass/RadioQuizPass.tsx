@@ -1,5 +1,6 @@
-import styles from "@/styles/QuizPass.module.scss";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+
+import styles from "@/styles/QuizPass.module.scss";
 
 type RadioQuizPassData = {
   question: string;
@@ -50,11 +51,11 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
                     color: !showResults
                       ? "#ffffff"
                       : (selected.includes(answer.id) && answer.isCorrect) ||
-                        (!selected.includes(answer.id) && answer.isCorrect)
-                      ? "#24d800"
-                      : selected.includes(answer.id) && !answer.isCorrect
-                      ? "#a80101"
-                      : "#ffffff",
+                          (!selected.includes(answer.id) && answer.isCorrect)
+                        ? "#24d800"
+                        : selected.includes(answer.id) && !answer.isCorrect
+                          ? "#a80101"
+                          : "#ffffff",
                   },
                 }}
               />
@@ -65,11 +66,11 @@ export const RadioQuizPass: React.FC<RadioQuizPassProps> = ({
                   color: !showResults
                     ? "#ffffff"
                     : (selected.includes(answer.id) && answer.isCorrect) ||
-                      (!selected.includes(answer.id) && answer.isCorrect)
-                    ? "#24d800"
-                    : selected.includes(answer.id) && !answer.isCorrect
-                    ? "#a80101"
-                    : "#ffffff",
+                        (!selected.includes(answer.id) && answer.isCorrect)
+                      ? "#24d800"
+                      : selected.includes(answer.id) && !answer.isCorrect
+                        ? "#a80101"
+                        : "#ffffff",
                 }}
               >
                 {answer.text}

@@ -1,15 +1,18 @@
 "use client";
 
-import { QuizOrGroup, SearchForm, ThemeWrapper } from "@/components";
-import styles from "@/styles/Quizzes.module.scss";
-import { AllGroups, MyQuiz } from "@/utils/lib/@types";
-import { filterAndSortItems } from "@/utils/lib/helpers/filterAndSortItems";
-import { GroupsService } from "@/utils/services/group.service";
-import { QuizService } from "@/utils/services/quiz.servise";
 import { Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useDeferredValue, useMemo, useState } from "react";
+
+import styles from "@/styles/Quizzes.module.scss";
+
+import { filterAndSortItems } from "@/utils/lib/helpers/filterAndSortItems";
+
+import { QuizOrGroup, SearchForm, ThemeWrapper } from "@/components";
+import { AllGroups, MyQuiz } from "@/utils/lib/@types";
+import { GroupsService } from "@/utils/services/group.service";
+import { QuizService } from "@/utils/services/quiz.servise";
 
 export default function Trends() {
   const [activeQuiz, setActiveQuiz] = useState<boolean>(true);

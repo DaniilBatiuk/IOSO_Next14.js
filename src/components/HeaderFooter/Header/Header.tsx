@@ -1,12 +1,15 @@
 "use client";
 
-import { SignInButton } from "@/components";
-import "@/styles/Header.scss";
-import { LINKS } from "@/utils/config/links";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+import { LINKS } from "@/utils/config/links";
+
+import "@/styles/Header.scss";
+
+import { SignInButton } from "@/components";
 
 export const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -31,13 +34,15 @@ export const Header: React.FC = () => {
   }, [pathname]);
 
   useEffect(() => {
-    const wrapperElement = document.getElementById("wrapper");
+    if (isVisible) {
+      const wrapperElement = document.getElementById("wrapper");
 
-    if (wrapperElement !== null) {
-      const height = wrapperElement.getBoundingClientRect().height + 200;
-      setHeight(height);
+      if (wrapperElement !== null) {
+        const height = wrapperElement.getBoundingClientRect().height;
+        setHeight(height);
+      }
     }
-  }, []);
+  }, [isVisible]);
 
   const menuOpen = () => {
     document.documentElement.classList.toggle("menu-open");

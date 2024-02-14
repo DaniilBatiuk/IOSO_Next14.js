@@ -1,7 +1,5 @@
 "use client";
-import styles from "@/styles/CreateQuiz.module.scss";
-import { useRestrictionsSettings } from "@/utils/hooks";
-import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -11,6 +9,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { Control, Controller, UseFormSetValue } from "react-hook-form";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+
+import { useRestrictionsSettings } from "@/utils/hooks";
 
 type RestrictionsSettings = {
   control: Control<CreateQuizType>;

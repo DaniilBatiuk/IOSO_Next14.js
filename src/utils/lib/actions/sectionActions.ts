@@ -1,6 +1,7 @@
 "use server";
 
 import { Section } from "@prisma/client";
+
 import prisma from "../prisma";
 
 export async function createSection(sections: Omit<Section, "id" | "createdAt" | "updatedAt">) {

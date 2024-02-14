@@ -1,7 +1,10 @@
 "use client";
-import styles from "@/styles/QuizPass.module.scss";
-import { useNow } from "@/utils/hooks";
+
 import { FormEvent, useEffect, useState } from "react";
+
+import styles from "@/styles/QuizPass.module.scss";
+
+import { useNow } from "@/utils/hooks";
 
 type TimerProp = {
   duration: string;

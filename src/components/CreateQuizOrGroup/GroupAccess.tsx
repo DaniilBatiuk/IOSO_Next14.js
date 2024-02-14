@@ -1,12 +1,15 @@
 "use client";
-import Information from "@/../public/Information.svg";
-import Planet from "@/../public/Planet.svg";
-import Private from "@/../public/Private.svg";
-import styles from "@/styles/CreateQuiz.module.scss";
+
 import TextField from "@mui/material/TextField";
 import { AccessTypeForGroup } from "@prisma/client";
 import { clsx } from "clsx";
 import Image from "next/image";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import Information from "@/../public/Information.svg";
+import Planet from "@/../public/Planet.svg";
+import Private from "@/../public/Private.svg";
 
 type GroupAccessProp = {
   errors: any;

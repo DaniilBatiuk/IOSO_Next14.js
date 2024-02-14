@@ -1,9 +1,11 @@
-import { Footer, Header, SessionWrapper } from "@/components";
-import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import "@/styles/globals.scss";
+
+import { Footer, Header, SessionWrapper } from "@/components";
 
 const inter = Inter({
   subsets: ["latin"],

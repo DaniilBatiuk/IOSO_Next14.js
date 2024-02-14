@@ -1,16 +1,5 @@
 "use client";
 
-import { CheckboxQuizPass, Modal, RadioQuizPass, ThemeWrapper } from "@/components";
-import { Timer } from "@/components/QuizPass/Timer";
-import styles from "@/styles/QuizPass.module.scss";
-import { useMultistepForm } from "@/utils/hooks";
-import { QuizPassType } from "@/utils/lib/@types";
-import {
-  createAllQuestionsAnswersAndAnswerSelected,
-  createQuizResult,
-} from "@/utils/lib/actions/quizResultActions";
-import { calculateScore } from "@/utils/lib/helpers/calculateScore";
-import { QuizService } from "@/utils/services/quiz.servise";
 import { Skeleton } from "@mui/material";
 import { QuestionType, QuizResultStatus } from "@prisma/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,6 +8,22 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
+import { Timer } from "@/components/QuizPass/Timer";
+
+import styles from "@/styles/QuizPass.module.scss";
+
+import {
+  createAllQuestionsAnswersAndAnswerSelected,
+  createQuizResult,
+} from "@/utils/lib/actions/quizResultActions";
+
+import { calculateScore } from "@/utils/lib/helpers/calculateScore";
+
+import { CheckboxQuizPass, Modal, RadioQuizPass, ThemeWrapper } from "@/components";
+import { useMultistepForm } from "@/utils/hooks";
+import { QuizPassType } from "@/utils/lib/@types";
+import { QuizService } from "@/utils/services/quiz.servise";
 
 export type Result = {
   durationOfAttempt: Date;

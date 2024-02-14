@@ -1,13 +1,16 @@
-import Svg1 from "@/../public/Icon.svg";
+import Image from "next/image";
+import Link from "next/link";
+
+import { LINKS } from "@/utils/config/links";
+
+import styles from "@/styles/Home.module.scss";
+
 import Svg2 from "@/../public/Icon1.svg";
 import Svg3 from "@/../public/Icon2.svg";
+import Svg1 from "@/../public/Icon.svg";
 import Main from "@/../public/Main3.png";
 import SubMain from "@/../public/SubMain.png";
 import { Button } from "@/components";
-import styles from "@/styles/Home.module.scss";
-import { LINKS } from "@/utils/config/links";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function Home() {
   return (

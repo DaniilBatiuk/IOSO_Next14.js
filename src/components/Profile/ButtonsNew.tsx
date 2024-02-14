@@ -1,8 +1,11 @@
 "use client";
-import styles from "@/styles/Profile.module.scss";
-import { LINKS } from "@/utils/config/links";
+
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+
+import { LINKS } from "@/utils/config/links";
+
+import styles from "@/styles/Profile.module.scss";
 
 type ButtonsNewProp = {
   id: string;

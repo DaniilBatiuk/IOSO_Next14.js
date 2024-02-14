@@ -1,6 +1,7 @@
 "use server";
 
 import { Answer } from "@prisma/client";
+
 import prisma from "../prisma";
 
 export async function createAnswer(answer: Omit<Answer, "id" | "createdAt" | "updatedAt">) {
@@ -11,4 +12,12 @@ export async function createAnswer(answer: Omit<Answer, "id" | "createdAt" | "up
   });
 
   return { answerId: newAnswer.id };
+}
+
+export async function deleteAnswers(id: string) {
+  await prisma.answer.deleteMany({
+    where: {
+      questionId: id,
+    },
+  });
 }

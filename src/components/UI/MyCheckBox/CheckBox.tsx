@@ -1,5 +1,6 @@
-import { removeItemFromArray } from "@/utils/lib/helpers/removeItemFromArray";
 import { Checkbox, FormControlLabel } from "@mui/material";
+
+import { removeItemFromArray } from "@/utils/lib/helpers/removeItemFromArray";
 
 type MyCheckBoxData = {
   answer: {
@@ -49,11 +50,11 @@ export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
               color: !showResults
                 ? "#ffffff"
                 : (selected.includes(answer.id) && answer.isCorrect) ||
-                  (!selected.includes(answer.id) && answer.isCorrect)
-                ? "#24d800"
-                : selected.includes(answer.id) && !answer.isCorrect
-                ? "#a80101"
-                : "#ffffff",
+                    (!selected.includes(answer.id) && answer.isCorrect)
+                  ? "#24d800"
+                  : selected.includes(answer.id) && !answer.isCorrect
+                    ? "#a80101"
+                    : "#ffffff",
             },
           }}
         />
@@ -64,11 +65,11 @@ export const MyCheckBox: React.FC<MyCheckBoxProp> = ({
             color: !showResults
               ? "#ffffff"
               : (selected.includes(answer.id) && answer.isCorrect) ||
-                (!selected.includes(answer.id) && answer.isCorrect)
-              ? "#24d800"
-              : selected.includes(answer.id) && !answer.isCorrect
-              ? "#a80101"
-              : "#ffffff",
+                  (!selected.includes(answer.id) && answer.isCorrect)
+                ? "#24d800"
+                : selected.includes(answer.id) && !answer.isCorrect
+                  ? "#a80101"
+                  : "#ffffff",
           }}
         >
           {answer.text}

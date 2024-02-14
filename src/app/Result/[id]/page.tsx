@@ -1,8 +1,5 @@
 "use client";
-import { CheckboxQuizPass, RadioQuizPass, ThemeWrapper } from "@/components";
-import styles from "@/styles/Result.module.scss";
-import { QuizResult } from "@/utils/lib/@types";
-import { QuizResultService } from "@/utils/services/quizResult.servise";
+
 import {
   FormControl,
   InputLabel,
@@ -16,6 +13,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import styles from "@/styles/Result.module.scss";
+
+import { CheckboxQuizPass, RadioQuizPass, ThemeWrapper } from "@/components";
+import { QuizResult } from "@/utils/lib/@types";
+import { QuizResultService } from "@/utils/services/quizResult.servise";
 
 export default function Result({ params }: { params: { id: string } }) {
   const [quizResultsSelect, setQuizResultsSelect] = useState<QuizResult>();

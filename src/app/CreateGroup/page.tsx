@@ -1,14 +1,5 @@
 "use client";
 
-import { BasicSettings, GroupAccess, ThemeWrapper } from "@/components";
-import styles from "@/styles/CreateQuiz.module.scss";
-import { ICONS } from "@/utils/config/icons";
-import { createNewGroup } from "@/utils/lib/actions";
-import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
-import {
-  CreateGroupFormScheme,
-  CreateGroupType,
-} from "@/utils/lib/validators/create-group-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForGroup } from "@prisma/client";
 import { clsx } from "clsx";
@@ -17,6 +8,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+
+import { ICONS } from "@/utils/config/icons";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
+import {
+  CreateGroupFormScheme,
+  CreateGroupType,
+} from "@/utils/lib/validators/create-group-validator";
+
+import { BasicSettings, GroupAccess, ThemeWrapper } from "@/components";
+import { createNewGroup } from "@/utils/lib/actions";
 
 export default function CreateGroup() {
   const { data: session } = useSession();

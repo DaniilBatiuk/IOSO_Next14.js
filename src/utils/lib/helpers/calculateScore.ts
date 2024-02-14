@@ -1,4 +1,5 @@
 import { QuizPassType } from "../@types";
+
 import { calculateScoreForOneQuestion } from "./calculateScoreForOneQuestion";
 
 export const calculateScore = (quizResult: QuizPassType) => {

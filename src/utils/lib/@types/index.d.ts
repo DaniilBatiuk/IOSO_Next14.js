@@ -4,7 +4,27 @@ import {
   MemberStatus,
   QuizResultStatus,
   QuizStatus,
+  User,
 } from "@prisma/client";
+
+declare module "next-auth" {
+  interface Session {
+    user: User;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    user: User;
+  }
+}
+
+declare module NodeJS {
+  interface ProcessEnv {
+    SMPT_EMAIL: string;
+    SMTP_GMAIL_PASS: string;
+  }
+}
 
 type AllGroups = {
   id: string;
@@ -156,4 +176,31 @@ export type QuizResult = {
       };
     }[];
   }[];
+};
+
+type UpdateQuiz = {
+  id: string;
+  name: string;
+  attempts?: number;
+  percentagePass: number;
+  duration?: Date;
+  deadline?: Date;
+  accessType: AccessTypeForQuiz;
+  accessCode?: string;
+  groupId?: string;
+  sectionId?: string;
+  questions: {
+    id: string;
+    text: string;
+    type: QuestionType;
+    answers: {
+      id: string;
+      text: string;
+      isCorrect: boolean;
+    }[];
+  }[];
+  section?: {
+    id: string;
+    name: string;
+  };
 };

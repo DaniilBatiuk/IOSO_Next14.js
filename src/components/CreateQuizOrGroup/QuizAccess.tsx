@@ -1,14 +1,6 @@
 "use client";
-import Create from "@/../public/Create.svg";
-import Exist from "@/../public/Exist.svg";
-import Group from "@/../public/Group.svg";
-import Information from "@/../public/Information.svg";
-import Person from "@/../public/Person.svg";
-import Planet from "@/../public/Planet.svg";
-import Private from "@/../public/Private.svg";
-import styles from "@/styles/CreateQuiz.module.scss";
-import { useQuizAccess } from "@/utils/hooks";
-import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+
+import { Modal } from "..";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,7 +16,19 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import { Modal } from "..";
+
+import styles from "@/styles/CreateQuiz.module.scss";
+
+import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
+
+import Create from "@/../public/Create.svg";
+import Exist from "@/../public/Exist.svg";
+import Group from "@/../public/Group.svg";
+import Information from "@/../public/Information.svg";
+import Person from "@/../public/Person.svg";
+import Planet from "@/../public/Planet.svg";
+import Private from "@/../public/Private.svg";
+import { useQuizAccess } from "@/utils/hooks";
 
 type QuizAccessProp = {
   accessType: AccessTypeForQuiz;
@@ -159,10 +163,10 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
           {accessType === AccessTypeForQuiz.Private
             ? "Only you will be able to take the quiz"
             : accessType === AccessTypeForQuiz.Public_access_code
-            ? "Quiz access will be possible only with an individual access code"
-            : accessType === AccessTypeForQuiz.Public
-            ? "Anyone will be able to take the quiz"
-            : "The quiz will only be available only to members of your group"}
+              ? "Quiz access will be possible only with an individual access code"
+              : accessType === AccessTypeForQuiz.Public
+                ? "Anyone will be able to take the quiz"
+                : "The quiz will only be available only to members of your group"}
         </div>
       </div>
       <div className={`${styles.form}`}>
@@ -236,7 +240,6 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
                 )}
                 name="sectionId"
                 control={control}
-                defaultValue={""}
               />
             </FormControl>
           </>

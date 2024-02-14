@@ -9,6 +9,14 @@
   border-left: 4px rgb(206, 193, 17) solid !important;
 }
 
+.quiz__item__progress_quiz {
+  border-left: 4px rgb(206, 193, 17) solid !important;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(55, 255, 255, 0.2);
+  }
+}
+
 .quiz__item__ended {
   border-left: 4px rgb(148, 148, 148) solid !important;
 }

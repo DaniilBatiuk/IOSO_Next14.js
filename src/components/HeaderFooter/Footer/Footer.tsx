@@ -1,8 +1,10 @@
 "use client";
-import styles from "@/styles/Footer.module.scss";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import styles from "@/styles/Footer.module.scss";
 
 export const Footer: React.FC = () => {
   const [displayActive, setDisplayActive] = useState<boolean>(false);

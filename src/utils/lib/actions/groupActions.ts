@@ -1,6 +1,7 @@
 "use server";
 
 import { Group, MemberStatus } from "@prisma/client";
+
 import prisma from "../prisma";
 
 export async function createNewGroup(group: Omit<Group, "id" | "createdAt" | "updatedAt">) {

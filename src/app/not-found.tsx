@@ -1,8 +1,10 @@
-import Svg from "@/../public/404.svg";
-import { Button } from "@/components";
-import styles from "@/styles/Error.module.scss";
 import Image from "next/image";
 import Link from "next/link";
+
+import styles from "@/styles/Error.module.scss";
+
+import Svg from "@/../public/404.svg";
+import { Button } from "@/components";
 
 export default function NotFound() {
   return (

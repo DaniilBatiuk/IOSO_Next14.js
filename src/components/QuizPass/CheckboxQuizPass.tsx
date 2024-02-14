@@ -1,5 +1,6 @@
-import styles from "@/styles/QuizPass.module.scss";
 import { MyCheckBox } from "..";
+
+import styles from "@/styles/QuizPass.module.scss";
 
 type CheckboxQuizPassData = {
   question: string;

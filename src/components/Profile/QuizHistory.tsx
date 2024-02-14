@@ -1,11 +1,14 @@
 "use client";
-import styles from "@/styles/Profile.module.scss";
-import { QuizResultService } from "@/utils/services/quizResult.servise";
+
 import { Skeleton } from "@mui/material";
 import { QuizResultStatus } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+
+import styles from "@/styles/Profile.module.scss";
+
+import { QuizResultService } from "@/utils/services/quizResult.servise";
 
 export const QuizHistory: React.FC = () => {
   const { data: session } = useSession();

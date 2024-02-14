@@ -1,6 +1,8 @@
 "use client";
-import styles from "@/styles/CreateQuiz.module.scss";
+
 import TextField from "@mui/material/TextField";
+
+import styles from "@/styles/CreateQuiz.module.scss";
 
 type BasicSettingsProp = {
   label: string;
