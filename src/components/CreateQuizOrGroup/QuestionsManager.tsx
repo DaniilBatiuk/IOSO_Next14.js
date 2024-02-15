@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import {
   Control,
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
@@ -22,10 +23,11 @@ type Prop = {
   setValue: UseFormSetValue<CreateQuizType>;
   watch: UseFormWatch<CreateQuizType>;
   errors: FieldErrors<CreateQuizType>;
+  getValues: UseFormGetValues<CreateQuizType>;
 };
 
 export const QuestionsManager: React.FC<Prop> = React.memo(
-  ({ control, register, setValue, watch, errors }: Prop) => {
+  ({ control, register, setValue, watch, errors, getValues }: Prop) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -59,6 +61,7 @@ export const QuestionsManager: React.FC<Prop> = React.memo(
                     setValue={setValue}
                     watch={watch}
                     errors={errors}
+                    getValues={getValues}
                   />
                 </React.Fragment>
               ))}

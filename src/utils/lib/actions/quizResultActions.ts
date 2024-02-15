@@ -52,6 +52,5 @@ export async function createAllQuestionsAnswersAndAnswerSelected(
   } catch (error) {
     console.error(error);
     return "Something went wrong!";
-  } finally {
   }
 }

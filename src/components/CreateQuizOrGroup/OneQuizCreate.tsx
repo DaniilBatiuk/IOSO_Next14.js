@@ -15,6 +15,7 @@ import {
   Control,
   FieldErrors,
   UseFieldArrayRemove,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
@@ -36,10 +37,20 @@ type OneQuizCreateProp = {
   setValue: UseFormSetValue<CreateQuizType>;
   watch: UseFormWatch<CreateQuizType>;
   errors: FieldErrors<CreateQuizType>;
+  getValues: UseFormGetValues<CreateQuizType>;
 };
 
 export const OneQuizCreate = React.memo(
-  ({ numberQuiz, remove, register, setValue, watch, errors, control }: OneQuizCreateProp) => {
+  ({
+    numberQuiz,
+    remove,
+    register,
+    setValue,
+    watch,
+    errors,
+    control,
+    getValues,
+  }: OneQuizCreateProp) => {
     const {
       rightMultipleAnswer,
       answerFields,
@@ -50,7 +61,7 @@ export const OneQuizCreate = React.memo(
       handleChangeSelectQuizType,
       selectValue,
       selectRightAnswerValue,
-    } = useQuizEffect(watch, numberQuiz, setValue, control, register);
+    } = useQuizEffect(watch, numberQuiz, setValue, control, register, getValues);
 
     return (
       <div className={styles.form__list__item}>

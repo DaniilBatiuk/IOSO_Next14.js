@@ -3,6 +3,7 @@
 export * from "./Auth/SignInForm";
 export * from "./Auth/SignUpForm";
 
+export * from "./CreateQuizOrGroup/Aside";
 export * from "./CreateQuizOrGroup/BasicSettings";
 export * from "./CreateQuizOrGroup/GroupAccess";
 export * from "./CreateQuizOrGroup/OneQuizCreate";

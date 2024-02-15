@@ -2,8 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForQuiz } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -15,23 +14,18 @@ import { ICONS } from "@/utils/config/icons";
 
 import styles from "@/styles/CreateQuiz.module.scss";
 
-import { AccessCodeScheme } from "@/utils/lib/validators/access-code-validator";
 import { CreateQuizFormSchema, CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 
 import {
+  Aside,
   BasicSettings,
   QuestionsManager,
   QuizAccess,
   RestrictionsSettings,
   ThemeWrapper,
 } from "@/components";
-import {
-  createAnswer,
-  createQuestion,
-  deleteAnswers,
-  deleteQuestions,
-  updateQuiz,
-} from "@/utils/lib/actions";
+import { updateQuizSave } from "@/utils/lib/actions";
+import { validateQuiz } from "@/utils/lib/helpers";
 import { QuizService } from "@/utils/services/quiz.servise";
 
 export default function UpdateQuiz({ params }: { params: { id: string } }) {
@@ -41,8 +35,13 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
   const [accessType, setAccessType] = useState<AccessTypeForQuiz>(AccessTypeForQuiz.Private);
   const { data: session } = useSession();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const { data: quiz, isSuccess } = useQuery({
+  const {
+    data: quiz,
+    isSuccess,
+    isError,
+  } = useQuery({
     queryKey: ["QuizUpdate", params.id],
     queryFn: () => QuizService.getQuizForUpdate(params.id),
   });
@@ -54,6 +53,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
     control,
     setError,
     reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<CreateQuizType>({
     resolver: zodResolver(CreateQuizFormSchema),
@@ -81,97 +81,35 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isError) {
+      router.push(`/Profile/${session!.user.id}`);
+      toast.error("Something went wrong!");
+    }
+  }, [isError]);
+
   const quizSave: SubmitHandler<CreateQuizType> = async data => {
-    // console.log(CreateQuizFormSchema.parse(data));
-    // return;
     try {
-      if (accessType === AccessTypeForQuiz.Public_access_code) {
-        if (!AccessCodeScheme.safeParse(data.accessCode).success) {
-          setError("accessCode", {
-            type: "custom",
-            message: "Password must be within 6 - 50 characters",
-          });
-          return;
-        }
-      } else {
-        data.accessCode = null;
-      }
-
-      if (data.attempts === 555) data.attempts = null;
-
-      if (accessType !== AccessTypeForQuiz.Group) data.groupId = null;
-
-      if (accessType === AccessTypeForQuiz.Group && data.sectionId === "") {
-        setError("sectionId", {
-          type: "custom",
-          message: "Section can not be empty.",
-        });
-        return;
-      } else if (accessType !== AccessTypeForQuiz.Group) {
-        data.sectionId = null;
-      }
-
-      if (session === null) {
-        toast.error("You have to register to create the group!");
+      if (validateQuiz(accessType, data, setError, session?.user.id || null) || !quiz) {
         return;
       }
 
-      const currentDateTime = new Date();
+      const deadline = data?.deadline?.toDate() || null;
+      data.deadline = null;
 
-      let duration = null;
-      if (data.duration?.hours !== 0 || data.duration?.minutes !== 0) {
-        duration = new Date(
-          currentDateTime.getFullYear(),
-          currentDateTime.getMonth(),
-          currentDateTime.getDate(),
-          data.duration.hours,
-          data.duration.minutes,
-        );
+      const error = await updateQuizSave(accessType, data, session!.user.id, quiz!, deadline);
+      if (error) {
+        toast.error("Something went wrong!");
+        return;
       }
-
-      if (!quiz?.result) return;
-      const error = await updateQuiz({
-        id: quiz?.result.id,
-        name: data.name,
-        attempts: data.attempts,
-        accessCode: data.accessCode,
-        percentagePass: data.percentagePass,
-        groupId: data.groupId || null,
-        sectionId: data.sectionId,
-        duration: duration,
-        deadline: data?.deadline?.toDate() || null,
-        accessType: accessType,
-        creatorId: session?.user.id,
+      await queryClient.refetchQueries({
+        queryKey: ["QuizUpdate", params.id],
+        type: "active",
+        exact: true,
       });
 
-      if (error) {
-        toast.error(error);
-      } else {
-        for (const question of quiz.result.questions) {
-          await deleteAnswers(question.id);
-        }
-        await deleteQuestions(quiz.result.id);
-        for (const question of data.questions) {
-          const { questionId } = await createQuestion({
-            quizId: quiz.result.id,
-            text: question.text,
-            type: question.type,
-          });
-
-          if (questionId) {
-            for (const answer of question.answers) {
-              await createAnswer({
-                questionId: questionId,
-                text: answer.text,
-                isCorrect: answer.isCorrect,
-              });
-            }
-          }
-        }
-
-        router.push(`/Profile/${session.user.id}`);
-        toast.success("Quiz update successfully.");
-      }
+      router.push(`/Profile/${session!.user.id}`);
+      toast.success("Quiz update successfully.");
     } catch (error) {
       toast.error("Something went wrong!");
       console.error(error);
@@ -192,73 +130,13 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
         }
       `}</style>
           )}
-          <aside className={!menuActive ? styles.create__body__active : styles.create__body}>
-            <div className={styles.create__body__inside}>
-              <div className={styles.create__title}>
-                Quiz configuration
-                {!menuActive && ICONS.close2({ onClick: () => setMenuActive(prev => !prev) })}
-              </div>
-              <div className={styles.create__list}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActive(0);
-                    if (!menuActive) setMenuActive(prev => !prev);
-                  }}
-                  className={clsx(styles.create__item, {
-                    [styles.create__item_active]: active === 0,
-                  })}
-                >
-                  {ICONS.basicSettings()}
-                  <div className={styles.create__text}>Basic settings</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActive(1);
-                    if (!menuActive) setMenuActive(prev => !prev);
-                  }}
-                  className={clsx(styles.create__item, {
-                    [styles.create__item_active]: active === 1,
-                  })}
-                >
-                  {ICONS.QuestionsManager()}
-                  <div className={styles.create__text}>Questions manager</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActive(2);
-                    if (!menuActive) setMenuActive(prev => !prev);
-                  }}
-                  className={clsx(styles.create__item, {
-                    [styles.create__item_active]: active === 2,
-                  })}
-                >
-                  {ICONS.GroupAccess()}
-                  <div className={styles.create__text}>Quiz access</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActive(3);
-                    if (!menuActive) setMenuActive(prev => !prev);
-                  }}
-                  className={clsx(styles.create__item, {
-                    [styles.create__item_active]: active === 3,
-                  })}
-                >
-                  {ICONS.TimeSettings()}
-                  <div className={styles.create__text}>Restriction settings</div>
-                </button>
-              </div>
-              <div className={styles.create__buttons}>
-                <button type="submit" className={styles.create__button__save}>
-                  {isSubmitting ? "Save changes..." : "Save changes"}
-                </button>
-              </div>
-            </div>
-          </aside>
+          <Aside
+            menuActive={menuActive}
+            setMenuActive={setMenuActive}
+            active={active}
+            setActive={setActive}
+            isSubmitting={isSubmitting}
+          />
           <section className={styles.create__right}>
             <div className={styles.right__top}>
               <button
@@ -288,6 +166,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
                 setValue={setValue}
                 watch={watch}
                 errors={errors}
+                getValues={getValues}
               />
             ) : active === 2 ? (
               <QuizAccess

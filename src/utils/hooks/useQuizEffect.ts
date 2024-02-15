@@ -1,9 +1,11 @@
 "use client";
 
 import { SelectChangeEvent } from "@mui/material";
+import { QuestionType } from "@prisma/client";
 import { useEffect, useState } from "react";
 import {
   Control,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
@@ -20,6 +22,7 @@ export const useQuizEffect = (
   setValue: UseFormSetValue<CreateQuizType>,
   control: Control<CreateQuizType>,
   register: UseFormRegister<CreateQuizType>,
+  getValues: UseFormGetValues<CreateQuizType>,
 ) => {
   const [rightAnswer, setRightAnswer] = useState<Answers>([]);
   const [rightMultipleAnswer, setMultipleRightAnswer] = useState<string[]>([]);
@@ -32,43 +35,28 @@ export const useQuizEffect = (
   } = useFieldArray({ control, name: `questions.${numberQuiz}.answers` as const });
 
   useEffect(() => {
-    setRightAnswer([{ text: "", isCorrect: true }]);
+    const question = getValues(`questions.${numberQuiz}`);
+    const answers = getValues(`questions.${numberQuiz}.answers`);
+    if (question.type === QuestionType.Multiple_choice) {
+      const newRightMultipleAnswer: string[] | undefined = answers?.reduce(
+        (
+          indexes: string[],
+          answer: { text?: string; isCorrect?: boolean } | undefined,
+          index: number,
+        ) => {
+          if (answer && answer.isCorrect) {
+            return [...indexes, index.toString()];
+          }
+          return indexes;
+        },
+        [],
+      );
+
+      setMultipleRightAnswer(newRightMultipleAnswer);
+    } else {
+      setRightAnswer(answers as Answers);
+    }
   }, []);
-
-  useEffect(() => {
-    const subscription = watch(data => {
-      const answers = data?.questions?.[numberQuiz]?.answers;
-
-      if (data?.questions?.[numberQuiz]?.type === "Multiple_choice") {
-        const newRightMultipleAnswer: string[] | undefined = answers?.reduce(
-          (
-            indexes: string[],
-            answer: { text?: string; isCorrect?: boolean } | undefined,
-            index: number,
-          ) => {
-            if (answer && answer.isCorrect) {
-              return [...indexes, index.toString()];
-            }
-            return indexes;
-          },
-          [],
-        );
-
-        if (
-          JSON.stringify(rightMultipleAnswer) !== JSON.stringify(newRightMultipleAnswer) &&
-          newRightMultipleAnswer !== undefined
-        ) {
-          setMultipleRightAnswer(newRightMultipleAnswer);
-        }
-      } else if (JSON.stringify(rightAnswer) !== JSON.stringify(answers) && answers !== undefined) {
-        setRightAnswer(answers as Answers);
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [watch, rightMultipleAnswer]);
 
   const handleChangeSelectQuizType = (
     event: SelectChangeEvent<"Single_choice" | "Multiple_choice" | "True_or_false">,
@@ -119,6 +107,8 @@ export const useQuizEffect = (
   };
 
   const handlerSelectRightAnswer = (event: SelectChangeEvent) => {
+    const answers = getValues(`questions.${numberQuiz}.answers`);
+    setRightAnswer(answers);
     rerender(event.target.value);
     answerFields.forEach((field, index) => {
       setValue(`questions.${numberQuiz}.answers.${index}.isCorrect`, index === +event.target.value);
