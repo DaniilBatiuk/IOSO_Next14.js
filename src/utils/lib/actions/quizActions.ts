@@ -32,7 +32,7 @@ export async function updateQuizStatus(quizId: string, status: QuizStatus) {
   });
 
   if (!quizExist) {
-    return "Quiz with this name does not exist.";
+    return "Quiz with does not exist.";
   }
 
   await prisma.quiz.update({
@@ -63,6 +63,22 @@ export async function updateQuiz(quiz: Omit<Quiz, "createdAt" | "updatedAt" | "s
     },
     data: {
       ...rest,
+    },
+  });
+}
+
+export async function updateQuizStatusEnded() {
+  console.log("do");
+  await prisma.quiz.updateMany({
+    where: {
+      status: QuizStatus.Active,
+      deadline: {
+        not: null,
+        lt: new Date(),
+      },
+    },
+    data: {
+      status: QuizStatus.Ended,
     },
   });
 }

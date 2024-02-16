@@ -36,6 +36,14 @@ export async function GET(req: NextRequest) {
             id: true,
           },
         },
+        QuizResult: {
+          where: {
+            userId: id,
+          },
+          select: {
+            id: true,
+          },
+        },
       },
     });
 

@@ -47,7 +47,7 @@ export async function updateQuizSave(
 
     if (error) {
       throw new Error(error);
-    } else {
+    } else if (quiz.result.QuizResult.length === 0) {
       for (const question of quiz.result.questions) {
         await deleteAnswers(question.id);
       }

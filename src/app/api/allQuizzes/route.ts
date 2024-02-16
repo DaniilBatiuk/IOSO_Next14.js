@@ -5,8 +5,14 @@ import { wrapSuccess } from "@/utils/lib/helpers/wrapSuccess";
 
 import prisma from "@/utils/lib/prisma";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const id = req.nextUrl.searchParams.get("id");
+
+    if (id === null) {
+      return NextResponse.json({ error: "Error no id exist", status: 404 });
+    }
+
     const allQuizzes = await prisma.quiz.findMany({
       where: {
         status: QuizStatus.Active,
@@ -32,6 +38,14 @@ export async function GET() {
           },
         },
         questions: {
+          select: {
+            id: true,
+          },
+        },
+        QuizResult: {
+          where: {
+            userId: id,
+          },
           select: {
             id: true,
           },

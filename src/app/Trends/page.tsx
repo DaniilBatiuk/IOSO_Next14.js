@@ -28,7 +28,8 @@ export default function Trends() {
 
   const { data: quizzes } = useQuery({
     queryKey: ["allQuizzes"],
-    queryFn: () => QuizService.getAllQuizzes(),
+    queryFn: () => QuizService.getAllQuizzes(session?.user.id),
+    enabled: !!session?.user.id,
   });
 
   const sortedGroups = useMemo(

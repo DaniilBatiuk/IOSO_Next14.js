@@ -116,6 +116,7 @@ export default function CreateQuiz() {
           active={active}
           setActive={setActive}
           isSubmitting={isSubmitting}
+          canUpdateQuestionsManager={true}
         />
         <section className={styles.create__right}>
           <div className={styles.right__top}>

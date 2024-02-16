@@ -103,6 +103,9 @@ type MyQuiz = {
   questions: {
     id: string;
   }[];
+  QuizResult: {
+    id: string;
+  }[];
   createdAt: Date;
 };
 
@@ -121,6 +124,13 @@ type PassQuiz = {
       isCorrect: boolean;
     }[];
   }[];
+};
+
+export type Result = {
+  durationOfAttempt: Date;
+  score: number;
+  questionCount: number;
+  rightAnswerCount: number;
 };
 
 export type QuizPassQuestionType = {
@@ -203,4 +213,7 @@ type UpdateQuiz = {
     id: string;
     name: string;
   };
+  QuizResult: {
+    id: string;
+  }[];
 };

@@ -65,12 +65,18 @@ export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
         return;
       }
       if (quiz.accessCode) {
-        inputRef?.current?.value === quiz.accessCode
-          ? router.push(`/QuizPass/${quiz.id}`)
-          : setPasswordCorrect(false);
+        inputRef?.current?.value === quiz.accessCode ? handleQuiz() : setPasswordCorrect(false);
       } else {
-        router.push(`/QuizPass/${quiz.id}`);
+        handleQuiz();
       }
+    }
+  };
+
+  const handleQuiz = () => {
+    if (quiz && quiz?.attempts && quiz?.QuizResult.length >= quiz?.attempts) {
+      toast.error("You've used up all your attempts.");
+    } else {
+      router.push(`/QuizPass/${quiz?.id}`);
     }
   };
 
@@ -92,7 +98,8 @@ export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
             {quiz && quiz.accessType === AccessTypeForQuiz.Public ? (
               <>
                 <div className={styles.modal__text}>
-                  Attempts left: {quiz?.attempts || "Infinity"}
+                  Attempts left:{" "}
+                  {quiz?.attempts ? quiz.attempts - quiz.QuizResult.length : "Infinity"}
                 </div>
                 <div className={styles.modal__text}>
                   Quiz duration:{" "}
@@ -104,31 +111,45 @@ export const QuizOrGroup: React.FC<QuizOrGroupProp> = ({
                 </div>
               </>
             ) : (
-              <TextField
-                inputRef={inputRef}
-                error={!passwordCorrect}
-                label={passwordCorrect ? "Insert password" : "Incorrect password"}
-                fullWidth
-                variant="standard"
-                type="password"
-                sx={{
-                  "& label.Mui-focused": {
-                    color: "white",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "white",
-                  },
-                  "& .MuiInput-root:before": {
-                    borderBottomColor: "white",
-                  },
-                  "& .MuiInput-root:after": {
-                    borderBottomColor: "white",
-                  },
-                  ".MuiInput-root:hover:not(.Mui-disabled):before": {
-                    borderBottomColor: "white",
-                  },
-                }}
-              />
+              <>
+                <div className={styles.modal__text}>
+                  Attempts left:{" "}
+                  {quiz?.attempts ? quiz.attempts - quiz.QuizResult.length : "Infinity"}
+                </div>
+                <div className={styles.modal__text}>
+                  Quiz duration:{" "}
+                  {quiz?.duration
+                    ? formatTime(new Date(quiz?.duration).getHours()) +
+                      ":" +
+                      formatTime(new Date(quiz?.duration).getMinutes())
+                    : "Infinity"}
+                </div>
+                <TextField
+                  inputRef={inputRef}
+                  error={!passwordCorrect}
+                  label={passwordCorrect ? "Insert password" : "Incorrect password"}
+                  fullWidth
+                  variant="standard"
+                  type="password"
+                  sx={{
+                    "& label.Mui-focused": {
+                      color: "white",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "white",
+                    },
+                    "& .MuiInput-root:before": {
+                      borderBottomColor: "white",
+                    },
+                    "& .MuiInput-root:after": {
+                      borderBottomColor: "white",
+                    },
+                    ".MuiInput-root:hover:not(.Mui-disabled):before": {
+                      borderBottomColor: "white",
+                    },
+                  }}
+                />
+              </>
             )}
           </div>
           <div className={styles.modal__buttons}>

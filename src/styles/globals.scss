@@ -242,3 +242,7 @@ input:-webkit-autofill:active {
   align-items: center;
   font-size: clamp(18px, 4vw, 20px);
 }
+
+.MuiSkeleton-root {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}

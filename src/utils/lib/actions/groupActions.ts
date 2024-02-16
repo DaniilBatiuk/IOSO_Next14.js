@@ -35,7 +35,7 @@ export async function createNewGroup(group: Omit<Group, "id" | "createdAt" | "up
   return { groupId: newGroup.id };
 }
 
-export async function removeGroup(groupId: string, userId: string | undefined) {
+export async function removeGroup(groupId: string) {
   try {
     await prisma.membership.deleteMany({
       where: {

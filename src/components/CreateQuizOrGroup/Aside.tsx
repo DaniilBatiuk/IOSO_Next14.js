@@ -13,6 +13,7 @@ type AsideProp = {
   active: number;
   setActive: (value: number) => void;
   isSubmitting: boolean;
+  canUpdateQuestionsManager: boolean;
 };
 
 export const Aside: React.FC<AsideProp> = ({
@@ -21,6 +22,7 @@ export const Aside: React.FC<AsideProp> = ({
   active,
   setActive,
   isSubmitting,
+  canUpdateQuestionsManager,
 }: AsideProp) => {
   return (
     <aside className={!menuActive ? styles.create__body__active : styles.create__body}>
@@ -43,19 +45,21 @@ export const Aside: React.FC<AsideProp> = ({
             {ICONS.basicSettings()}
             <div className={styles.create__text}>Basic settings</div>
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActive(1);
-              if (!menuActive) setMenuActive(prev => !prev);
-            }}
-            className={clsx(styles.create__item, {
-              [styles.create__item_active]: active === 1,
-            })}
-          >
-            {ICONS.QuestionsManager()}
-            <div className={styles.create__text}>Questions manager</div>
-          </button>
+          {canUpdateQuestionsManager && (
+            <button
+              type="button"
+              onClick={() => {
+                setActive(1);
+                if (!menuActive) setMenuActive(prev => !prev);
+              }}
+              className={clsx(styles.create__item, {
+                [styles.create__item_active]: active === 1,
+              })}
+            >
+              {ICONS.QuestionsManager()}
+              <div className={styles.create__text}>Questions manager</div>
+            </button>
+          )}
           <button
             type="button"
             onClick={() => {

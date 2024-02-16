@@ -8,8 +8,14 @@ export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
 
-    if (id === null) {
+    const userId = req.nextUrl.searchParams.get("userId");
+
+    if (!id) {
       return NextResponse.json({ error: "Error no id exist", status: 404 });
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: "Error no userId exist", status: 404 });
     }
 
     const quiz = await prisma.quiz.findUnique({
@@ -45,6 +51,14 @@ export async function GET(req: NextRequest) {
           select: {
             id: true,
             name: true,
+          },
+        },
+        QuizResult: {
+          where: {
+            userId: userId,
+          },
+          select: {
+            id: true,
           },
         },
       },

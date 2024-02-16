@@ -25,32 +25,46 @@ const Group = ({ params }: { params: { id: string } }) => {
     enabled: !!session?.user.id,
   });
 
+  if (!group || !group?.result) {
+    return (
+      <div className={styles.group__container}>
+        <div className={styles.group__title}>
+          <Skeleton variant="text" sx={{ height: "44px" }} />
+        </div>
+        <Skeleton variant="text" sx={{ height: "44px", width: "250px" }} />
+        <div className={styles.group__main}>
+          <Skeleton variant="rectangular" height={500} width={980} />
+
+          <section className={styles.right}>
+            <Skeleton variant="rectangular" height={500} />
+          </section>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <ThemeWrapper>
       <div className={styles.group__container}>
-        <div className={styles.group__title}>
-          {group?.result ? group.result.name : <Skeleton variant="text" sx={{ height: "44px" }} />}
+        <div className={styles.group__title}>{group.result.name}</div>
+
+        <div className={styles.left__buttons}>
+          <button
+            className={activeMenu === "Group" ? styles.left__button__active : styles.left__button}
+            onClick={() => setActiveMenu("Group")}
+          >
+            Group
+          </button>
+          <button
+            className={
+              activeMenu === "Statistic" ? styles.left__button__active : styles.left__button
+            }
+            onClick={() => setActiveMenu("Statistic")}
+          >
+            Statistic
+          </button>
         </div>
-        {group?.result ? (
-          <div className={styles.left__buttons}>
-            <button
-              className={activeMenu === "Group" ? styles.left__button__active : styles.left__button}
-              onClick={() => setActiveMenu("Group")}
-            >
-              Group
-            </button>
-            <button
-              className={
-                activeMenu === "Statistic" ? styles.left__button__active : styles.left__button
-              }
-              onClick={() => setActiveMenu("Statistic")}
-            >
-              Statistic
-            </button>
-          </div>
-        ) : (
-          <Skeleton variant="text" sx={{ height: "44px", width: "250px" }} />
-        )}
+
         <div className={styles.group__main}>
           {activeMenu === "Group" ? (
             <GroupSections group={group} />

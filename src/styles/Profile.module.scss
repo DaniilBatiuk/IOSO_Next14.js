@@ -374,12 +374,6 @@
 }
 
 .skeleton {
-  & span {
-    border-top: 1px rgba(55, 255, 255, 1) solid;
-  }
-}
-
-.skeleton2 {
   & span:not(:first-child) {
     border-top: 1px rgba(55, 255, 255, 1) solid;
   }

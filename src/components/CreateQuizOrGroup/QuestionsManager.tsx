@@ -46,47 +46,47 @@ export const QuestionsManager: React.FC<Prop> = React.memo(
           <Skeleton variant="rectangular" height={500} />
         </div>
       );
-    } else {
-      return (
-        <div className={styles.right}>
-          <div className={`${styles.form}`}>
-            <div className={`${styles.form__question__list}`}>
-              {questionFields.map((field, index) => (
-                <React.Fragment key={field.id}>
-                  <OneQuizCreate
-                    numberQuiz={index}
-                    remove={questionRemove}
-                    control={control}
-                    register={register}
-                    setValue={setValue}
-                    watch={watch}
-                    errors={errors}
-                    getValues={getValues}
-                  />
-                </React.Fragment>
-              ))}
-            </div>
-            <div className="modal__button-div">
-              <button
-                className={styles.button__create}
-                type="button"
-                onClick={() =>
-                  questionAppend({
-                    text: "",
-                    type: "Single_choice",
-                    answers: [
-                      { text: "", isCorrect: true },
-                      { text: "", isCorrect: false },
-                    ],
-                  })
-                }
-              >
-                Add question
-              </button>
-            </div>
+    }
+
+    return (
+      <div className={styles.right}>
+        <div className={`${styles.form}`}>
+          <div className={`${styles.form__question__list}`}>
+            {questionFields.map((field, index) => (
+              <React.Fragment key={field.id}>
+                <OneQuizCreate
+                  numberQuiz={index}
+                  remove={questionRemove}
+                  control={control}
+                  register={register}
+                  setValue={setValue}
+                  watch={watch}
+                  errors={errors}
+                  getValues={getValues}
+                />
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="modal__button-div">
+            <button
+              className={styles.button__create}
+              type="button"
+              onClick={() =>
+                questionAppend({
+                  text: "",
+                  type: "Single_choice",
+                  answers: [
+                    { text: "", isCorrect: true },
+                    { text: "", isCorrect: false },
+                  ],
+                })
+              }
+            >
+              Add question
+            </button>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   },
 );

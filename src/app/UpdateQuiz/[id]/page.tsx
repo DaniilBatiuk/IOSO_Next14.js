@@ -43,7 +43,8 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
     isError,
   } = useQuery({
     queryKey: ["QuizUpdate", params.id],
-    queryFn: () => QuizService.getQuizForUpdate(params.id),
+    queryFn: () => QuizService.getQuizForUpdate(params.id, session?.user.id),
+    enabled: !!session?.user.id,
   });
   const {
     register,
@@ -62,6 +63,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (isSuccess && quiz) {
+      console.log(quiz);
       reset({
         name: quiz.result.name,
         attempts: quiz.result.attempts ? quiz.result.attempts : 555,
@@ -136,6 +138,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
             active={active}
             setActive={setActive}
             isSubmitting={isSubmitting}
+            canUpdateQuestionsManager={quiz?.result?.QuizResult.length === 0}
           />
           <section className={styles.create__right}>
             <div className={styles.right__top}>
@@ -149,7 +152,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
               <div className={styles.right__title}>
                 {active === 0
                   ? "Basic settings"
-                  : active === 1
+                  : active === 1 && quiz?.result?.QuizResult.length === 0
                     ? "Questions manager"
                     : active === 2
                       ? "Test access"
@@ -159,7 +162,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
 
             {active === 0 ? (
               <BasicSettings label="Insert quiz name" errors={errors} register={register} />
-            ) : active === 1 ? (
+            ) : active === 1 && quiz?.result?.QuizResult.length === 0 ? (
               <QuestionsManager
                 control={control}
                 register={register}
