@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForGroup } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { clsx } from "clsx";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -31,6 +32,7 @@ export default function CreateGroup() {
   const [accessType, setAccessType] = useState<AccessTypeForGroup>(
     AccessTypeForGroup.Public_access_code,
   );
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -67,6 +69,17 @@ export default function CreateGroup() {
       if (error) {
         toast.error(error);
       } else {
+        queryClient.invalidateQueries({
+          queryKey: ["myGroups"],
+          type: "active",
+          exact: true,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["allGroups"],
+          type: "active",
+          exact: true,
+        });
+
         toast.success("Group created successfully.");
         router.push(`/Profile/${session.user.id}`);
       }

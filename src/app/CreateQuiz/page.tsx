@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccessTypeForQuiz } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -31,6 +32,7 @@ export default function CreateQuiz() {
   const [accessType, setAccessType] = useState<AccessTypeForQuiz>(AccessTypeForQuiz.Private);
   const { data: session } = useSession();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -87,6 +89,16 @@ export default function CreateQuiz() {
         toast.error("Something went wrong!");
         return;
       }
+      queryClient.invalidateQueries({
+        queryKey: ["myQuizzes"],
+        type: "active",
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["allQuizzes"],
+        type: "active",
+        exact: true,
+      });
 
       router.push(`/Profile/${session!.user.id}`);
       toast.success("Quiz created successfully.");

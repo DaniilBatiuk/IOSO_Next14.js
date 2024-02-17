@@ -1,6 +1,6 @@
 "use client";
 
-import { MyQuizzes, QuizHistory } from "..";
+import { MyQuizzes, QuizHistory, Statistic } from "..";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 
@@ -29,7 +29,14 @@ export const ProfileList: React.FC<ProfileListProp> = ({ id }: ProfileListProp) 
         >
           My quizzes & Groups
         </div>
+        <div
+          className={activeMenuItem === 2 ? styles.profile__item__active : styles.profile__item}
+          onClick={() => setActiveMenuItem(2)}
+        >
+          Statistic
+        </div>
       </div>
+
       {session?.user.id !== id ? (
         <div className={styles.profile__blur}>
           {session === undefined ? "Loading..." : "No access to data"}
@@ -38,6 +45,7 @@ export const ProfileList: React.FC<ProfileListProp> = ({ id }: ProfileListProp) 
         <>
           {activeMenuItem === 0 && <QuizHistory />}
           {activeMenuItem === 1 && <MyQuizzes />}
+          {activeMenuItem === 2 && <Statistic />}
         </>
       )}
     </>

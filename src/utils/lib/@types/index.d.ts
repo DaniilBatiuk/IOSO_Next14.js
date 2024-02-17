@@ -217,3 +217,45 @@ type UpdateQuiz = {
     id: string;
   }[];
 };
+
+type TGroupStatisticSelect = {
+  id: string;
+  name: string;
+};
+
+type TUserSelect = {
+  id: string;
+  user: {
+    id: string;
+    fullName: string;
+  };
+  questionResult: TQuestionResult[];
+};
+
+type TQuizStatisticSelect = {
+  id: string;
+  name: string;
+  groupId: string;
+  QuizResult: TUserSelect[];
+};
+
+type TQuestionResult = {
+  id: string;
+  score: number;
+};
+
+type TQuizResult = {
+  id: string;
+  questionResult: TQuestionResult[];
+};
+
+type TUser = {
+  id: string;
+  email: string;
+  fullName: string;
+  groups: TGroupStatisticSelect[];
+  quiz: TQuizStatisticSelect[];
+  QuizResult: {
+    id: string;
+  }[];
+};

@@ -21,6 +21,7 @@ export * from "./Profile/ButtonsNew";
 export * from "./Profile/MyQuizzes";
 export * from "./Profile/ProfileList";
 export * from "./Profile/QuizHistory";
+export * from "./Profile/Statistic";
 
 export * from "./QuizPass/CheckboxQuizPass";
 export * from "./QuizPass/RadioQuizPass";
@@ -32,6 +33,7 @@ export * from "./Wrappers/ProviderWrapper";
 export * from "./Wrappers/ThemeWrapper";
 
 export * from "./UI/Button/Button";
+export * from "./UI/Line/Line";
 export * from "./UI/Modal/Modal";
 export * from "./UI/MyCheckBox/CheckBox";
 export * from "./UI/PieChartActivity/PieChartActivity";

@@ -7,5 +7,25 @@ export async function FindUserById(id: string) {
     where: {
       id: id,
     },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      groups: {
+        select: {
+          id: true,
+        },
+      },
+      quiz: {
+        select: {
+          id: true,
+        },
+      },
+      QuizResult: {
+        select: {
+          id: true,
+        },
+      },
+    },
   });
 }

@@ -51,11 +51,11 @@ export const useQuizAccess = (
 
   useEffect(() => {
     if (
-      (groups !== undefined && changeGroupId !== selectGroupId && changeGroupId) ||
-      (groups !== undefined && selectGroupId === "")
+      (groups && groups?.result.length > 0 && changeGroupId !== selectGroupId && changeGroupId) ||
+      (groups && groups?.result.length > 0 && selectGroupId === "")
     ) {
       if (selectGroupId === "") {
-        setSelectGroupId(groups?.result[0].id);
+        setSelectGroupId(groups.result[0].id);
       } else if (changeGroupId) {
         setSelectGroupId(changeGroupId);
       }
