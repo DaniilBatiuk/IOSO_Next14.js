@@ -138,7 +138,6 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
             active={active}
             setActive={setActive}
             isSubmitting={isSubmitting}
-            canUpdateQuestionsManager={quiz?.result?.QuizResult.length === 0}
           />
           <section className={styles.create__right}>
             <div className={styles.right__top}>
@@ -152,7 +151,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
               <div className={styles.right__title}>
                 {active === 0
                   ? "Basic settings"
-                  : active === 1 && quiz?.result?.QuizResult.length === 0
+                  : active === 1
                     ? "Questions manager"
                     : active === 2
                       ? "Test access"
@@ -162,7 +161,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
 
             {active === 0 ? (
               <BasicSettings label="Insert quiz name" errors={errors} register={register} />
-            ) : active === 1 && quiz?.result?.QuizResult.length === 0 ? (
+            ) : active === 1 ? (
               <QuestionsManager
                 control={control}
                 register={register}

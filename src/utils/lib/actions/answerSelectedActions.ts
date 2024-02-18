@@ -1,13 +1,13 @@
 "use server";
 
-import { AnswerSelected } from "@prisma/client";
+import { AnswerResult } from "@prisma/client";
 
 import prisma from "../prisma";
 
-export async function createAnswerSelected(answerSelected: Omit<AnswerSelected, "id">) {
-  await prisma.answerSelected.create({
+export async function createAnswerResult(answerResult: Omit<AnswerResult, "id">) {
+  await prisma.answerResult.create({
     data: {
-      ...answerSelected,
+      ...answerResult,
     },
   });
 }

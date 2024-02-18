@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
             id: true,
           },
         },
-        QuizResult: {
+        quizResult: {
           where: {
             userId: id,
           },

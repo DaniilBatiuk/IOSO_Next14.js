@@ -5,12 +5,12 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { QuizPassType, Result } from "../lib/@types";
+import { PassQuiz, QuizPassType, Result } from "../lib/@types";
 import {
-  createAllQuestionsAnswersAndAnswerSelected,
+  createAllQuestionsAnswersAndAnswerResult,
   createQuizResult,
 } from "../lib/actions/quizResultActions";
-import { calculateScore } from "../lib/helpers";
+import { calculateScore, shufflePassQuiz } from "../lib/helpers";
 import { QuizService } from "../services/quiz.servise";
 
 export const useQuizPass = (id: string, router: AppRouterInstance) => {
@@ -26,6 +26,7 @@ export const useQuizPass = (id: string, router: AppRouterInstance) => {
   const [result, setResult] = useState<Result>();
   const [timeToLeave, setTimeToLeave] = useState<boolean>(false);
   const [startAt, setStartAt] = useState<number>(Date.now());
+  const [sortedQuiz, setSortedQuiz] = useState<PassQuiz>();
   const { data: session } = useSession();
   const queryClient = useQueryClient();
 
@@ -39,17 +40,23 @@ export const useQuizPass = (id: string, router: AppRouterInstance) => {
   };
 
   useEffect(() => {
+    if (!quiz?.result) return;
+    setSortedQuiz(shufflePassQuiz(quiz.result));
+  }, [quiz]);
+
+  useEffect(() => {
     setQuizResult(
-      quiz
-        ? quiz.result.questions.map(question => ({
+      sortedQuiz
+        ? sortedQuiz.questions.map(question => ({
             id: question.id,
             question: question.text,
             answers: question.answers,
+            type: question.type,
             selected: question.type === QuestionType.Multiple_choice ? [] : "",
           }))
         : [],
     );
-  }, [quiz]);
+  }, [sortedQuiz]);
 
   const updateFields = (index: number, fields: Partial<QuizPassType[0]>) => {
     setQuizResult(prev => {
@@ -103,6 +110,7 @@ export const useQuizPass = (id: string, router: AppRouterInstance) => {
       const { newQuizResultId } = await createQuizResult({
         userId: session.user.id,
         quizId: quiz?.result.id,
+        percentagePass: quiz.result.percentagePass,
         ...res,
         status:
           quiz.result.percentagePass >= res.score
@@ -111,7 +119,7 @@ export const useQuizPass = (id: string, router: AppRouterInstance) => {
       });
 
       setNewQuizResultId(newQuizResultId);
-      await createAllQuestionsAnswersAndAnswerSelected(newQuizResultId, quizResult);
+      await createAllQuestionsAnswersAndAnswerResult(newQuizResultId, quizResult);
       await queryClient.refetchQueries({
         queryKey: ["quizHistory"],
         type: "active",
@@ -127,6 +135,11 @@ export const useQuizPass = (id: string, router: AppRouterInstance) => {
         type: "active",
         exact: true,
       });
+      queryClient.refetchQueries({
+        queryKey: ["user", session.user.id],
+        type: "active",
+        exact: true,
+      });
     } catch (error) {
       toast.error("Something went wrong!");
       console.error(error);
@@ -138,7 +151,7 @@ export const useQuizPass = (id: string, router: AppRouterInstance) => {
   return {
     quizResult,
     onSubmit,
-    quiz,
+    sortedQuiz,
     isSubmitting,
     setActiveModal,
     result,

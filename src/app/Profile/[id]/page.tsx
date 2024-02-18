@@ -44,11 +44,11 @@ export default function Profile({ params }: { params: { id: string } }) {
               {/* <div className={styles.info__title}>Activity</div> */}
               <div className={styles.info__right__pie}>
                 {user &&
-                (user.result.QuizResult.length > 0 ||
+                (user.result.quizResult.length > 0 ||
                   user.result.quiz.length > 0 ||
                   user.result.groups.length > 0) ? (
                   <PieChartActivity
-                    quizPassed={user.result.QuizResult.length}
+                    quizPassed={user.result.quizResult.length}
                     quizCreated={user.result.quiz.length}
                     groupCreated={user.result.groups.length}
                   />

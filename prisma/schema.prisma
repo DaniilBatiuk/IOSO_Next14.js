@@ -20,7 +20,7 @@ model User {
   quiz          Quiz[]
   groups        Group[]
   membership    Membership[]
-  QuizResult    QuizResult[]
+  quizResult    QuizResult[]
 }
 
 model Quiz {
@@ -41,30 +41,28 @@ model Quiz {
   updatedAt      DateTime          @updatedAt
   section        Section?          @relation(fields: [sectionId], references: [id])
   sectionId      String?           @db.ObjectId
-  QuizResult     QuizResult[]
+  quizResult     QuizResult[]
 }
 
 model Question {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  text           String
-  type           QuestionType
-  answers        Answer[]
-  quizId         String           @db.ObjectId
-  quiz           Quiz             @relation(fields: [quizId], references: [id])
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  QuestionResult QuestionResult[]
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  type      QuestionType
+  answers   Answer[]
+  quizId    String       @db.ObjectId
+  quiz      Quiz         @relation(fields: [quizId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 model Answer {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  text           String
-  isCorrect      Boolean
-  questionId     String           @db.ObjectId
-  question       Question         @relation(fields: [questionId], references: [id])
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  AnswerSelected AnswerSelected[]
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  isCorrect  Boolean
+  questionId String   @db.ObjectId
+  question   Question @relation(fields: [questionId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Group {
@@ -104,8 +102,9 @@ model QuizResult {
   durationOfAttempt DateTime
   status            QuizResultStatus
   score             Float
+  percentagePass    Int
   questionCount     Int
-  rightAnswerCount  Int
+  rightAnswerCount  Float
   userId            String           @db.ObjectId
   quizId            String           @db.ObjectId
   questionResult    QuestionResult[]
@@ -116,21 +115,22 @@ model QuizResult {
 }
 
 model QuestionResult {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  score          Float
-  answerSelected AnswerSelected[]
-  quizResultId   String           @db.ObjectId
-  questionId     String           @db.ObjectId
-  question       Question         @relation(fields: [questionId], references: [id])
-  quizResult     QuizResult       @relation(fields: [quizResultId], references: [id])
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  score        Float
+  text         String
+  type         QuestionType
+  answerResult AnswerResult[]
+  quizResultId String         @db.ObjectId
+  quizResult   QuizResult     @relation(fields: [quizResultId], references: [id])
 }
 
-model AnswerSelected {
+model AnswerResult {
   id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  text             String
+  isCorrect        Boolean
+  isSelected       Boolean
   questionResultId String         @db.ObjectId
-  answerId         String         @db.ObjectId
-  answer           Answer         @relation(fields: [answerId], references: [id])
-  QuestionResult   QuestionResult @relation(fields: [questionResultId], references: [id])
+  questionResult   QuestionResult @relation(fields: [questionResultId], references: [id])
 }
 
 enum AccessTypeForGroup {

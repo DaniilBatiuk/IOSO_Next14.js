@@ -22,10 +22,11 @@ import { QuizResultService } from "@/utils/services/quizResult.servise";
 
 export default function Result({ params }: { params: { id: string } }) {
   const [quizResultsSelect, setQuizResultsSelect] = useState<QuizResult>();
-  const { data: session } = useSession();
 
   const searchParams = useSearchParams();
   const quizName = searchParams.get("quizName");
+  const userId = searchParams.get("userId");
+  const { data: session } = useSession();
 
   const handleChange = (event: SelectChangeEvent) => {
     setQuizResultsSelect(
@@ -35,8 +36,8 @@ export default function Result({ params }: { params: { id: string } }) {
 
   const { data: quizResults } = useQuery({
     queryKey: ["QuizResults", quizName],
-    queryFn: () => QuizResultService.getQuizResults(session?.user.id, quizName),
-    enabled: !!session?.user.id,
+    queryFn: () => QuizResultService.getQuizResults(userId ? userId : session?.user.id, quizName),
+    enabled: userId ? !!userId : !!session?.user.id,
   });
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function Result({ params }: { params: { id: string } }) {
   if (!quizResultsSelect || !quizResults) {
     return (
       <div className={styles.result__container}>
-        <Skeleton variant="text" sx={{ height: "44px" }} />{" "}
+        <Skeleton variant="text" sx={{ height: "44px" }} />
         <div className={styles.result__main}>
           <Skeleton variant="rectangular" height={500} width={1000} />
           <aside className={styles.right}>
@@ -80,15 +81,15 @@ export default function Result({ params }: { params: { id: string } }) {
                 </div>
               </div>
               <div className={styles.left__statistic__item}>
-                <div className={styles.left__statistic__item__text}>Question count</div>
+                <div className={styles.left__statistic__item__text}>Percentage pass</div>
                 <div className={styles.left__statistic__item__result}>
-                  {quizResultsSelect.questionCount}
+                  {quizResultsSelect.percentagePass}%
                 </div>
               </div>
               <div className={styles.left__statistic__item}>
                 <div className={styles.left__statistic__item__text}>Right answer count</div>
                 <div className={styles.left__statistic__item__result}>
-                  {quizResultsSelect.rightAnswerCount}
+                  {quizResultsSelect.rightAnswerCount}/{quizResultsSelect.questionCount}
                 </div>
               </div>
               <div className={styles.left__statistic__item}>
@@ -105,16 +106,18 @@ export default function Result({ params }: { params: { id: string } }) {
               </div>
             </div>
             {quizResultsSelect.questionResult.map((questionResult, index) =>
-              questionResult.question.type === QuestionType.Multiple_choice ? (
+              questionResult.type === QuestionType.Multiple_choice ? (
                 <div className={styles.left__wrapper} key={index}>
                   <div className={styles.left__top}>
                     <div className={styles.left__title}>Question {index + 1}</div>
                     <div className={styles.left__score}> {questionResult.score}/1</div>
                   </div>
                   <CheckboxQuizPass
-                    question={questionResult.question.text}
-                    answers={questionResult.question.answers}
-                    selected={questionResult.answerSelected.map(answer => answer.answer.id)}
+                    question={questionResult.text}
+                    answers={questionResult.answerResult}
+                    selected={questionResult.answerResult
+                      .filter(answer => answer.isSelected)
+                      .map(answer => answer.id)}
                     showResults={true}
                   />
                 </div>
@@ -125,9 +128,11 @@ export default function Result({ params }: { params: { id: string } }) {
                     <div className={styles.left__score}> {questionResult.score}/1</div>
                   </div>
                   <RadioQuizPass
-                    question={questionResult.question.text}
-                    answers={questionResult.question.answers}
-                    selected={questionResult.answerSelected.map(answer => answer.answer.id)}
+                    question={questionResult.text}
+                    answers={questionResult.answerResult}
+                    selected={questionResult.answerResult
+                      .filter(answer => answer.isSelected)
+                      .map(answer => answer.id)}
                     showResults={true}
                   />
                 </div>

@@ -23,7 +23,7 @@ export default function QuizPass({ params }: { params: { id: string } }) {
   const {
     quizResult,
     onSubmit,
-    quiz,
+    sortedQuiz,
     isSubmitting,
     setActiveModal,
     result,
@@ -53,7 +53,7 @@ export default function QuizPass({ params }: { params: { id: string } }) {
       ),
     ]);
 
-  if (!quiz?.result) {
+  if (!sortedQuiz) {
     return (
       <div className={styles.quizPass__container}>
         <form onSubmit={onSubmit} className={styles.quizPass__form}>
@@ -72,16 +72,16 @@ export default function QuizPass({ params }: { params: { id: string } }) {
         <div className={styles.modal__head}>
           <h2 className={styles.modal__title}>Result</h2>
 
-          {result && quiz?.result.percentagePass !== undefined && (
+          {result && sortedQuiz.percentagePass !== undefined && (
             <>
               <div
                 className={
-                  quiz.result.percentagePass >= result.score
+                  sortedQuiz.percentagePass >= result.score
                     ? styles.modal__status_close
                     : styles.modal__status_open
                 }
               >
-                {quiz.result.percentagePass >= result.score ? "Denied" : "Passed"}
+                {sortedQuiz.percentagePass >= result.score ? "Denied" : "Passed"}
               </div>
               <div className={styles.modal__text}>
                 {result.durationOfAttempt.toLocaleTimeString()}
@@ -99,7 +99,7 @@ export default function QuizPass({ params }: { params: { id: string } }) {
               isSubmitting ? styles.modal__button__disable : styles.modal__button__activate
             }
             disabled={isSubmitting}
-            onClick={() => router.push(`/Result/${newQuizResultId}?quizName=${quiz?.result.name}`)}
+            onClick={() => router.push(`/Result/${newQuizResultId}?quizName=${sortedQuiz.name}`)}
           >
             {isSubmitting ? "Saving..." : "View result"}
           </button>
@@ -110,9 +110,7 @@ export default function QuizPass({ params }: { params: { id: string } }) {
           <div className={styles.left}>
             <div className={styles.left__top}>
               <div className={styles.left__title}>Question {currentStepIndex + 1}</div>
-              {quiz.result.duration && (
-                <Timer duration={quiz.result.duration} onSubmit={onSubmit} />
-              )}
+              {sortedQuiz.duration && <Timer duration={sortedQuiz.duration} onSubmit={onSubmit} />}
             </div>
             {step}
             <div className={styles.left__buttons}>

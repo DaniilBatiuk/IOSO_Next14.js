@@ -2,6 +2,7 @@ import {
   AccessTypeForGroup,
   AccessTypeForQuiz,
   MemberStatus,
+  QuestionType,
   QuizResultStatus,
   QuizStatus,
   User,
@@ -103,7 +104,7 @@ type MyQuiz = {
   questions: {
     id: string;
   }[];
-  QuizResult: {
+  quizResult: {
     id: string;
   }[];
   createdAt: Date;
@@ -136,6 +137,7 @@ export type Result = {
 export type QuizPassQuestionType = {
   id: string;
   question: string;
+  type: QuestionType;
   answers: {
     id: string;
     text: string;
@@ -166,24 +168,17 @@ export type QuizResult = {
   questionCount: number;
   rightAnswerCount: number;
   createdAt: string;
+  percentagePass: number;
   questionResult: {
     id: string;
     score: number;
-    question: {
+    text: string;
+    type: QuestionType;
+    answerResult: {
       id: string;
       text: string;
-      type: QuestionType;
-      answers: {
-        id: string;
-        text: string;
-        isCorrect: boolean;
-      }[];
-    };
-    answerSelected: {
-      id: string;
-      answer: {
-        id: string;
-      };
+      isCorrect: boolean;
+      isSelected: boolean;
     }[];
   }[];
 };
@@ -213,7 +208,7 @@ type UpdateQuiz = {
     id: string;
     name: string;
   };
-  QuizResult: {
+  quizResult: {
     id: string;
   }[];
 };
@@ -225,9 +220,23 @@ type TGroupStatisticSelect = {
 
 type TUserSelect = {
   id: string;
-  user: {
+  fullName: string;
+};
+
+type TQuizResultSelect = {
+  id: string;
+  score: number;
+  status: QuizResultStatus;
+  durationOfAttempt: Date;
+  createdAt: Date;
+  user: TUserSelect;
+  quiz: {
     id: string;
-    fullName: string;
+    name: string;
+    questions: {
+      id: string;
+      text: string;
+    }[];
   };
   questionResult: TQuestionResult[];
 };
@@ -236,12 +245,13 @@ type TQuizStatisticSelect = {
   id: string;
   name: string;
   groupId: string;
-  QuizResult: TUserSelect[];
+  quizResult: TQuizResultSelect[];
 };
 
 type TQuestionResult = {
   id: string;
   score: number;
+  text: string;
 };
 
 type TQuizResult = {
@@ -255,7 +265,7 @@ type TUser = {
   fullName: string;
   groups: TGroupStatisticSelect[];
   quiz: TQuizStatisticSelect[];
-  QuizResult: {
+  quizResult: {
     id: string;
   }[];
 };

@@ -140,6 +140,7 @@
 
         & a {
           text-wrap: nowrap;
+          white-space: nowrap;
         }
         @media (max-width: 767.98px) {
           display: block;

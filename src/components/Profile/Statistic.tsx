@@ -16,7 +16,9 @@ import styles from "@/styles/Profile.module.scss";
 
 import { Line } from "../UI/Line/Line";
 
-import { TGroupStatisticSelect, TQuizStatisticSelect } from "@/utils/lib/@types";
+import { PersonQuizHistory } from "./PersonQuizHistory";
+import { StatisticMain } from "./StatisticMain";
+import { TGroupStatisticSelect, TQuizResultSelect, TQuizStatisticSelect } from "@/utils/lib/@types";
 import { UserService } from "@/utils/services/user.service";
 
 const defaultGroup: TGroupStatisticSelect = {
@@ -29,6 +31,8 @@ export const Statistic = () => {
   const [groupSelected, setGroupSelected] = useState<TGroupStatisticSelect>(defaultGroup);
   const [quizzes, setQuizzes] = useState<TQuizStatisticSelect[] | null>(null);
   const [quizSelected, setQuizSelected] = useState<TQuizStatisticSelect | null>(null);
+  const [people, setPeople] = useState<Partial<Record<string, TQuizResultSelect[]>> | null>(null);
+  const [personSelected, setPersonSelected] = useState<TQuizResultSelect[] | null>(null);
 
   const { data: user } = useQuery({
     queryKey: ["user", session?.user.id],
@@ -38,8 +42,12 @@ export const Statistic = () => {
 
   useEffect(() => {
     if (!user?.result) return;
-    setQuizzes(user.result.quiz.filter(quiz => quiz.QuizResult.length > 0));
-    setQuizSelected(user.result.quiz.find(quiz => quiz.QuizResult.length > 0) || null);
+    setQuizzes(user.result.quiz.filter(quiz => quiz.quizResult.length > 0 && !quiz.groupId));
+    setQuizSelected(
+      user.result.quiz.find(quiz => quiz.quizResult.length > 0 && !quiz.groupId) || null,
+    );
+    setPeople(null);
+    setPersonSelected(null);
   }, [user]);
 
   const handleChangeGroupSelect = (event: SelectChangeEvent) => {
@@ -47,12 +55,18 @@ export const Statistic = () => {
 
     if (+event.target.value === 0) {
       setGroupSelected(defaultGroup);
-      setQuizzes(user.result.quiz.filter(quiz => quiz.QuizResult.length > 0 && !quiz.groupId));
-      setQuizSelected(user.result.quiz.find(quiz => quiz.QuizResult.length > 0) || null);
+      setQuizzes(user.result.quiz.filter(quiz => quiz.quizResult.length > 0 && !quiz.groupId));
+      setQuizSelected(
+        user.result.quiz.find(quiz => quiz.quizResult.length > 0 && !quiz.groupId) || null,
+      );
+      setPeople(null);
+      setPersonSelected(null);
     } else {
       setGroupSelected(user.result.groups.find(group => group.id === event.target.value)!);
       setQuizzes(user.result.quiz.filter(quiz => quiz.groupId === event.target.value));
       setQuizSelected(user.result.quiz.find(quiz => quiz.groupId === event.target.value) || null);
+      setPeople(null);
+      setPersonSelected(null);
     }
   };
 
@@ -61,10 +75,29 @@ export const Statistic = () => {
     setQuizSelected(quizzes.find(quiz => quiz.id === event.target.value)!);
   };
 
+  useEffect(() => {
+    if (!quizSelected) return;
+    const users = Object.groupBy(quizSelected.quizResult, ({ user }) => user.fullName);
+    if (!users) return;
+    setPeople(users);
+  }, [quizSelected]);
+
+  const handleChangePersonSelect = (event: SelectChangeEvent) => {
+    if (!people) return;
+    if (+event.target.value === 0) {
+      setPersonSelected(null);
+    } else {
+      const person = people[event.target.value];
+
+      setPersonSelected(person ? person : null);
+    }
+  };
+
   if (!user?.result) {
     return (
       <div className={styles.profile__main_3}>
-        <Skeleton variant="rectangular" height={450} />
+        <Skeleton variant="rectangular" height={132} style={{ marginBottom: "20px" }} />
+        <Skeleton variant="rectangular" height={400} />
       </div>
     );
   }
@@ -72,7 +105,7 @@ export const Statistic = () => {
   return (
     <div className={styles.profile__main_3}>
       <div className={styles.statistic__form}>
-        <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
+        <FormControl variant="standard" sx={{ m: 1 }}>
           <InputLabel>Group select</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
@@ -92,7 +125,7 @@ export const Statistic = () => {
           </Select>
         </FormControl>
 
-        <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
+        <FormControl variant="standard" sx={{ m: 1 }}>
           <InputLabel>Quiz select</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
@@ -107,11 +140,53 @@ export const Statistic = () => {
             ))}
           </Select>
         </FormControl>
+
+        <FormControl variant="standard" sx={{ m: 1 }}>
+          <InputLabel>Person select</InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            value={personSelected ? personSelected[0].user.fullName : ""}
+            onChange={handleChangePersonSelect}
+            label="Person select"
+          >
+            <MenuItem value={0} key={0}>
+              No user
+            </MenuItem>
+
+            {people &&
+              Object.keys(people)?.map(person => (
+                <MenuItem value={person} key={person}>
+                  {person}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
       </div>
-      <div className={styles.statistic__line}>
-        {quizSelected?.QuizResult && <Line quizResult={quizSelected?.QuizResult} />}
-      </div>
-      {!quizzes && <div className="blur">No data yet</div>}
+      {quizSelected && quizSelected.quizResult.length > 0 ? (
+        <>
+          <div className={styles.statistic__main}>
+            <StatisticMain quizResult={personSelected ? personSelected : quizSelected.quizResult} />
+            <div className={styles.statistic__lines}>
+              {quizSelected?.quizResult && (
+                <Line quizResult={personSelected ? personSelected : quizSelected.quizResult} />
+              )}
+            </div>
+          </div>
+          <PersonQuizHistory
+            personSelected={
+              personSelected
+                ? personSelected
+                : people
+                  ? (Object.values(people).flat() as TQuizResultSelect[])
+                  : null
+            }
+          />
+        </>
+      ) : (
+        <div className="blur" style={{ borderRadius: "10px" }}>
+          No data yet
+        </div>
+      )}
     </div>
   );
 };

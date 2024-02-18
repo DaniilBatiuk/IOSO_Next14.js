@@ -65,7 +65,7 @@ const Group = ({ params }: { params: { id: string } }) => {
           </button>
         </div>
 
-        <div className={styles.group__main}>
+        <div className={styles.group__main} style={{ borderTopLeftRadius: "0px" }}>
           {activeMenu === "Group" ? (
             <GroupSections group={group} />
           ) : (

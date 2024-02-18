@@ -31,26 +31,43 @@ export async function GET(req: NextRequest) {
             id: true,
             name: true,
             groupId: true,
-            QuizResult: {
+            quizResult: {
               select: {
                 id: true,
+                score: true,
+                status: true,
+                createdAt: true,
+                durationOfAttempt: true,
                 user: {
                   select: {
                     id: true,
                     fullName: true,
                   },
                 },
+                quiz: {
+                  select: {
+                    id: true,
+                    name: true,
+                    questions: {
+                      select: {
+                        id: true,
+                        text: true,
+                      },
+                    },
+                  },
+                },
                 questionResult: {
                   select: {
                     id: true,
                     score: true,
+                    text: true,
                   },
                 },
               },
             },
           },
         },
-        QuizResult: {
+        quizResult: {
           select: {
             id: true,
           },

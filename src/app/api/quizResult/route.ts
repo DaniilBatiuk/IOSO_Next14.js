@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get("id");
     const quizName = req.nextUrl.searchParams.get("quizName");
+
     if (!id) {
       return NextResponse.json({ error: "Error no id exist", status: 404 });
     }
@@ -30,33 +31,20 @@ export async function GET(req: NextRequest) {
         score: true,
         questionCount: true,
         rightAnswerCount: true,
+        percentagePass: true,
         createdAt: true,
         questionResult: {
           select: {
             id: true,
             score: true,
-            question: {
+            text: true,
+            type: true,
+            answerResult: {
               select: {
                 id: true,
                 text: true,
-                type: true,
-                answers: {
-                  select: {
-                    id: true,
-                    text: true,
-                    isCorrect: true,
-                  },
-                },
-              },
-            },
-            answerSelected: {
-              select: {
-                id: true,
-                answer: {
-                  select: {
-                    id: true,
-                  },
-                },
+                isCorrect: true,
+                isSelected: true,
               },
             },
           },

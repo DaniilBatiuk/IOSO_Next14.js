@@ -6,7 +6,7 @@ import { QuizPassType } from "../@types";
 import { calculateScoreForOneQuestion } from "../helpers/calculateScoreForOneQuestion";
 import prisma from "../prisma";
 
-import { createAnswerSelected } from "./answerSelectedActions";
+import { createAnswerResult } from "./answerSelectedActions";
 import { createQuestionResult } from "./questionResultActions";
 
 export async function createQuizResult(
@@ -21,7 +21,7 @@ export async function createQuizResult(
   return { newQuizResultId: newQuizResult.id };
 }
 
-export async function createAllQuestionsAnswersAndAnswerSelected(
+export async function createAllQuestionsAnswersAndAnswerResult(
   newQuizResultId: string,
   quizResult: QuizPassType,
 ) {
@@ -29,22 +29,18 @@ export async function createAllQuestionsAnswersAndAnswerSelected(
     for (const question of quizResult) {
       const { newQuestionResultId } = await createQuestionResult({
         quizResultId: newQuizResultId,
-        questionId: question.id,
+        text: question.question,
+        type: question.type,
         score: calculateScoreForOneQuestion(question),
       });
 
       if (newQuestionResultId) {
-        if (Array.isArray(question.selected)) {
-          for (const selectedAnswer of question.selected) {
-            createAnswerSelected({
-              questionResultId: newQuestionResultId,
-              answerId: selectedAnswer,
-            });
-          }
-        } else {
-          createAnswerSelected({
+        for (const answer of question.answers) {
+          await createAnswerResult({
             questionResultId: newQuestionResultId,
-            answerId: question.selected,
+            text: answer.text,
+            isCorrect: answer.isCorrect,
+            isSelected: question.selected.includes(answer.id),
           });
         }
       }

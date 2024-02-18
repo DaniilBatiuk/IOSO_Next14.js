@@ -100,7 +100,7 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
   };
 
   const handleQuiz = () => {
-    if (quiz && quiz?.attempts && quiz?.QuizResult.length >= quiz?.attempts) {
+    if (quiz && quiz?.attempts && quiz?.quizResult.length >= quiz?.attempts) {
       toast.error("You've used up all your attempts.");
     } else {
       router.push(`/QuizPass/${quiz?.id}`);
@@ -122,7 +122,7 @@ export const MyQuizOrGroup: React.FC<MyQuizOrGroupProp> = ({
         <div className={styles.modal__head}>
           <h2 className={styles.modal__title}>Quiz</h2>
           <div className={styles.modal__text}>
-            Attempts left: {quiz?.attempts ? quiz.attempts - quiz.QuizResult.length : "Infinity"}
+            Attempts left: {quiz?.attempts ? quiz.attempts - quiz.quizResult.length : "Infinity"}
           </div>
           <div className={styles.modal__text}>
             Quiz duration:{" "}

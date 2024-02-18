@@ -15,10 +15,13 @@ export const GroupQuizHistory: React.FC<GroupQuizHistoryProp> = ({
   groupQuizHistory,
 }: GroupQuizHistoryProp) => {
   return (
-    <div className={styles.main_2}>
+    <div
+      className={styles.main_2}
+      style={{ padding: "0px", backgroundColor: "inherit", borderTopLeftRadius: "0px" }}
+    >
       {groupQuizHistory && groupQuizHistory.success && groupQuizHistory.result.length > 0 ? (
-        <div className={styles.profile__main_2}>
-          <table className={styles.profile__table}>
+        <div className={styles.profile__main_2} style={{ borderTopLeftRadius: "0px" }}>
+          <table className={styles.profile__table} style={{ borderTopLeftRadius: "0px" }}>
             <thead>
               <tr>
                 <th>Name</th>

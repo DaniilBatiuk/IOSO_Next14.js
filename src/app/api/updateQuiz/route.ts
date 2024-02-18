@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
             name: true,
           },
         },
-        QuizResult: {
+        quizResult: {
           where: {
             userId: userId,
           },

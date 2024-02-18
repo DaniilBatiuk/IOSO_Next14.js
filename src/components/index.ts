@@ -19,9 +19,11 @@ export * from "./HeaderFooter/Header/Header";
 
 export * from "./Profile/ButtonsNew";
 export * from "./Profile/MyQuizzes";
+export * from "./Profile/PersonQuizHistory";
 export * from "./Profile/ProfileList";
 export * from "./Profile/QuizHistory";
 export * from "./Profile/Statistic";
+export * from "./Profile/StatisticMain";
 
 export * from "./QuizPass/CheckboxQuizPass";
 export * from "./QuizPass/RadioQuizPass";
