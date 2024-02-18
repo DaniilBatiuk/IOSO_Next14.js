@@ -8,17 +8,8 @@ export function middleware(request: NextRequest) {
   const isAuth = cookies.get("next-auth.session-token")?.value;
 
   const isAuthPage = url.includes("/SignIn") || url.includes("/SignUp");
-  const isAuthPage2 =
-    url.includes("/UpdateQuiz") ||
-    url.includes("/Result") ||
-    url.includes("/Group") ||
-    url.includes("/CreateQuiz") ||
-    url.includes("/CreateGroup") ||
-    url.includes("/QuizPass");
 
-  if (isAuthPage2 && !isAuth) {
-    return NextResponse.redirect(new URL(LINKS.Home, url));
-  } else if (isAuthPage && isAuth) {
+  if (isAuthPage && isAuth) {
     return NextResponse.redirect(new URL(LINKS.Home, url));
   } else {
     return NextResponse.next();
@@ -26,14 +17,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/SignIn/:path",
-    "/SignUp/:path",
-    "/UpdateQuiz/:path",
-    "/Result/:path",
-    "/Group/:path",
-    "/CreateQuiz/:path",
-    "/CreateGroup/:path",
-    "/QuizPass/:path",
-  ],
+  matcher: ["/SignIn/:path", "/SignUp/:path"],
 };
