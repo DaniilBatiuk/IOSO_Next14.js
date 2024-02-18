@@ -68,7 +68,6 @@ export async function updateQuiz(quiz: Omit<Quiz, "createdAt" | "updatedAt" | "s
 }
 
 export async function updateQuizStatusEnded() {
-  console.log("do");
   await prisma.quiz.updateMany({
     where: {
       status: QuizStatus.Active,

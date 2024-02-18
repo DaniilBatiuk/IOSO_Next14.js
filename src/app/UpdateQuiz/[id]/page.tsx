@@ -63,7 +63,6 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (isSuccess && quiz) {
-      console.log(quiz);
       reset({
         name: quiz.result.name,
         attempts: quiz.result.attempts ? quiz.result.attempts : 555,
@@ -76,6 +75,7 @@ export default function UpdateQuiz({ params }: { params: { id: string } }) {
         accessCode: quiz.result.accessCode,
         groupId: quiz.result.groupId ? quiz.result.groupId : "",
         sectionId: quiz.result.sectionId,
+        // @ts-ignore
         questions: quiz.result.questions,
       });
       setAccessType(quiz.result.accessType);

@@ -13,7 +13,7 @@ export const CreateQuizFormSchema = z.object({
   name: z
     .string()
     .min(3, "Full name must be at least 3 characters")
-    .max(120, "Full name must be less than 120 characters"),
+    .max(300, "Full name must be less than 300 characters"),
   accessCode: z.string().nullable(),
   attempts: z.number().nullable(),
   groupId: z.string().optional().nullable(),
@@ -30,7 +30,7 @@ export const CreateQuizFormSchema = z.object({
         text: z
           .string()
           .min(3, "Question must be at least 3 characters")
-          .max(120, "Question must be less than 120 characters"),
+          .max(300, "Question must be less than 300 characters"),
         type: z.literal("Single_choice"),
         answers: z
           .array(
@@ -38,7 +38,7 @@ export const CreateQuizFormSchema = z.object({
               text: z
                 .string()
                 .min(1, "Question must be at least 1 characters")
-                .max(120, "Question must be less than 120 characters"),
+                .max(300, "Question must be less than 300 characters"),
               isCorrect: z.boolean(),
             }),
           )
@@ -48,7 +48,7 @@ export const CreateQuizFormSchema = z.object({
         text: z
           .string()
           .min(3, "Question must be at least 3 characters")
-          .max(120, "Question must be less than 120 characters"),
+          .max(300, "Question must be less than 300 characters"),
         type: z.literal("Multiple_choice"),
         answers: z
           .array(
@@ -56,7 +56,7 @@ export const CreateQuizFormSchema = z.object({
               text: z
                 .string()
                 .min(1, "Question must be at least 1 characters")
-                .max(120, "Question must be less than 120 characters"),
+                .max(300, "Question must be less than 300 characters"),
               isCorrect: z.boolean(),
             }),
           )
@@ -66,7 +66,7 @@ export const CreateQuizFormSchema = z.object({
         text: z
           .string()
           .min(3, "Question must be at least 3 characters")
-          .max(120, "Question must be less than 120 characters"),
+          .max(300, "Question must be less than 300 characters"),
         type: z.literal("True_or_false"),
         answers: z
           .array(
