@@ -1,3 +1,4 @@
+import { QuizStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 import { wrapSuccess } from "@/utils/lib/helpers/wrapSuccess";
@@ -22,7 +23,9 @@ export async function GET(req: NextRequest) {
         sections: {
           where: {
             quizzes: {
-              some: {},
+              some: {
+                status: QuizStatus.Active,
+              },
             },
           },
           select: {

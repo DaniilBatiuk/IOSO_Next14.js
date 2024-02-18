@@ -176,9 +176,6 @@ export const RestrictionsSettings: React.FC<RestrictionsSettings> = ({
           />
         </div>
       </div>
-      {/* <div className={`${styles.form__range__view} ${styles.marginTopLit}`}>
-        {percentagePassWatch}%
-      </div> */}
     </div>
   );
 };

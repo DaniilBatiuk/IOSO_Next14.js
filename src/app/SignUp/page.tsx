@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,6 +9,10 @@ import styles from "@/styles/SignIn.module.scss";
 import SignUpBack from "@/../public/SignUpBack.png";
 import SignUpFront from "@/../public/SignUpFront.png";
 import { SignUpForm, ThemeWrapper } from "@/components";
+
+export const metadata: Metadata = {
+  title: "Sign up",
+};
 
 export default function SignUp() {
   return (

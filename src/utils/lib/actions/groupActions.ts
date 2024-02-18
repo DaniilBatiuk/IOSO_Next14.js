@@ -43,6 +43,12 @@ export async function removeGroup(groupId: string) {
       },
     });
 
+    await prisma.section.deleteMany({
+      where: {
+        groupId: groupId,
+      },
+    });
+
     const groupDelete = await prisma.group.delete({
       where: {
         id: groupId,
@@ -51,7 +57,8 @@ export async function removeGroup(groupId: string) {
     if (!groupDelete) {
       return "Something went wrong.";
     }
-  } catch {
+  } catch (error) {
+    console.log(error);
     return "Something went wrong.";
   }
 }

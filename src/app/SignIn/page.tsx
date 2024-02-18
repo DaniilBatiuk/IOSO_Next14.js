@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,6 +9,10 @@ import styles from "@/styles/SignIn.module.scss";
 import SignInBack from "@/../public/SignInBack.png";
 import SignInFront from "@/../public/SignInFront.png";
 import { SignInForm, ThemeWrapper } from "@/components";
+
+export const metadata: Metadata = {
+  title: "Sign in",
+};
 
 interface SignInProps {
   searchParams: {

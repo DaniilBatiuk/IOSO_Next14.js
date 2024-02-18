@@ -151,7 +151,7 @@ export const Statistic = () => {
             label="Person select"
           >
             <MenuItem value={0} key={0}>
-              No user
+              All users
             </MenuItem>
 
             {people &&
