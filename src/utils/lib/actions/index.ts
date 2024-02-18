@@ -7,4 +7,3 @@ export * from "./questionActions";
 export * from "./quizActions";
 export * from "./sectionActions";
 export * from "./updateQuizActions";
-export * from "./userActions";

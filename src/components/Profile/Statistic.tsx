@@ -19,6 +19,7 @@ import { Line } from "../UI/Line/Line";
 import { PersonQuizHistory } from "./PersonQuizHistory";
 import { StatisticMain } from "./StatisticMain";
 import { TGroupStatisticSelect, TQuizResultSelect, TQuizStatisticSelect } from "@/utils/lib/@types";
+import { groupBy } from "@/utils/lib/helpers";
 import { UserService } from "@/utils/services/user.service";
 
 const defaultGroup: TGroupStatisticSelect = {
@@ -77,7 +78,7 @@ export const Statistic = () => {
 
   useEffect(() => {
     if (!quizSelected) return;
-    const users = Object.groupBy(quizSelected.quizResult, ({ user }) => user.fullName);
+    const users = groupBy(quizSelected.quizResult, ({ user }) => user.fullName);
     if (!users) return;
     setPeople(users);
   }, [quizSelected]);
