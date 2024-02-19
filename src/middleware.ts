@@ -5,8 +5,8 @@ import { LINKS } from "./utils/config/links";
 export function middleware(request: NextRequest) {
   const { url, cookies } = request;
 
-  const isAuth = cookies.get("__Secure-next-auth.session-token")?.value;
-
+  const isAuth = cookies.get("next-auth.session-token")?.value;
+  //const isAuth = cookies.get("__Secure-next-auth.session-token")?.value;
   const isAuthPage = url.includes("/SignIn") || url.includes("/SignUp");
   const isAuthPage2 =
     url.includes("/UpdateQuiz") ||
@@ -14,9 +14,9 @@ export function middleware(request: NextRequest) {
     url.includes("/Group") ||
     url.includes("/CreateQuiz") ||
     url.includes("/CreateGroup") ||
-    url.includes("/QuizPass");
+    url.includes("/QuizPass") ||
+    url.includes("/Trends");
 
-  console.log(!!isAuth, isAuthPage, isAuthPage2);
   if (isAuthPage2 && !!!isAuth) {
     return NextResponse.redirect(new URL(LINKS.Home, url));
   } else if (isAuthPage && !!isAuth) {
@@ -30,6 +30,7 @@ export const config = {
   matcher: [
     "/SignIn/:path",
     "/SignUp/:path",
+    "/Trends/:path",
     "/UpdateQuiz/:path",
     "/Result/:path",
     "/Group/:path",
