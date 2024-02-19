@@ -5,7 +5,7 @@ import { LINKS } from "./utils/config/links";
 export function middleware(request: NextRequest) {
   const { url, cookies } = request;
 
-  const isAuth = cookies.get("next-auth.session-token")?.value;
+  const isAuth = cookies.get("__Secure-next-auth.session-token")?.value;
 
   const isAuthPage = url.includes("/SignIn") || url.includes("/SignUp");
   const isAuthPage2 =
