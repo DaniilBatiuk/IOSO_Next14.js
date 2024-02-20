@@ -2,11 +2,11 @@
 
 import { Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
+
+import { ICONS } from "@/utils/config/icons";
 
 import styles from "@/styles/Profile.module.scss";
 
-import ProfileSvg from "@/../public/Profile.svg";
 import { ButtonsNew, PieChartActivity, ProfileList, ThemeWrapper } from "@/components";
 import { UserService } from "@/utils/services/user.service";
 
@@ -30,7 +30,7 @@ export const ProfilePage = ({ id }: { id: string }) => {
       <div className={styles.profile__container}>
         <section className={styles.profile__info}>
           <div className={styles.info__left}>
-            <Image src={ProfileSvg.src} alt="Icon" width={200} height={200} priority={true} />
+            {ICONS.Profile()}
             <div className={styles.info__left__text}>
               <div className={styles.info__text}>
                 <div className={styles.info__name}>{user?.result?.fullName}</div>

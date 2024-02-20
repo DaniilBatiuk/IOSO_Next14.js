@@ -1,5 +1,7 @@
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
 
+import { ICONS } from "@/utils/config/icons";
+
 import styles from "@/styles/Button.module.scss";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -31,9 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
         {children}
       </div>
       <div className={`${styles.button_arrow}`} style={{ backgroundColor: colorHover }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
-          <path fill="currentColor" d="m14 18l-1.4-1.45L16.15 13H4v-2h12.15L12.6 7.45L14 6l6 6z" />
-        </svg>
+        {ICONS.Button()}
       </div>
     </button>
   );

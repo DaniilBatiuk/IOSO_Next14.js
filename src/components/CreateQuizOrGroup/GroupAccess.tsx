@@ -3,13 +3,10 @@
 import TextField from "@mui/material/TextField";
 import { AccessTypeForGroup } from "@prisma/client";
 import { clsx } from "clsx";
-import Image from "next/image";
+
+import { ICONS } from "@/utils/config/icons";
 
 import styles from "@/styles/CreateQuiz.module.scss";
-
-import Information from "@/../public/Information.svg";
-import Planet from "@/../public/Planet.svg";
-import Private from "@/../public/Private.svg";
 
 type GroupAccessProp = {
   errors: any;
@@ -36,7 +33,7 @@ export const GroupAccess: React.FC<GroupAccessProp> = ({
           })}
           onClick={() => setAccessType(AccessTypeForGroup.Public_access_code)}
         >
-          <Image src={Private.src} alt="Icon" width={30} height={30} />
+          {ICONS.Private()}
           <div>Public access code</div>
         </button>
         <button
@@ -46,7 +43,7 @@ export const GroupAccess: React.FC<GroupAccessProp> = ({
           })}
           onClick={() => setAccessType(AccessTypeForGroup.Public)}
         >
-          <Image src={Planet.src} alt="Icon" width={30} height={30} />
+          {ICONS.Planet()}
           <div>Public</div>
         </button>
       </div>
@@ -56,7 +53,7 @@ export const GroupAccess: React.FC<GroupAccessProp> = ({
           [styles.marginButtonZero]: accessType === AccessTypeForGroup.Public,
         })}
       >
-        <Image src={Information.src} alt="Icon" width={25} height={25} />
+        {ICONS.Information()}
         <div>
           {accessType === AccessTypeForGroup.Public_access_code
             ? "Anyone who has access code will be able to join the group"

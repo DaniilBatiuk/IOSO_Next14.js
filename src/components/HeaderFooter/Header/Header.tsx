@@ -79,25 +79,6 @@ export const Header: React.FC = () => {
         <nav className="header__nav">
           <div className="header__body">
             <ul className="header__list">
-              <li
-                className={
-                  linkActiveUnderLine === 2 && menuActive === false
-                    ? "header__item__active"
-                    : "header__item"
-                }
-              >
-                <Link
-                  href={LINKS.Trends}
-                  onClick={() => {
-                    setLinkActiveUnderLine(2);
-                    if (menuActive) {
-                      menuOpen();
-                    }
-                  }}
-                >
-                  Trends
-                </Link>
-              </li>
               <SignInButton
                 menuOpen={menuOpen}
                 menuActive={menuActive}

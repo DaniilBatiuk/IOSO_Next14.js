@@ -8,7 +8,6 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { AccessTypeForQuiz } from "@prisma/client";
 import { clsx } from "clsx";
-import Image from "next/image";
 import {
   Control,
   Controller,
@@ -17,17 +16,12 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 
+import { ICONS } from "@/utils/config/icons";
+
 import styles from "@/styles/CreateQuiz.module.scss";
 
 import { CreateQuizType } from "@/utils/lib/validators/create-quiz-validator";
 
-import Create from "@/../public/Create.svg";
-import Exist from "@/../public/Exist.svg";
-import Group from "@/../public/Group.svg";
-import Information from "@/../public/Information.svg";
-import Person from "@/../public/Person.svg";
-import Planet from "@/../public/Planet.svg";
-import Private from "@/../public/Private.svg";
 import { useQuizAccess } from "@/utils/hooks";
 
 type QuizAccessProp = {
@@ -117,7 +111,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
           })}
           onClick={() => setAccessType(AccessTypeForQuiz.Private)}
         >
-          <Image src={Person.src} alt="Icon" width={30} height={30} />
+          {ICONS.Person()}
           <div>Private</div>
         </button>
         <button
@@ -127,7 +121,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
           })}
           onClick={() => setAccessType(AccessTypeForQuiz.Public_access_code)}
         >
-          <Image src={Private.src} alt="Icon" width={30} height={30} />
+          {ICONS.Private()}
           <div>Public access code</div>
         </button>
         <button
@@ -137,7 +131,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
           })}
           onClick={() => setAccessType(AccessTypeForQuiz.Public)}
         >
-          <Image src={Planet.src} alt="Icon" width={30} height={30} />
+          {ICONS.Planet()}
           <div>Public</div>
         </button>
         <button
@@ -147,7 +141,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
           })}
           onClick={() => setAccessType(AccessTypeForQuiz.Group)}
         >
-          <Image src={Group.src} alt="Icon" width={30} height={30} />
+          {ICONS.Group()}
           <div>Group</div>
         </button>
       </div>
@@ -157,7 +151,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
           [styles.marginButtonZero]: accessType === AccessTypeForQuiz.Public,
         })}
       >
-        <Image src={Information.src} alt="Icon" width={25} height={25} />
+        {ICONS.Information()}
 
         <div>
           {accessType === AccessTypeForQuiz.Private
@@ -211,7 +205,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
                 type="button"
                 className={clsx(styles.right__item, styles.right__item__active)}
               >
-                <Image src={Exist.src} alt="Icon" width={30} height={30} />
+                {ICONS.Exist()}
                 <div>Exist</div>
               </button>
 
@@ -220,7 +214,7 @@ export const QuizAccess: React.FC<QuizAccessProp> = ({
                 className={styles.right__item}
                 onClick={() => setCreateGroupSectionModalActive(true)}
               >
-                <Image src={Create.src} alt="Icon" width={30} height={30} />
+                {ICONS.CreateQuiz()}
                 <div>Create</div>
               </button>
             </div>

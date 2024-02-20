@@ -1,13 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ICONS } from "@/utils/config/icons";
 import { LINKS } from "@/utils/config/links";
 
 import styles from "@/styles/Home.module.scss";
 
-import Svg2 from "@/../public/Icon1.svg";
-import Svg3 from "@/../public/Icon2.svg";
-import Svg1 from "@/../public/Icon.svg";
 import Main from "@/../public/Main3.png";
 import SubMain from "@/../public/SubMain.png";
 import { Button } from "@/components";
@@ -66,9 +64,7 @@ export default function Home() {
         </div>
         <section className={`${styles.how__list}`}>
           <div className={`${styles.how__list__item}`}>
-            <div className={`${styles.how__icon}`}>
-              <Image src={Svg1.src} alt="Icon" width={200} height={200} />
-            </div>
+            <div className={`${styles.how__icon}`}>{ICONS.Create()}</div>
             <div className={`${styles.how__list__info}`}>
               <div className={`${styles.how__list__title}`}>Create</div>
               <div className={`${styles.how__list__text}`}>
@@ -77,9 +73,7 @@ export default function Home() {
             </div>
           </div>
           <div className={`${styles.how__list__item}`}>
-            <div className={`${styles.how__icon}`}>
-              <Image src={Svg2.src} alt="Icon" width={200} height={200} />
-            </div>
+            <div className={`${styles.how__icon}`}>{ICONS.Publish()}</div>
             <div className={`${styles.how__list__info}`}>
               <div className={`${styles.how__list__title}`}>Publish</div>
               <div className={`${styles.how__list__text}`}>
@@ -89,9 +83,7 @@ export default function Home() {
             </div>
           </div>
           <div className={`${styles.how__list__item}`}>
-            <div className={`${styles.how__icon}`}>
-              <Image src={Svg3.src} alt="Icon" width={200} height={200} />
-            </div>
+            <div className={`${styles.how__icon}`}>{ICONS.Analyze()}</div>
             <div className={`${styles.how__list__info}`}>
               <div className={`${styles.how__list__title}`}>Analyze</div>
               <div className={`${styles.how__list__text}`}>

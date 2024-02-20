@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
+
+import { ICONS } from "@/utils/config/icons";
 
 import styles from "@/styles/Error.module.scss";
 
-import Svg from "@/../public/404.svg";
 import { Button } from "@/components";
 
 export default function NotFound() {
@@ -16,9 +16,7 @@ export default function NotFound() {
           <Button>Go home</Button>
         </Link>
       </div>
-      <div className={styles.error__right}>
-        <Image src={Svg.src} alt="Icon" width={663} height={468} />
-      </div>
+      <div className={styles.error__right}>{ICONS.Error()}</div>
     </section>
   );
 }
